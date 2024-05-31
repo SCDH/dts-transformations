@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+	<id>package</id>
+	<includeBaseDirectory>true</includeBaseDirectory>
+	<baseDirectory>${project.ArtifactId}</baseDirectory>
+
+	<formats>
+		<format>zip</format>
+	</formats>
+
+	<fileSets>
+		<fileSet>
+			<directory>${project.basedir}</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>**/*.xsl</include>
+				<include>**/*.xq*</include>
+				<include>**/*.json</include>
+				<include>**/*.js</include>
+				<include>**/*.css</include>
+				<include>**/*.sty</include>
+				<include>**/*.tex</include>
+			</includes>
+			<excludes>
+				<exclude>**/xspec/**.xsl</exclude>
+				<exclude>distribution/**</exclude>
+				<exclude>scripts/**</exclude>
+				<exclude>doc/**</exclude>
+				<exclude>test/**</exclude>
+				<exclude>utils/**</exclude>
+				<exclude>target/**</exclude>
+				<exclude>frameworks/**</exclude>
+			</excludes>
+		</fileSet>
+		<fileSet>
+			<!-- include all dependencies unpacked in target/dependencies -->
+			<directory>target/dependencies</directory>
+			<outputDirectory>/target/dependencies</outputDirectory>
+			<includes>
+				<include>**/*</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>${project.basedir}</directory>
+			<includes>
+				<include>saxon.xml</include>
+				<include>saxon-local.xml</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>${project.build.directory}/generated-resources/xml/xslt</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>saxon.*.xml</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+
+</assembly>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." name="test" default="test">
+
+    <property name="xspec.version" value="2.2.4"/>
+
+    <property name="xspec.project.dir" value="target/dependency/xspec-${xspec.version}"/>
+
+    <property name="xspec.properties" location="../../system.properties"/>
+
+    <property name="xspec.project.dir" location="../../xspec"/>
+
+    <include file="${xspec.project.dir}/build.xml"/>
+
+    <echo>basedir: ${basedir}</echo>
+    <echo>using XSpec ${xspec.version}</echo>
+
+    <echo>classpath: ${java.class.path}</echo>
+    <echo>ext.dirs: ${java.ext.dirs}</echo>
+
+    <!-- default rule: run all tests -->
+    <target name="test">
+        <antcall target="test-xsl-navigation.xsl"/>
+    </target>
+
+    <target name="test-xsl-navigation.xsl">
+        <antcall target="xspec.xspec" inheritall="false">
+            <param name="xspec.xml" location="${basedir}/xsl/navigation.xspec"/>
+        </antcall>
+    </target>
+
+</project>

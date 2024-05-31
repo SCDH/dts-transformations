@@ -1,0 +1,23 @@
+<!-- Taken from
+     https://www.saxonica.com/documentation10/#!configuration/configuration-file
+     and adapted.
+-->
+<configuration xmlns="http://saxon.sf.net/ns/configuration"
+               edition="HE"
+               label="Hardened configuration">
+  <global
+    allowedProtocols="http,https,ftp,ftps"
+    allowExternalFunctions="true"
+    allowSyntaxExtensions="true"
+    unparsedTextURIResolver="net.sf.saxon.lib.StandardUnparsedTextResolver"
+    uriResolver="net.sf.saxon.lib.StandardURIResolver"
+    xInclude="true"
+    xpathVersionForXsd="20"
+    xpathVersionForXslt="31"
+    />
+
+  <xslt
+    outputUriResolver="de.wwu.scdh.seed.xml.transform.saxon.harden.DenyingOutputURIResolver"
+    />
+
+</configuration>

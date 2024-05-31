@@ -1,0 +1,12 @@
+{
+    "name": "${sef-package.prefix}${project.artifactId}",
+    "description": "A package of XSL transformations compiled for Saxon-JS and descriptors for use with @scdh/seed-frontend-components. ${project.description}",
+    "keywords": ["XSLT", "Saxon-JS", "SEF" ],
+    "homepage": "${project.url}",
+    "license": "SEE LICENSE IN <LICENSE>",
+    "private": false,
+    "version": "${project.version}",
+    "type": "module",
+    "dependencies": {},
+    "files": [ "./transformation-api/" ]
+}

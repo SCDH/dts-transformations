@@ -1,0 +1,9 @@
+*~
+
+/target
+/saxon.*.xml
+/saxon.xml
+/.classpath
+/.project
+/.settings
+xspec
