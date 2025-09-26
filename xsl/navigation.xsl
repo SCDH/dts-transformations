@@ -122,7 +122,7 @@
 
     <xsl:template name="citationTrees" as="array(map(xs:string, item()))">
         <xsl:context-item as="document-node()" use="required"/>
-        <xsl:variable name="trees" as="map(xs:string, item())*">
+        <xsl:variable name="citeStructures" as="map(xs:string, item())*">
             <xsl:for-each select="//refsDecl">
                 <xsl:map>
                     <xsl:map-entry key="'@type'">CitationTree</xsl:map-entry>
@@ -146,13 +146,16 @@
                         <xsl:map-entry key="'description'"
                             select="(p | ab) => string-join() => normalize-space()"/>
                     </xsl:if>
-                    <xsl:map-entry key="'citeStructure'">
+                    <xsl:variable name="trees" as="map(xs:string, item())*">
                         <xsl:apply-templates mode="citationTrees"/>
+                    </xsl:variable>
+                    <xsl:map-entry key="'citeStructure'">
+                        <xsl:sequence select="array { $trees }"/>
                     </xsl:map-entry>
                 </xsl:map>
             </xsl:for-each>
         </xsl:variable>
-        <xsl:sequence select="array { $trees }"/>
+        <xsl:sequence select="array { $citeStructures }"/>
     </xsl:template>
 
     <xsl:mode name="citationTrees" on-no-match="shallow-skip"/>
@@ -166,7 +169,7 @@
                 <xsl:apply-templates mode="citationTrees"/>
             </xsl:variable>
             <xsl:if test="not(empty($citeStructures))">
-                <xsl:map-entry key="'citeStructures'" select="array { $citeStructures }"/>
+                <xsl:map-entry key="'citeStructure'" select="array { $citeStructures }"/>
             </xsl:if>
         </xsl:map>
     </xsl:template>

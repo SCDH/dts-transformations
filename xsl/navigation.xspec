@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
     xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    xmlns:array="http://www.w3.org/2005/xpath-functions/array"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:dts="https://distributed-text-services.github.io/specifications/"
     xmlns:t="http://www.tei-c.org/ns/1.0" stylesheet="navigation.xsl" run-as="external">
 
     <x:variable name="x:saxon-config" href="../saxon.he.xml"/>
 
-    <x:scenario label="presence of properties of dts:Navigation">
+    <x:scenario label="presence of properties of Navigation">
         <x:context href="../test/4ezr.xml"/>
         <x:expect label="has @context" test="map:contains(., '@context')"/>
         <x:expect label="has dtsVersion" test="map:contains(., 'dtsVersion')"/>
@@ -19,7 +20,7 @@
         <x:expect label="has member" test="map:contains(., 'member')"/>
     </x:scenario>
 
-    <x:scenario label="presence of properties of navigation">
+    <x:scenario label="presence of properties of Resource object">
         <x:context href="../test/4ezr.xml"/>
         <x:expect label="has @id" test="map:get(., 'resource') => map:contains('@id')"/>
         <x:expect label="has @type" test="map:get(., 'resource') => map:contains('@type')"/>
@@ -31,6 +32,8 @@
             test="map:get(., 'resource') => map:contains('collection')"/>
         <x:expect label="has navigation" pending="not yet"
             test="map:get(., 'resource') => map:contains('navigation')"/>
+        <x:expect label="has citationTrees"
+            test="map:get(., 'resource') => map:contains('citationTrees')"/>
     </x:scenario>
 
     <x:scenario label="systemId is not provided as resource stylesheet parameter">
@@ -49,6 +52,45 @@
             select="'https://en.wikisource.org/wiki/Dracula'"/>
         <x:expect label="global context's base uri is in /@id"
             test="map:get(., '@id') => matches('Dracula')"/>
+    </x:scenario>
+
+    <x:scenario label="citationTrees in 4ezr.xml">
+        <x:context href="../test/4ezr.xml"/>
+        <x:expect label="has 1 citationTree"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:size()" select="1"/>
+        <x:expect label="1st CitationTree has @type"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:contains('@type')"/>
+        <x:expect label="1st CitationTree is a dts:CitationTree"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:get('@type') => string()"
+            select="'CitationTree'"/>
+        <x:expect label="1st CitationTree is the default citation tree and thus has no identifier"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:contains('identifier') => not()"/>
+        <x:expect label="1st CitationTree has citeStructure"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:contains('@type')"/>
+        <!-- dive into level 1 citeStructure -->
+        <x:expect label="onyl one level 1 citeStructure"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:get('citeStructure') => array:size()"
+            select="1"/>
+        <x:expect label="level 1 citeStructure has @type"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:get('citeStructure') => array:get(1) => map:contains('@type')"/>
+        <x:expect label="level 1 citeStructure has @type"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:get('citeStructure') => array:get(1) => map:get('@type') => string()"
+            select="'CiteStructure'"/>
+        <x:expect label="level 1 citeStructure has citeType"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:get('citeStructure') => array:get(1) => map:get('citeType') => string()"
+            select="'book'"/>
+        <x:expect label="level 1 citeStructure has nested citeStructure"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:get('citeStructure') => array:get(1) => map:contains('citeStructure')"/>
+        <!-- dive into level 2 citeStructure -->
+        <x:expect label="only one level 2 citeStructure"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:get('citeStructure') => array:get(1) => map:get('citeStructure') => array:size()"
+            select="1"/>
+        <x:expect label="level 2 citeStructure has @type"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:get('citeStructure') => array:get(1) => map:get('citeStructure') => array:get(1) => map:contains('@type')"/>
+        <x:expect label="level 2 citeStructure has citeType"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:get('citeStructure') => array:get(1) => map:get('citeStructure') => array:get(1) => map:contains('citeType')"/>
+        <x:expect label="level 2 citeStructure has citeStructure"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:get('citeStructure') => array:get(1) => map:get('citeStructure') => array:get(1) => map:contains('citeStructure')"/>
     </x:scenario>
 
 
