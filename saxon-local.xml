@@ -8,9 +8,8 @@ http://www.saxonica.com/documentation/index/configuration-file.html
 <configuration edition="HE" xmlns="http://saxon.sf.net/ns/configuration">
 
     <xsltPackages>
-        <!--package
-            name="https://scdh.zivgitlabpages.uni-muenster.de/hees-alea/alea-transformations/xsl/html/registry.xsl"
-            version="1.0.0" sourceLocation="xsl/html/registry.xsl"/-->
+        <package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl" version="1.0.0"
+            sourceLocation="xsl/dts.xsl"/>
     </xsltPackages>
 
 </configuration>

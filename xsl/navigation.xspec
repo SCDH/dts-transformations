@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:dts="https://distributed-text-services.github.io/specifications/"
+    xmlns:t="http://www.tei-c.org/ns/1.0" stylesheet="navigation.xsl" run-as="external">
+
+    <x:variable name="x:saxon-config" href="../saxon.he.xml"/>
+
+    <x:scenario label="presence of properties of dts:Navigation">
+        <x:context href="../test/4ezr.xml"/>
+        <x:expect label="has @context" test="map:contains(., '@context')"/>
+        <x:expect label="has dtsVersion" test="map:contains(., 'dtsVersion')"/>
+        <x:expect label="has @type" test="map:contains(., '@type')"/>
+        <x:expect label="@type is Navigation" test="map:get(., '@type') => string()"
+            select="'Navigation'"/>
+        <x:expect label="has @id" test="map:contains(., '@id')"/>
+        <x:expect label="has resource" test="map:contains(., 'resource')"/>
+        <x:expect label="has member" test="map:contains(., 'member')"/>
+    </x:scenario>
+
+    <x:scenario label="presence of properties of navigation">
+        <x:context href="../test/4ezr.xml"/>
+        <x:expect label="has @id" test="map:get(., 'resource') => map:contains('@id')"/>
+        <x:expect label="has @type" test="map:get(., 'resource') => map:contains('@type')"/>
+        <x:expect label="@type is Resource"
+            test="map:get(., 'resource') => map:get('@type') => string()" select="'Resource'"/>
+        <x:expect label="has document" pending="not yet"
+            test="map:get(., 'resource') => map:contains('document')"/>
+        <x:expect label="has collection" pending="not yet"
+            test="map:get(., 'resource') => map:contains('collection')"/>
+        <x:expect label="has navigation" pending="not yet"
+            test="map:get(., 'resource') => map:contains('navigation')"/>
+    </x:scenario>
+
+    <x:scenario label="systemId is not provided as resource stylesheet parameter">
+        <x:context href="../test/4ezr.xml"/>
+        <x:expect label="global context's base-uri as resource/@id"
+            test="map:get(., 'resource') => map:get('@id')" select="$x:context => base-uri()"/>
+        <x:expect label="global context's base uri is in /@id"
+            test="map:get(., '@id') => matches('4ezr\.xml')"/>
+    </x:scenario>
+
+    <x:scenario label="resource systemId is provided as resource stylesheet parameter">
+        <x:param name="resource" select="'https://en.wikisource.org/wiki/Dracula'"/>
+        <x:context href="../test/4ezr.xml"/>
+        <x:expect label="source base-uri as resource/@id"
+            test="map:get(., 'resource') => map:get('@id')"
+            select="'https://en.wikisource.org/wiki/Dracula'"/>
+        <x:expect label="global context's base uri is in /@id"
+            test="map:get(., '@id') => matches('Dracula')"/>
+    </x:scenario>
+
+
+</x:description>

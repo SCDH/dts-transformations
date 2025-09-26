@@ -1,0 +1,25 @@
+<xsl:package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl" package-version="1.0.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+  xmlns:dts="https://distributed-text-services.github.io/specifications/"
+  exclude-result-prefixes="#all" xpath-default-namespace="http://www.tei-c.org/ns/1.0" version="3.0">
+
+  <xsl:param name="dts-version" as="xs:string" select="'1.0rc1'"/>
+
+  <xsl:param name="api-base-url" as="xs:string" select="'https://example.org/api/dts'"/>
+  
+  <xsl:variable name="context" visibility="final">
+    <xsl:map-entry key="'@context'"
+      select="concat('https://distributed-text-services.github.io/specifications/context/', $dts-version,'.json')"/>
+    <xsl:map-entry key="'dtsVersion'" select="$dts-version"/>
+  </xsl:variable>
+
+  <xsl:function name="dts:navigation-url-with-query-parameters" as="xs:anyURI" visibility="final">
+    <xsl:param name="parameters" as="map(xs:string, item())"/>
+    <xsl:variable name="ps" as="xs:string"
+      select="map:for-each($parameters, function ($k, $v) { $k || '=' || $v }) => string-join('&amp;')"/>
+    <xsl:sequence select="($api-base-url || '/navigation/?' || $ps ) => xs:anyURI()"/>
+  </xsl:function>
+
+
+</xsl:package>
