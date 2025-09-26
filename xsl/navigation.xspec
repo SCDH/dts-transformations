@@ -90,7 +90,38 @@
         <x:expect label="level 2 citeStructure has citeType"
             test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:get('citeStructure') => array:get(1) => map:get('citeStructure') => array:get(1) => map:contains('citeType')"/>
         <x:expect label="level 2 citeStructure has citeStructure"
-            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:get('citeStructure') => array:get(1) => map:get('citeStructure') => array:get(1) => map:contains('citeStructure')"/>
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:get('citeStructure') => array:get(1) => map:get('citeStructure') => array:get(1) => map:contains('citeStructure')"
+        />
+    </x:scenario>
+
+    <x:scenario label="members in 4ezr.xml">
+        <x:context href="../test/4ezr.xml"/>
+        <!-- diving into member 1 -->
+        <x:expect label="correct count of members" test="map:get(., 'member') => array:size()"
+            select="10"/>
+        <x:expect label="member 1 has identifier"
+            test="map:get(., 'member') => array:get(1) => map:contains('identifier')"/>
+        <x:expect label="member 1 has @type"
+            test="map:get(., 'member') => array:get(1) => map:contains('@type')"/>
+        <x:expect label="member 1 has level"
+            test="map:get(., 'member') => array:get(1) => map:contains('level')"/>
+        <x:expect label="member 1 has parent"
+            test="map:get(., 'member') => array:get(1) => map:contains('parent')"/>
+        <x:expect label="member 1 has citeType"
+            test="map:get(., 'member') => array:get(1) => map:contains('citeType')"/>
+        <x:expect label="member 1 is first in document order"
+            test="map:get(., 'member') => array:get(1) => map:get('identifier') => string()"
+            select="'4 Ezra'"/>
+        <x:expect label="member 1 is a CiteableUnit"
+            test="map:get(., 'member') => array:get(1) => map:get('@type') => string()"
+            select="'CiteableUnit'"/>
+        <x:expect label="member 1 is in level 1"
+            test="map:get(., 'member') => array:get(1) => map:get('level')" select="1"/>
+        <x:expect label="member 1 has no parent"
+            test="map:get(., 'member') => array:get(1) => map:get('parent')" select="()"/>
+        <x:expect label="member 1 has correct citeType"
+            test="map:get(., 'member') => array:get(1) => map:get('citeType') => string()"
+            select="'book'"/>
     </x:scenario>
 
 

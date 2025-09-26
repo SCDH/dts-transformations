@@ -27,7 +27,19 @@
    </teiHeader>
    <text>
       <body>
-         <p>Some text here.</p>
+         <div n="4 Ezra">
+            <div n="1">
+               <div n="1"/>
+               <div n="2"/>
+               <div n="3"></div>
+               <div n="4"></div>
+            </div>
+            <div n="2">
+               <div n="1"/>
+               <div n="2"/>
+               <div n="3"/>
+            </div>
+         </div>
       </body>
    </text>
 </TEI>

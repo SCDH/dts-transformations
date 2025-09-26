@@ -179,12 +179,48 @@
 
     <xsl:template name="members">
         <xsl:context-item as="document-node()" use="required"/>
-        <xsl:variable name="members" as="map(xs:string, item())*">
-            <xsl:apply-templates mode="members" select="//citeStructure"/>
+        <xsl:variable name="members" as="map(xs:string, item()?)*">
+            <xsl:apply-templates mode="members" select="//citeStructure">
+                <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="()"/>
+                <xsl:with-param name="parentContext" as="node()" tunnel="true" select="root(.)"/>
+            </xsl:apply-templates>
         </xsl:variable>
         <xsl:sequence select="array { $members }"/>
     </xsl:template>
 
     <xsl:mode name="members" on-no-match="shallow-skip"/>
+
+    <xsl:template mode="members" match="citeStructure">
+        <xsl:param name="parentId" as="xs:string?" tunnel="true"/>
+        <xsl:param name="parentContext" as="node()" tunnel="true"/>
+        <xsl:variable name="citeStructureContext" as="element(citeStructure)" select="."/>
+        <xsl:variable name="members" as="node()*">
+            <xsl:evaluate context-item="$parentContext" xpath="@match"
+                namespace-context="$citeStructureContext"/>
+        </xsl:variable>
+        <xsl:for-each select="$members">
+            <xsl:variable name="memberContext" as="node()" select="."/>
+            <xsl:variable name="use" as="item()*">
+                <xsl:evaluate context-item="$memberContext" xpath="$citeStructureContext/@use"
+                    namespace-context="$citeStructureContext"/>
+            </xsl:variable>
+            <xsl:variable name="identifier"
+                select="concat($parentId, $citeStructureContext/@delim, $use)"/>
+            <xsl:map>
+                <xsl:map-entry key="'identifier'" select="$identifier"/>
+                <xsl:map-entry key="'@type'">CiteableUnit</xsl:map-entry>
+                <xsl:map-entry key="'level'"
+                    select="count($citeStructureContext/ancestor-or-self::citeStructure)"/>
+                <xsl:map-entry key="'parent'" select="$parentId"/>
+                <xsl:map-entry key="'citeType'" select="$citeStructureContext/@unit => string()"/>
+                <!-- TODO dcterms -->
+            </xsl:map>
+            <xsl:apply-templates mode="members" select="$citeStructureContext/node()">
+                <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="$identifier"/>
+                <xsl:with-param name="parentContext" as="node()" tunnel="true"
+                    select="$memberContext"/>
+            </xsl:apply-templates>
+        </xsl:for-each>
+    </xsl:template>
 
 </xsl:package>
