@@ -231,4 +231,46 @@
         <x:expect label="no end property" test="map:contains(., 'end') => not()"/>
     </x:scenario>
 
+    <x:scenario label="down to level 1 in matt.xml">
+        <x:param name="down" select="1"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="correct count of members" test="map:get(., 'member') => array:size()"
+            select="1"/>
+        <x:expect label="maximum depth as given by $down parameter"
+            test="(map:get(., 'member') => array:for-each(function ($x) {map:get($x, 'level') => xs:integer()})) => max()"
+            select="1"/>
+    </x:scenario>
+
+    <x:scenario label="down to level 2 in matt.xml">
+        <x:param name="down" select="2"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="correct count of members" test="map:get(., 'member') => array:size()"
+            select="4"/>
+        <x:expect label="maximum depth as given by $down parameter"
+            test="(map:get(., 'member') => array:for-each(function ($x) {map:get($x, 'level') => xs:integer()})) => max()"
+            select="2"/>
+    </x:scenario>
+
+    <x:scenario label="down to level 3 in matt.xml">
+        <x:param name="down" select="3"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="maximum depth as given by $down parameter"
+            test="(map:get(., 'member') => array:for-each(function ($x) {map:get($x, 'level') => xs:integer()})) => min()"
+            select="1"/>
+        <x:expect label="maximum depth as given by $down parameter"
+            test="(map:get(., 'member') => array:for-each(function ($x) {map:get($x, 'level') => xs:integer()})) => max()"
+            select="3"/>
+    </x:scenario>
+
+    <x:scenario label="down to level 4 in matt.xml">
+        <x:param name="down" select="4"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="maximum depth as given by $down parameter"
+            test="(map:get(., 'member') => array:for-each(function ($x) {map:get($x, 'level') => xs:integer()})) => min()"
+            select="1"/>
+        <x:expect label="maximum depth as given by $down parameter"
+            test="(map:get(., 'member') => array:for-each(function ($x) {map:get($x, 'level') => xs:integer()})) => max()"
+            select="3"/>
+    </x:scenario>
+
 </x:description>

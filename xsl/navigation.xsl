@@ -216,6 +216,7 @@
                     <xsl:with-param name="parentContext" as="node()" tunnel="true" select="root(.)"/>
                     <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
                         select="$range-requested"/>
+                    <xsl:with-param name="level" as="xs:integer" tunnel="true" select="1"/>
                 </xsl:apply-templates>
             </xsl:when>
             <xsl:when test="$tree">
@@ -225,6 +226,7 @@
                     <xsl:with-param name="parentContext" as="node()" tunnel="true" select="root(.)"/>
                     <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
                         select="$range-requested"/>
+                    <xsl:with-param name="level" as="xs:integer" tunnel="true" select="1"/>
                 </xsl:apply-templates>
             </xsl:when>
         </xsl:choose>
@@ -236,6 +238,7 @@
         <xsl:param name="parentId" as="xs:string?" tunnel="true"/>
         <xsl:param name="parentContext" as="node()" tunnel="true"/>
         <xsl:param name="in-requested-range" as="xs:boolean" tunnel="true"/>
+        <xsl:param name="level" as="xs:integer" tunnel="true"/>
         <xsl:variable name="citeStructureContext" as="element(citeStructure)" select="."/>
         <xsl:variable name="members" as="node()*">
             <xsl:evaluate context-item="$parentContext" xpath="@match"
@@ -274,14 +277,23 @@
                 </xsl:choose>
             </xsl:variable>
             <xsl:variable name="children" as="element(dts:member)*">
-                <xsl:apply-templates mode="members" select="$citeStructureContext/node()">
-                    <xsl:with-param name="parentId" as="xs:string?" tunnel="true"
-                        select="$identifier"/>
-                    <xsl:with-param name="parentContext" as="node()" tunnel="true"
-                        select="$memberContext"/>
-                    <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
-                        select="$include"/>
-                </xsl:apply-templates>
+                <xsl:choose>
+                    <!-- level of $down reached, stop descending -->
+                    <xsl:when test="$down eq $level"/>
+                    <!-- descend one level deeper to children -->
+                    <xsl:otherwise>
+                        <xsl:apply-templates mode="members" select="$citeStructureContext/node()">
+                            <xsl:with-param name="parentId" as="xs:string?" tunnel="true"
+                                select="$identifier"/>
+                            <xsl:with-param name="parentContext" as="node()" tunnel="true"
+                                select="$memberContext"/>
+                            <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
+                                select="$include"/>
+                            <xsl:with-param name="level" as="xs:integer" tunnel="true"
+                                select="$level + 1"/>
+                        </xsl:apply-templates>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:variable>
             <dts:member>
                 <!-- <dts:in-requested-range> keeps the state -->
@@ -298,8 +310,7 @@
                     <xsl:value-of select="$identifier"/>
                 </dts:identifier>
                 <dts:level>
-                    <xsl:value-of
-                        select="count($citeStructureContext/ancestor-or-self::citeStructure)"/>
+                    <xsl:value-of select="$level"/>
                 </dts:level>
                 <dts:parent>
                     <xsl:value-of select="$parentId"/>
