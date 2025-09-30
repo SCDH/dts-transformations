@@ -273,7 +273,7 @@
             select="3"/>
     </x:scenario>
 
-    <x:scenario label="down empty with $ref to first chapter in matt.xml">
+    <x:scenario label="down empty with $ref to second chapter in matt.xml">
         <x:param name="down" select="()"/>
         <x:param name="ref" select="'Matt:2'"/>
         <x:context href="../test/matt.xml"/>
@@ -284,7 +284,7 @@
             test="map:get(., 'ref') => map:get('level')" select="2"/>
     </x:scenario>
 
-    <x:scenario label="down emtpy with $ref to first chapter in matt.xml">
+    <x:scenario label="down emtpy with $start and $end in matt.xml">
         <x:param name="down" select="()"/>
         <x:param name="start" select="'Matt:1:3'"/>
         <x:param name="end" select="'Matt:2:2'"/>
@@ -298,6 +298,22 @@
             test="map:get(., 'end') => map:get('identifier') => string()" select="'Matt:2:2'"/>
         <x:expect label="end property has correct level"
             test="map:get(., 'end') => map:get('level')" select="3"/>
+    </x:scenario>
+
+    <x:scenario label="down 0 with $ref to first chapter in matt.xml">
+        <x:param name="down" select="0"/>
+        <x:param name="ref" select="'Matt:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="has member property" test="map:contains(., 'member')"/>
+        <x:expect label="has correct members count" test="map:get(., 'member') => array:size()"
+            select="3"/>
+        <x:expect label="all members siblings"
+            test="map:get(., 'member') => array:for-each(function ($x) {map:get($x, 'level')})"
+            select="array { 2, 2, 2 }"/>
+        <x:expect label="ref property has correct identifier"
+            test="map:get(., 'ref') => map:get('identifier') => string()" select="'Matt:2'"/>
+        <x:expect label="ref property has correct level"
+            test="map:get(., 'ref') => map:get('level')" select="2"/>
     </x:scenario>
 
 </x:description>

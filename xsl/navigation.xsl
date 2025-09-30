@@ -105,10 +105,20 @@
             </xsl:variable>
             <xsl:variable name="members-in-requested-range" as="element(dts:member)*"
                 select="$members[dts:is-in-requested-range(.)]"/>
-            <xsl:if test="$down">
-                <xsl:map-entry key="'member'"
-                    select="array { $members-in-requested-range ! dts:member-json(.) }"/>
-            </xsl:if>
+            <xsl:choose>
+                <xsl:when test="not(exists($down))"/>
+                <xsl:when test="exists($down) and $down eq 0">
+                    <xsl:variable name="ref-parent-id" as="xs:string"
+                        select="$members-in-requested-range[1]/dts:parent => string()"/>
+                    <xsl:map-entry key="'member'"
+                        select="array { $members[string(dts:parent) = $ref-parent-id] ! dts:member-json(.) }"
+                    />
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:map-entry key="'member'"
+                        select="array { $members-in-requested-range ! dts:member-json(.) }"/>
+                </xsl:otherwise>
+            </xsl:choose>
             <xsl:if test="$ref">
                 <xsl:map-entry key="'ref'"
                     select="$members-in-requested-range[1] => dts:member-json()"/>
