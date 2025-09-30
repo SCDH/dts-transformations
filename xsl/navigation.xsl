@@ -275,6 +275,9 @@
                         select="$include and (every $child in $children satisfies dts:is-in-requested-range($child))"
                     />
                 </dts:in-requested-range>
+                <xsl:if test="$end and $identifier eq $end">
+                    <dts:end/>
+                </xsl:if>
                 <dts:identifier>
                     <xsl:value-of select="$identifier"/>
                 </dts:identifier>
@@ -293,7 +296,7 @@
             <xsl:sequence select="$children"/>
             <xsl:next-iteration>
                 <xsl:with-param name="in-requested-range-before" as="xs:boolean"
-                    select="($include, $children ! dts:is-in-requested-range(.))[last()]"/>
+                    select="($include, $children ! dts:is-in-requested-range(.))[last()] and not(exists($children/dts:end))"/>
                 <xsl:with-param name="last-was-requested-end" as="xs:boolean"
                     select="$end and $identifier eq $end"/>
             </xsl:next-iteration>
