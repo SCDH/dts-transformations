@@ -253,6 +253,9 @@
                         test="$start and $end and not($in-requested-range-before) and ($identifier eq $start)">
                         <xsl:sequence select="true()"/>
                     </xsl:when>
+                    <xsl:when test="$ref and ($identifier eq $ref)">
+                        <xsl:sequence select="true()"/>
+                    </xsl:when>
                     <xsl:otherwise>
                         <xsl:sequence select="$in-requested-range-before"/>
                     </xsl:otherwise>
@@ -295,8 +298,18 @@
             </dts:member>
             <xsl:sequence select="$children"/>
             <xsl:next-iteration>
-                <xsl:with-param name="in-requested-range-before" as="xs:boolean"
-                    select="($include, $children ! dts:is-in-requested-range(.))[last()] and not(exists($children/dts:end))"/>
+                <xsl:with-param name="in-requested-range-before" as="xs:boolean">
+                    <xsl:choose>
+                        <xsl:when test="$ref and $identifier eq $ref">
+                            <xsl:sequence select="false()"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence
+                                select="($include, $children ! dts:is-in-requested-range(.))[last()] and not(exists($children/dts:end))"
+                            />
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:with-param>
                 <xsl:with-param name="last-was-requested-end" as="xs:boolean"
                     select="$end and $identifier eq $end"/>
             </xsl:next-iteration>

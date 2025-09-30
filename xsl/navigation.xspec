@@ -206,4 +206,12 @@
             select="'Matt:2:3'"/>
     </x:scenario>
 
+    <x:scenario label="ref in matt.xml">
+        <x:param name="ref" select="'Matt:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="correct count of members" test="map:get(., 'member') => array:size()"
+            select="4"/>
+
+    </x:scenario>
+
 </x:description>
