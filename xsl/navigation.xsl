@@ -213,7 +213,7 @@
             <xsl:evaluate context-item="$parentContext" xpath="@match"
                 namespace-context="$citeStructureContext"/>
         </xsl:variable>
-        <xsl:for-each select="$members">
+        <xsl:iterate select="$members">
             <xsl:variable name="memberContext" as="node()" select="."/>
             <xsl:variable name="use" as="item()*">
                 <xsl:evaluate context-item="$memberContext" xpath="$citeStructureContext/@use"
@@ -235,7 +235,7 @@
                 <xsl:with-param name="parentContext" as="node()" tunnel="true"
                     select="$memberContext"/>
             </xsl:apply-templates>
-        </xsl:for-each>
+        </xsl:iterate>
     </xsl:template>
 
 </xsl:package>
