@@ -114,6 +114,32 @@
                         select="array { $members[string(dts:parent) = $ref-parent-id] ! dts:member-json(.) }"
                     />
                 </xsl:when>
+                <xsl:when test="$down &gt; 0">
+                    <xsl:variable name="deepest" as="xs:integer">
+                        <xsl:choose>
+                            <xsl:when test="$start">
+                                <xsl:sequence
+                                    select="$members-in-requested-range[1 or last()]/dts:level ! xs:integer(.) => max() + $down"
+                                />
+                            </xsl:when>
+                            <xsl:when test="$ref">
+                                <xsl:sequence
+                                    select="$members-in-requested-range[1]/dts:level ! xs:integer(.) + $down"
+                                />
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:sequence select="$down"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:variable>
+                    <xsl:message>
+                        <xsl:text>filtering to deepest level </xsl:text>
+                        <xsl:value-of select="$deepest"/>
+                    </xsl:message>
+                    <xsl:map-entry key="'members'"
+                        select="array { $members-in-requested-range [xs:integer(dts:level/text()) le $deepest] ! dts:member-json(.) }"
+                    />
+                </xsl:when>
                 <xsl:otherwise>
                     <xsl:map-entry key="'member'"
                         select="array { $members-in-requested-range ! dts:member-json(.) }"/>
@@ -289,23 +315,15 @@
                 </xsl:choose>
             </xsl:variable>
             <xsl:variable name="children" as="element(dts:member)*">
-                <xsl:choose>
-                    <!-- level of $down reached, stop descending -->
-                    <xsl:when test="$down eq $level"/>
-                    <!-- descend one level deeper to children -->
-                    <xsl:otherwise>
-                        <xsl:apply-templates mode="members" select="$citeStructureContext/node()">
-                            <xsl:with-param name="parentId" as="xs:string?" tunnel="true"
-                                select="$identifier"/>
-                            <xsl:with-param name="parentContext" as="node()" tunnel="true"
-                                select="$memberContext"/>
-                            <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
-                                select="$include"/>
-                            <xsl:with-param name="level" as="xs:integer" tunnel="true"
-                                select="$level + 1"/>
-                        </xsl:apply-templates>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <xsl:apply-templates mode="members" select="$citeStructureContext/node()">
+                    <xsl:with-param name="parentId" as="xs:string?" tunnel="true"
+                        select="$identifier"/>
+                    <xsl:with-param name="parentContext" as="node()" tunnel="true"
+                        select="$memberContext"/>
+                    <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
+                        select="$include"/>
+                    <xsl:with-param name="level" as="xs:integer" tunnel="true" select="$level + 1"/>
+                </xsl:apply-templates>
             </xsl:variable>
             <dts:member>
                 <!-- <dts:in-requested-range> keeps the state -->
