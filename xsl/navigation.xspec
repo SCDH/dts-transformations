@@ -273,4 +273,31 @@
             select="3"/>
     </x:scenario>
 
+    <x:scenario label="down empty with $ref to first chapter in matt.xml">
+        <x:param name="down" select="()"/>
+        <x:param name="ref" select="'Matt:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="no member property" test="map:contains(., 'member') => not()"/>
+        <x:expect label="ref property has correct identifier"
+            test="map:get(., 'ref') => map:get('identifier') => string()" select="'Matt:2'"/>
+        <x:expect label="ref property has correct level"
+            test="map:get(., 'ref') => map:get('level')" select="2"/>
+    </x:scenario>
+
+    <x:scenario label="down emtpy with $ref to first chapter in matt.xml">
+        <x:param name="down" select="()"/>
+        <x:param name="start" select="'Matt:1:3'"/>
+        <x:param name="end" select="'Matt:2:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="no member property" test="map:contains(., 'member') => not()"/>
+        <x:expect label="start property has correct identifier"
+            test="map:get(., 'start') => map:get('identifier') => string()" select="'Matt:1:3'"/>
+        <x:expect label="start property has correct level"
+            test="map:get(., 'start') => map:get('level')" select="3"/>
+        <x:expect label="end property has correct identifier"
+            test="map:get(., 'end') => map:get('identifier') => string()" select="'Matt:2:2'"/>
+        <x:expect label="end property has correct level"
+            test="map:get(., 'end') => map:get('level')" select="3"/>
+    </x:scenario>
+
 </x:description>

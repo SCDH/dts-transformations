@@ -22,7 +22,7 @@
 
     <xsl:param name="end" as="xs:string?" select="()"/>
 
-    <xsl:param name="down" as="xs:integer" select="-1"/>
+    <xsl:param name="down" as="xs:integer?" select="-1"/>
 
     <xsl:param name="tree" as="xs:string?" select="()"/>
 
@@ -105,8 +105,10 @@
             </xsl:variable>
             <xsl:variable name="members-in-requested-range" as="element(dts:member)*"
                 select="$members[dts:is-in-requested-range(.)]"/>
-            <xsl:map-entry key="'member'"
-                select="array { $members-in-requested-range ! dts:member-json(.) }"/>
+            <xsl:if test="$down">
+                <xsl:map-entry key="'member'"
+                    select="array { $members-in-requested-range ! dts:member-json(.) }"/>
+            </xsl:if>
             <xsl:if test="$ref">
                 <xsl:map-entry key="'ref'"
                     select="$members-in-requested-range[1] => dts:member-json()"/>
