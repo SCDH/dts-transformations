@@ -246,16 +246,20 @@
             <!-- make intermediate <dts:member> element -->
             <xsl:variable name="include" as="xs:boolean">
                 <xsl:choose>
+                    <!-- $last=$end,$here -->
                     <xsl:when test="$last-was-requested-end">
                         <xsl:sequence select="false()"/>
                     </xsl:when>
+                    <!-- $here=$start -->
                     <xsl:when
                         test="$start and $end and not($in-requested-range-before) and ($identifier eq $start)">
                         <xsl:sequence select="true()"/>
                     </xsl:when>
+                    <!-- $here=$ref -->
                     <xsl:when test="$ref and ($identifier eq $ref)">
                         <xsl:sequence select="true()"/>
                     </xsl:when>
+                    <!-- keep state as has been before -->
                     <xsl:otherwise>
                         <xsl:sequence select="$in-requested-range-before"/>
                     </xsl:otherwise>
@@ -278,6 +282,7 @@
                         select="$include and (every $child in $children satisfies dts:is-in-requested-range($child))"
                     />
                 </dts:in-requested-range>
+                <!-- <dts:end> keeps the state by demarking the $end member -->
                 <xsl:if test="$end and $identifier eq $end">
                     <dts:end/>
                 </xsl:if>
@@ -300,13 +305,20 @@
             <xsl:next-iteration>
                 <xsl:with-param name="in-requested-range-before" as="xs:boolean">
                     <xsl:choose>
+                        <!-- currently in $ref, so $next not in $ref -->
                         <xsl:when test="$ref and $identifier eq $ref">
                             <xsl:sequence select="false()"/>
                         </xsl:when>
+                        <!-- $children[1]..$end..$children[last()],$next -->
+                        <xsl:when test="exists($children/dts:end)">
+                            <xsl:sequence select="false()"/>
+                        </xsl:when>
+                        <!-- $start..$children[last()],$next..$end -->
+                        <xsl:when test="$children[last()] ! dts:is-in-requested-range(.)">
+                            <xsl:sequence select="true()"/>
+                        </xsl:when>
                         <xsl:otherwise>
-                            <xsl:sequence
-                                select="($include, $children ! dts:is-in-requested-range(.))[last()] and not(exists($children/dts:end))"
-                            />
+                            <xsl:sequence select="$include"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:with-param>
