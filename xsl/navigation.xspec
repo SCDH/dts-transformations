@@ -316,4 +316,54 @@
             test="map:get(., 'ref') => map:get('level')" select="2"/>
     </x:scenario>
 
+    <x:scenario label="down 0 with $ref to Matt:2:2 in matt.xml">
+        <x:param name="down" select="0"/>
+        <x:param name="ref" select="'Matt:2:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="has member property" test="map:contains(., 'member')"/>
+        <x:expect label="has correct members count" test="map:get(., 'member') => array:size()"
+            select="3"/>
+        <x:expect label="all members siblings"
+            test="map:get(., 'member') => array:for-each(function ($x) {map:get($x, 'level')})"
+            select="array { 3, 3, 3 }"/>
+        <x:expect label="ref property has correct identifier"
+            test="map:get(., 'ref') => map:get('identifier') => string()" select="'Matt:2:2'"/>
+        <x:expect label="ref property has correct level"
+            test="map:get(., 'ref') => map:get('level')" select="3"/>
+    </x:scenario>
+
+    <x:scenario label="down 0 with $ref to book in matt.xml">
+        <x:param name="down" select="0"/>
+        <x:param name="ref" select="'Matt'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="has member property" test="map:contains(., 'member')"/>
+        <x:expect label="has correct members count" test="map:get(., 'member') => array:size()"
+            select="1"/>
+        <x:expect label="all members siblings"
+            test="map:get(., 'member') => array:for-each(function ($x) {map:get($x, 'level')})"
+            select="array { 1 }"/>
+        <x:expect label="ref property has correct identifier"
+            test="map:get(., 'ref') => map:get('identifier') => string()" select="'Matt'"/>
+        <x:expect label="ref property has correct level"
+            test="map:get(., 'ref') => map:get('level')" select="1"/>
+    </x:scenario>
+
+    <x:scenario label="down 1 with $ref to Matt:2:2">
+        <x:param name="down" select="1"/>
+        <x:param name="ref" select="'Matt:2:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="has member property" test="map:contains(., 'member')"/>
+        <x:expect label="has correct members count" test="map:get(., 'member') => array:size()"
+            select="1"/>
+    </x:scenario>
+
+    <x:scenario label="down 1 with $ref to Matt:2">
+        <x:param name="down" select="1"/>
+        <x:param name="ref" select="'Matt:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="has member property" test="map:contains(., 'member')"/>
+        <x:expect label="has correct members count" test="map:get(., 'member') => array:size()"
+            select="4"/>
+    </x:scenario>
+
 </x:description>
