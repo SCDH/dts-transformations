@@ -124,5 +124,35 @@
             select="'book'"/>
     </x:scenario>
 
+    <x:scenario label="default citation tree: default citation tree of matt.xml">
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="has 2 citationTrees"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:size()" select="2"/>
+        <x:expect label="1st CitationTree is the default citation tree and thus has no identifier"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:contains('identifier') => not()"/>
+        <x:expect label="2nd CitationTree has identifier"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(2) => map:contains('identifier')"/>
+        <x:expect label="2nd CitationTree has identifier 'pages'"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(2) => map:get('identifier') => string()"
+            select="'pages'"/>
+        <x:expect label="correct count of members" test="map:get(., 'member') => array:size()"
+            select="10"/>
+    </x:scenario>
+
+    <x:scenario label="named citation tree: 'pages' citation tree of matt.xml">
+        <x:param name="tree" select="'pages'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="has 2 citationTrees"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:size()" select="2"/>
+        <x:expect label="1st CitationTree is the default citation tree and thus has no identifier"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:contains('identifier') => not()"/>
+        <x:expect label="2nd CitationTree has identifier"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(2) => map:contains('identifier')"/>
+        <x:expect label="2nd CitationTree has identifier 'pages'"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(2) => map:get('identifier') => string()"
+            select="'pages'"/>
+        <x:expect label="correct count of members" test="map:get(., 'member') => array:size()"
+            select="2"/>
+    </x:scenario>
 
 </x:description>

@@ -180,10 +180,25 @@
     <xsl:template name="members">
         <xsl:context-item as="document-node()" use="required"/>
         <xsl:variable name="members" as="map(xs:string, item()?)*">
-            <xsl:apply-templates mode="members" select="//citeStructure">
-                <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="()"/>
-                <xsl:with-param name="parentContext" as="node()" tunnel="true" select="root(.)"/>
-            </xsl:apply-templates>
+            <xsl:choose>
+                <xsl:when test="not($tree)">
+                    <!-- all members of default citation tree -->
+                    <xsl:apply-templates mode="members"
+                        select="(//refsDecl[not(@xml:id)] | //refsDecl)[1]">
+                        <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="()"/>
+                        <xsl:with-param name="parentContext" as="node()" tunnel="true"
+                            select="root(.)"/>
+                    </xsl:apply-templates>
+                </xsl:when>
+                <xsl:when test="$tree">
+                    <!-- all members of a named citation tree -->
+                    <xsl:apply-templates mode="members" select="id($tree)/self::refsDecl">
+                        <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="()"/>
+                        <xsl:with-param name="parentContext" as="node()" tunnel="true"
+                            select="root(.)"/>
+                    </xsl:apply-templates>
+                </xsl:when>
+            </xsl:choose>
         </xsl:variable>
         <xsl:sequence select="array { $members }"/>
     </xsl:template>
