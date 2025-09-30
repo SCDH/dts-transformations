@@ -18,7 +18,7 @@
       <encodingDesc>
          <refsDecl xml:id="biblical2">
             <citeStructure unit="book" match="//body/div" use="@n">
-               <citeStructure unit="chapter" match="div" use="@n" delim=" ">
+               <citeStructure unit="chapter" match="div" use="@n" delim=":">
                   <citeStructure unit="verse" match="div" use="@n" delim=":"/>
                </citeStructure>
             </citeStructure>
@@ -31,7 +31,7 @@
    <text>
       <body>
          <pb n="1"/>
-         <div n="Matt.">
+         <div n="Matt">
             <div n="1">
                <div n="1"/>
                <div n="2"/>
@@ -43,6 +43,12 @@
                <div n="1"/>
                <div n="2"/>
                <div n="3"/>
+            </div>
+            <div n="3">
+               <div n="1"/>
+               <div n="2"/>
+               <div n="3"/>
+               <div n="4"/>
             </div>
          </div>
       </body>

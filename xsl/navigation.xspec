@@ -136,7 +136,7 @@
             test="map:get(., 'resource') => map:get('citationTrees') => array:get(2) => map:get('identifier') => string()"
             select="'pages'"/>
         <x:expect label="correct count of members" test="map:get(., 'member') => array:size()"
-            select="10"/>
+            select="15"/>
     </x:scenario>
 
     <x:scenario label="named citation tree: 'pages' citation tree of matt.xml">
@@ -153,6 +153,23 @@
             select="'pages'"/>
         <x:expect label="correct count of members" test="map:get(., 'member') => array:size()"
             select="2"/>
+    </x:scenario>
+
+    <x:scenario label="from start to end in matt.xml">
+        <x:param name="start" select="'Matt:1:3'"/>
+        <x:param name="end" select="'Matt:2:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="correct count of members" test="map:get(., 'member') => array:size()"
+            select="4"/>
+        <x:expect label="only level 3 members"
+            test="map:get(., 'member') => array:for-each(function ($x) {map:get($x, 'level')})"
+            select="array {3, 3, 3, 3}"/>
+        <x:expect label="start is first member"
+            test="map:get(., 'member') => array:get(1) => map:get('identifier') => string()"
+            select="'Matt:1:3'"/>
+        <x:expect label="end is last member"
+            test="map:get(., 'member') => array:get(4) => map:get('identifier') => string()"
+            select="'Matt:2:2'"/>
     </x:scenario>
 
 </x:description>
