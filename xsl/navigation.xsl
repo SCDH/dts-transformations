@@ -14,6 +14,8 @@ target/bin/xslt.sh \
     -it \
     resource=test/matt.xml
 
+Use 'java -cp $CLASSPATH saxon-10.9.jar' instead of 'target/bin/xslt.sh'.
+
 This package has overridable components for adding metadata to member objects.
 See the section at the end of the package.
 -->
