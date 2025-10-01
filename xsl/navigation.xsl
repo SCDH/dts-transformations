@@ -43,9 +43,6 @@ See the section at the end of the package.
 
     <xsl:param name="page" as="xs:integer?" select="()"/>
 
-    <xsl:param name="url-template" as="xs:QName"
-        select="xs:QName('dts:navigation-url-with-query-parameters')"/>
-
     <xsl:function name="dts:validate-parameters" as="map(xs:string, item())">
         <xsl:param name="context" as="node()"/>
         <xsl:map>
@@ -91,10 +88,10 @@ See the section at the end of the package.
         </xsl:map>
     </xsl:function>
 
-    <xsl:variable name="dts:make-navigation-url" as="function(map(xs:string, item())) as xs:anyURI"
-        select="function-lookup($url-template, 1)"/>
-
     <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl"
+        package-version="1.0.0"/>
+
+    <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/url-templates.xsl"
         package-version="1.0.0"/>
 
     <!-- entry point with initial template and resource URL from stylesheet parameter -->
@@ -114,7 +111,7 @@ See the section at the end of the package.
                 select="concat('https://distributed-text-services.github.io/specifications/context/', $dts-version,'.json')"/>
             <xsl:map-entry key="'dtsVersion'" select="$dts-version"/>
             <xsl:map-entry key="'@type'">Navigation</xsl:map-entry>
-            <xsl:map-entry key="'@id'" select="$dts:make-navigation-url($parameters)"/>
+            <xsl:map-entry key="'@id'" select="dts:navigation-url($parameters)"/>
             <xsl:map-entry key="'resource'">
                 <xsl:call-template name="resource">
                     <xsl:with-param name="parameters" select="$parameters"/>
@@ -157,14 +154,17 @@ See the section at the end of the package.
 
     <xsl:template name="resource" as="map(xs:string, item())" visibility="final">
         <xsl:param name="parameters" as="map(xs:string, item()*)" required="true"/>
-        <xsl:map>
-            <xsl:map-entry key="'@id'" select="map:get($parameters, 'resource')"/>
-            <xsl:map-entry key="'@type'">Resource</xsl:map-entry>
-            <!-- TODO: insert URL templates for all endpoints -->
-            <xsl:map-entry key="'citationTrees'">
-                <xsl:call-template name="citationTrees"/>
-            </xsl:map-entry>
-        </xsl:map>
+        <xsl:variable name="resource" as="map(xs:string, item()*)">
+            <xsl:map>
+                <xsl:map-entry key="'@id'" select="map:get($parameters, 'resource')"/>
+                <xsl:map-entry key="'@type'">Resource</xsl:map-entry>
+                <!-- TODO: insert URL templates for all endpoints -->
+                <xsl:map-entry key="'citationTrees'">
+                    <xsl:call-template name="citationTrees"/>
+                </xsl:map-entry>
+            </xsl:map>
+        </xsl:variable>
+        <xsl:sequence select="map:merge(($resource))"/>
     </xsl:template>
 
 
