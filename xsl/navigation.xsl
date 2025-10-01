@@ -88,9 +88,9 @@
         <xsl:call-template name="navigation"/>
     </xsl:template>
 
-    <xsl:template name="xsl:initial-template" visibility="public"> </xsl:template>
-
-    <xsl:template name="navigation" as="map(xs:string, item())">
+    <!-- make the Navigation JSON-LD object for the given context document -->
+    <xsl:template name="navigation" as="map(xs:string, item())" visibility="final">
+        <xsl:context-item as="document-node()" use="required"/>
         <xsl:map>
             <xsl:map-entry key="'@context'"
                 select="concat('https://distributed-text-services.github.io/specifications/context/', $dts-version,'.json')"/>
@@ -132,7 +132,7 @@
         </xsl:map>
     </xsl:template>
 
-    <xsl:template name="resource" as="map(xs:string, item())">
+    <xsl:template name="resource" as="map(xs:string, item())" visibility="final">
         <xsl:map>
             <xsl:map-entry key="'@id'" select="map:get($parameters, 'resource')"/>
             <xsl:map-entry key="'@type'">Resource</xsl:map-entry>
@@ -146,7 +146,7 @@
 
     <!-- citationTrees section -->
 
-    <xsl:template name="citationTrees" as="array(map(xs:string, item()))">
+    <xsl:template name="citationTrees" as="array(map(xs:string, item()))" visibility="final">
         <xsl:context-item as="document-node()" use="required"/>
         <xsl:variable name="citeStructures" as="map(xs:string, item())*">
             <xsl:for-each select="//refsDecl">
@@ -184,7 +184,7 @@
         <xsl:sequence select="array { $citeStructures }"/>
     </xsl:template>
 
-    <xsl:mode name="citationTrees" on-no-match="shallow-skip"/>
+    <xsl:mode name="citationTrees" on-no-match="shallow-skip" visibility="public"/>
 
     <xsl:template mode="citationTrees" match="citeStructure">
         <xsl:map>
@@ -295,7 +295,7 @@
         </xsl:choose>
     </xsl:function>
 
-    <xsl:mode name="members" on-no-match="shallow-skip"/>
+    <xsl:mode name="members" on-no-match="shallow-skip" visibility="public"/>
 
     <xsl:template mode="members" match="citeStructure">
         <xsl:param name="parentId" as="xs:string?" tunnel="true"/>
@@ -403,7 +403,7 @@
     </xsl:template>
 
     <!-- make a Member JSON-LD object from an intermediate <dts:member> element -->
-    <xsl:function name="dts:member-json" as="map(xs:string, item()*)?">
+    <xsl:function name="dts:member-json" as="map(xs:string, item()*)?" visibility="final">
         <xsl:param name="member" as="element(dts:member)"/>
         <!-- xpaths on $member highly depend on making of $member, see above -->
         <xsl:map>
@@ -417,7 +417,7 @@
     </xsl:function>
 
     <!-- tests if an intermediate <dts:member> has the property that indicates that it is in the requested range -->
-    <xsl:function name="dts:is-in-requested-range" as="xs:boolean">
+    <xsl:function name="dts:is-in-requested-range" as="xs:boolean" visibility="final">
         <xsl:param name="member" as="element(dts:member)"/>
         <xsl:sequence select="$member/dts:in-requested-range => xs:boolean()"/>
     </xsl:function>
