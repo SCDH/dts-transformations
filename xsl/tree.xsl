@@ -234,7 +234,19 @@
             context. In order to regain them in document context, we do
             roundtripping with path expressions. Which method would be more
             performant?
+
+            citeStructure/@match may select multiple nodes. For $ref,
+            regaining them all is required! For $start and $end, only the
+            edges are required; however, since $start and $end may equal,
+            we have to use different elements to store them!
           -->
+          <xsl:if test="$ref and $identifier eq $ref">
+            <xsl:for-each select="$memberContext">
+              <dts:ref-xpath>
+                <xsl:value-of select="path(.)"/>
+              </dts:ref-xpath>
+            </xsl:for-each>
+          </xsl:if>
           <xsl:if test="$start and $identifier eq $start">
             <dts:start-xpath>
               <xsl:value-of select="$memberContext[1] => path()"/>

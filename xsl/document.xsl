@@ -28,19 +28,26 @@
         <xsl:copy-of select="."/>
       </xsl:when>
       <xsl:when test="exists($ref)">
+        <!--
+          Elements wrapped in dts:member/dts:wrapper have lost their
+          document context. However, we can get them in context by
+          roundtripping with path expressions.
+        -->
+        <xsl:variable name="context" as="node()" select="."/>
+        <xsl:variable name="referenced" as="node()*">
+          <xsl:for-each select="dts:members(., -1, true())[1]/dts:ref-xpath ! string(.)">
+            <xsl:evaluate as="node()?" context-item="$context" xpath="."/>
+          </xsl:for-each>
+        </xsl:variable>
         <TEI>
           <dtsc:wrapper xmlns:dtsc="https://w3id.org/api/dts#">
-            <xsl:sequence select="dts:members(., -1, true())[1]/dts:wrapper/node()"/>
+            <xsl:sequence select="$referenced"/>
           </dtsc:wrapper>
         </TEI>
       </xsl:when>
       <xsl:when test="$start and $end">
         <xsl:variable name="members" as="element(dts:member)*" select="dts:members(., -1, true())"/>
-        <!--
-          Elements wrapped in dts:member/dts:wrapper do not work here
-          because they have lost their document context. However, we can
-          simply get them by roundtripping with path expressions.
-        -->
+        <!-- see explaintion for using xpath above -->
         <xsl:variable name="first" as="node()?">
           <xsl:evaluate context-item="." as="node()?"
             xpath="$members[1]/dts:start-xpath => string()"/>
