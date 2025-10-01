@@ -20,11 +20,18 @@
     <!-- default rule: run all tests -->
     <target name="test">
         <antcall target="test-xsl-navigation.xsl"/>
+        <antcall target="test-xsl-document.xsl"/>
     </target>
 
     <target name="test-xsl-navigation.xsl">
         <antcall target="xspec.xspec" inheritall="false">
             <param name="xspec.xml" location="${basedir}/xsl/navigation.xspec"/>
+        </antcall>
+    </target>
+
+    <target name="test-xsl-document.xsl">
+        <antcall target="xspec.xspec" inheritall="false">
+            <param name="xspec.xml" location="${basedir}/xsl/document.xspec"/>
         </antcall>
     </target>
 

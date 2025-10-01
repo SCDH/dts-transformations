@@ -26,12 +26,12 @@ parameters:
 
 | parameter   | [navigation](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#uri-for-navigation-endpoint-requests) | [document](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#query-parameters-2) |
 |-------------|--------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| `resource`  | ✅                                                                                                                             | ❌                                                                                                         |
-| `ref`       | ✅                                                                                                                             | ❌                                                                                                         |
-| `start`     | ✅                                                                                                                             | ❌                                                                                                         |
-| `end`       | ✅                                                                                                                             | ❌                                                                                                         |
+| `resource`  | ✅                                                                                                                             | ✅                                                                                                         |
+| `ref`       | ✅                                                                                                                             | ✅                                                                                                         |
+| `start`     | ✅                                                                                                                             | ✅                                                                                                         |
+| `end`       | ✅                                                                                                                             | ✅                                                                                                         |
 | `down`      | ✅                                                                                                                             | not used                                                                                                   |
-| `tree`      | ✅                                                                                                                             | ❌                                                                                                         |
+| `tree`      | ✅                                                                                                                             | ✅                                                                                                         |
 | `page`      | ❌                                                                                                                             | not used                                                                                                   |
 | `mediaType` | not used                                                                                                                       | ❌                                                                                                         |
 
@@ -39,8 +39,8 @@ Evaluated TEI elements:
 
 | element                                                                                          | navigation | document |
 |--------------------------------------------------------------------------------------------------|------------|----------|
-| [`<refsDecl>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-refsDecl.html)           | ✅         | ❌       |
-| [`<citeStructure>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-citeStructure.html) | ✅         | ❌       |
+| [`<refsDecl>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-refsDecl.html)           | ✅         | ✅       |
+| [`<citeStructure>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-citeStructure.html) | ✅         | ✅       |
 | [`<citeData>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-citeData.html)           | ❌         | ❌       |
 
 
@@ -75,6 +75,25 @@ $SAXON_CMD -xsl:saxon-local.xml -xsl:xsl/navigation.xsl -it resource=test/matt.x
 When a source document is processed, the `resource` stylesheet
 parameter can be used to set the source's URI in multiple properties
 of the JSON-LD output.
+
+### Document
+
+The [`xsl/document.xsl`](xsl/document.xsl) XSLT package implements the
+either full or part-wise delivery of a TEI document.
+
+Just as `xsl/navigation.xsl`, also `xsl/document.xsl` can be applied
+on a source document (where the `resource` parameter can be used to
+reset the resource identifier)
+
+```shell
+$SAXON_CMD -xsl:saxon-local.xml -xsl:xsl/document.xsl -s:test/matt.xml
+```
+
+... or it can be called with the default initial template:
+
+```shell
+$SAXON_CMD -xsl:saxon-local.xml -xsl:xsl/document.xsl -it resource=test/matt.xml
+```
 
 
 ## Getting started
