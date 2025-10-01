@@ -1,8 +1,9 @@
 # DTS Transformations
 
-This project provides XSLT stylesheets for implementing those endpoints
-of Distributed Text Services (DTS), that can be implemented
-generically.
+This project provides XSLT stylesheets for those endpoints of
+[Distributed Text Services
+(DTS)](https://distributed-text-services.github.io/specifications/),
+that can be implemented generically.
 
 - **navigation** endpoint
 - **document** endpoint
@@ -17,6 +18,8 @@ Wiki](https://github.com/SCDH/xtriples-micro/wiki). The **entry**
 endpoint is more a task for a text editor.
 
 ## State of Implementation
+
+Implemented version: [1.0rc1](https://distributed-text-services.github.io/specifications/versions/1.0rc1/)
 
 Query parameters for the endpoints are supported through stylesheet
 parameters:
