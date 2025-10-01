@@ -154,17 +154,16 @@ See the section at the end of the package.
 
     <xsl:template name="resource" as="map(xs:string, item())" visibility="final">
         <xsl:param name="parameters" as="map(xs:string, item()*)" required="true"/>
-        <xsl:variable name="resource" as="map(xs:string, item()*)">
-            <xsl:map>
-                <xsl:map-entry key="'@id'" select="map:get($parameters, 'resource')"/>
-                <xsl:map-entry key="'@type'">Resource</xsl:map-entry>
-                <!-- TODO: insert URL templates for all endpoints -->
-                <xsl:map-entry key="'citationTrees'">
-                    <xsl:call-template name="citationTrees"/>
-                </xsl:map-entry>
-            </xsl:map>
-        </xsl:variable>
-        <xsl:sequence select="map:merge(($resource))"/>
+        <xsl:map>
+            <xsl:map-entry key="'@id'" select="map:get($parameters, 'resource')"/>
+            <xsl:map-entry key="'@type'">Resource</xsl:map-entry>
+            <xsl:map-entry key="'collection'" select="dts:collection-url($parameters)"/>
+            <xsl:map-entry key="'navigation'" select="dts:navigation-url($parameters)"/>
+            <xsl:map-entry key="'document'" select="dts:document-url($parameters)"/>
+            <xsl:map-entry key="'citationTrees'">
+                <xsl:call-template name="citationTrees"/>
+            </xsl:map-entry>
+        </xsl:map>
     </xsl:template>
 
 

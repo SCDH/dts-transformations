@@ -26,12 +26,9 @@
         <x:expect label="has @type" test="map:get(., 'resource') => map:contains('@type')"/>
         <x:expect label="@type is Resource"
             test="map:get(., 'resource') => map:get('@type') => string()" select="'Resource'"/>
-        <x:expect label="has document" pending="not yet"
-            test="map:get(., 'resource') => map:contains('document')"/>
-        <x:expect label="has collection" pending="not yet"
-            test="map:get(., 'resource') => map:contains('collection')"/>
-        <x:expect label="has navigation" pending="not yet"
-            test="map:get(., 'resource') => map:contains('navigation')"/>
+        <x:expect label="has document" test="map:get(., 'resource') => map:contains('document')"/>
+        <x:expect label="has collection" test="map:get(., 'resource') => map:contains('collection')"/>
+        <x:expect label="has navigation" test="map:get(., 'resource') => map:contains('navigation')"/>
         <x:expect label="has citationTrees"
             test="map:get(., 'resource') => map:contains('citationTrees')"/>
     </x:scenario>
