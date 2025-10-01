@@ -131,7 +131,7 @@ XSLT package named
 `https://scdh.github.io/dts-transformations/xsl/url-templates.xsl`,
 version 1.0.0, and tell the XSLT processor to use it instead of the
 default one through the [Saxon configuration
-file]()https://www.saxonica.com/documentation12/index.html#!configuration/configuration-file/config-xsltPackages,
+file](https://www.saxonica.com/documentation12/index.html#!configuration/configuration-file/config-xsltPackages),
 like in [`saxon-local.xml`](saxon-local.xml).
 
 There are alternative implementations in this project:
