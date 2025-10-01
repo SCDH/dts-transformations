@@ -76,6 +76,25 @@ When a source document is processed, the `resource` stylesheet
 parameter can be used to set the source's URI in multiple properties
 of the JSON-LD output.
 
+### Document
+
+The [`xsl/document.xsl`](xsl/document.xsl) XSLT package implements the
+either full or part-wise delivery of a TEI document.
+
+Just as `xsl/navigation.xsl`, also `xsl/document.xsl` can be applied
+on a source document (where the `resource` parameter can be used to
+reset the resource identifier)
+
+```shell
+$SAXON_CMD -xsl:saxon-local.xml -xsl:xsl/document.xsl -s:test/matt.xml
+```
+
+... or it can be called with the default initial template:
+
+```shell
+$SAXON_CMD -xsl:saxon-local.xml -xsl:xsl/document.xsl -it resource=test/matt.xml
+```
+
 
 ## Getting started
 
