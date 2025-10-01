@@ -26,12 +26,12 @@ parameters:
 
 | parameter   | [navigation](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#uri-for-navigation-endpoint-requests) | [document](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#query-parameters-2) |
 |-------------|--------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| `resource`  | ✅                                                                                                                             | ❌                                                                                                         |
-| `ref`       | ✅                                                                                                                             | ❌                                                                                                         |
+| `resource`  | ✅                                                                                                                             | ✅                                                                                                         |
+| `ref`       | ✅                                                                                                                             | ✅                                                                                                         |
 | `start`     | ✅                                                                                                                             | ❌                                                                                                         |
 | `end`       | ✅                                                                                                                             | ❌                                                                                                         |
 | `down`      | ✅                                                                                                                             | not used                                                                                                   |
-| `tree`      | ✅                                                                                                                             | ❌                                                                                                         |
+| `tree`      | ✅                                                                                                                             | ✅                                                                                                         |
 | `page`      | ❌                                                                                                                             | not used                                                                                                   |
 | `mediaType` | not used                                                                                                                       | ❌                                                                                                         |
 
@@ -39,8 +39,8 @@ Evaluated TEI elements:
 
 | element                                                                                          | navigation | document |
 |--------------------------------------------------------------------------------------------------|------------|----------|
-| [`<refsDecl>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-refsDecl.html)           | ✅         | ❌       |
-| [`<citeStructure>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-citeStructure.html) | ✅         | ❌       |
+| [`<refsDecl>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-refsDecl.html)           | ✅         | ✅       |
+| [`<citeStructure>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-citeStructure.html) | ✅         | ✅       |
 | [`<citeData>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-citeData.html)           | ❌         | ❌       |
 
 
