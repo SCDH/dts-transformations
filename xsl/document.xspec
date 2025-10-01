@@ -2,8 +2,7 @@
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
     xmlns:map="http://www.w3.org/2005/xpath-functions/map"
     xmlns:array="http://www.w3.org/2005/xpath-functions/array"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:dts="https://distributed-text-services.github.io/specifications/"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dts="https://w3id.org/api/dts#"
     xmlns:t="http://www.tei-c.org/ns/1.0" stylesheet="document.xsl" run-as="external">
 
     <x:variable name="x:saxon-config" href="../saxon.he.xml"/>
@@ -17,6 +16,21 @@
         <x:param name="resource" select="'../test/matt.xml'"/>
         <x:call xmlns:xsl="http://www.w3.org/1999/XSL/Transform" template="xsl:initial-template"/>
         <x:expect label="identity" href="../test/matt.xml"/>
+    </x:scenario>
+
+    <x:scenario label="$ref on matt.xml results in dts:wrapper element in TEI root">
+        <x:param name="ref" select="'Matt:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="TEI root element" test="exists(/*/self::t:TEI)"/>
+        <x:expect label="has /TEI/dts:wrapper" test="exists(/t:TEI/dts:wrapper)"/>
+        <x:expect label="/TEI has only on child element" test="count(/t:TEI/*)" select="1"/>
+    </x:scenario>
+
+    <x:scenario label="$ref with Matt:2 on matt.xml result in Matt:2 in dts:wrapper">
+        <x:param name="ref" select="'Matt:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="identical content" href="../test/matt.xml" test="/t:TEI/dts:wrapper/*"
+            select="//t:body/t:div[1]/t:div[2]"/>
     </x:scenario>
 
 </x:description>
