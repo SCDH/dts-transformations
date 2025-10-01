@@ -229,7 +229,7 @@
 
     <!-- member section -->
 
-    <xsl:template name="members" as="element(dts:member)*">
+    <xsl:template name="members" as="element(dts:member)*" visibility="final">
         <xsl:context-item as="document-node()" use="required"/>
         <xsl:variable name="range-requested" as="xs:boolean">
             <!--
@@ -245,30 +245,29 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:choose>
-            <xsl:when test="not($tree)">
-                <!-- members of default citation tree -->
-                <xsl:apply-templates mode="members"
-                    select="(//refsDecl[not(@xml:id)] | //refsDecl)[1]">
-                    <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="()"/>
-                    <xsl:with-param name="parentContext" as="node()" tunnel="true" select="root(.)"/>
-                    <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
-                        select="$range-requested"/>
-                    <xsl:with-param name="level" as="xs:integer" tunnel="true" select="1"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <xsl:when test="$tree">
-                <!-- members of a named citation tree -->
-                <xsl:apply-templates mode="members" select="id($tree)/self::refsDecl">
-                    <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="()"/>
-                    <xsl:with-param name="parentContext" as="node()" tunnel="true" select="root(.)"/>
-                    <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
-                        select="$range-requested"/>
-                    <xsl:with-param name="level" as="xs:integer" tunnel="true" select="1"/>
-                </xsl:apply-templates>
-            </xsl:when>
-        </xsl:choose>
+        <!-- generate the sequence of members -->
+        <xsl:apply-templates mode="members" select="dts:get-citeation-tree(., $tree)">
+            <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="()"/>
+            <xsl:with-param name="parentContext" as="node()" tunnel="true" select="root(.)"/>
+            <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
+                select="$range-requested"/>
+            <xsl:with-param name="level" as="xs:integer" tunnel="true" select="1"/>
+        </xsl:apply-templates>
     </xsl:template>
+
+    <!-- returns the right refsDecl in the context based on $name -->
+    <xsl:function name="dts:get-citeation-tree" as="element()?" visibility="public">
+        <xsl:param name="context" as="node()"/>
+        <xsl:param name="name" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="not($name)">
+                <xsl:sequence select="($context//refsDecl[not(@xml:id)] | $context//refsDecl)[1]"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="id($name, $context)/self::refsDecl"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
 
     <xsl:mode name="members" on-no-match="shallow-skip"/>
 
