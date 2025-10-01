@@ -29,19 +29,11 @@ See the section at the end of the package.
 
     <xsl:output method="json" indent="true"/>
 
-    <xsl:param name="resource" as="xs:string?" select="()"/>
-
-    <xsl:param name="ref" as="xs:string?" select="()"/>
-
-    <xsl:param name="start" as="xs:string?" select="()"/>
-
-    <xsl:param name="end" as="xs:string?" select="()"/>
-
     <xsl:param name="down" as="xs:integer?" select="-1"/>
 
-    <xsl:param name="tree" as="xs:string?" select="()"/>
-
     <xsl:param name="page" as="xs:integer?" select="()"/>
+
+    <!-- more parameters defined in tree.xsl -->
 
     <xsl:function name="dts:validate-parameters" as="map(xs:string, item())">
         <xsl:param name="context" as="node()"/>
@@ -92,6 +84,9 @@ See the section at the end of the package.
         package-version="1.0.0"/>
 
     <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/url-templates.xsl"
+        package-version="1.0.0"/>
+
+    <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl"
         package-version="1.0.0"/>
 
     <!-- entry point with initial template and resource URL from stylesheet parameter -->

@@ -10,6 +10,8 @@ http://www.saxonica.com/documentation/index/configuration-file.html
     <xsltPackages>
         <package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl" version="1.0.0"
             sourceLocation="xsl/dts.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl" version="1.0.0"
+            sourceLocation="xsl/tree.xsl"/>
 
         <package name="https://scdh.github.io/dts-transformations/xsl/url-templates.xsl"
             base="https://scdh.github.io/dts-transformations/xsl/url-templates-with-query-parameters.xsl"
