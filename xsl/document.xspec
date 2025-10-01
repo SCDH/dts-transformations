@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    xmlns:array="http://www.w3.org/2005/xpath-functions/array"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:dts="https://distributed-text-services.github.io/specifications/"
+    xmlns:t="http://www.tei-c.org/ns/1.0" stylesheet="document.xsl" run-as="external">
+
+    <x:variable name="x:saxon-config" href="../saxon.he.xml"/>
+
+    <x:scenario label="whole document as source matt.xml">
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="identity" href="../test/matt.xml"/>
+    </x:scenario>
+
+    <x:scenario label="initial template: whole document matt.xml">
+        <x:param name="resource" select="'../test/matt.xml'"/>
+        <x:call xmlns:xsl="http://www.w3.org/1999/XSL/Transform" template="xsl:initial-template"/>
+        <x:expect label="identity" href="../test/matt.xml"/>
+    </x:scenario>
+
+</x:description>
