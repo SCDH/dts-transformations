@@ -21,26 +21,26 @@ endpoint is more a task for a text editor.
 Query parameters for the endpoints are supported through stylesheet
 parameters:
 
+❌
 
-
-| parameter   | [navigation]](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#uri-for-navigation-endpoint-requests) | [document](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#query-parameters-2) |
-|-------------|---------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| `resource`  | ✅                                                                                                                              | missing                                                                                                    |
-| `ref`       | ✅                                                                                                                              | missing                                                                                                    |
-| `start`     | ✅                                                                                                                              | missing                                                                                                    |
-| `end`       | ✅                                                                                                                              | missing                                                                                                    |
-| `down`      | ✅                                                                                                                              | not used                                                                                                   |
-| `tree`      | ✅                                                                                                                              | missing                                                                                                    |
-| `page`      | missing                                                                                                                         | not used                                                                                                   |
-| `mediaType` | not used                                                                                                                        | missing                                                                                                    |
+| parameter   | [navigation](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#uri-for-navigation-endpoint-requests) | [document](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#query-parameters-2) |
+|-------------|--------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| `resource`  | ✅                                                                                                                             | ❌                                                                                                         |
+| `ref`       | ✅                                                                                                                             | ❌                                                                                                         |
+| `start`     | ✅                                                                                                                             | ❌                                                                                                         |
+| `end`       | ✅                                                                                                                             | ❌                                                                                                         |
+| `down`      | ✅                                                                                                                             | not used                                                                                                   |
+| `tree`      | ✅                                                                                                                             | ❌                                                                                                         |
+| `page`      | ❌                                                                                                                             | not used                                                                                                   |
+| `mediaType` | not used                                                                                                                       | ❌                                                                                                         |
 
 Evaluated TEI elements:
 
 | element           | navigation | document |
 |-------------------|------------|----------|
-| `<refsDecl>`      | ✅         | missing  |
-| `<citeStructure>` | ✅         | missing  |
-| `<citeData>`      | missing    | missing  |
+| `<refsDecl>`      | ✅         | ❌       |
+| `<citeStructure>` | ✅         | ❌       |
+| `<citeData>`      | ❌         | ❌       |
 
 
 
