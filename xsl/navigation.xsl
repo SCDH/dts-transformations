@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generate data for DTS navigation endpoint from TEI source document
+<!-- Generate a dts:Navigation JSON-LD object as is required by a DTS navigation endpoint
 
+USAGE with TEI document as source document:
+target/bin/xslt.sh \
+    -config:saxon.he.xml
+    -xsl:xsl/navigation.xsl
+    -s:test/matt.xml
+
+USAGE with initial template:
+target/bin/xslt.sh \
+    -config:saxon.he.xml \
+    -xsl:xsl/navigation.xsl \
+    -it \
+    resource=test/matt.xml
 -->
 <xsl:package name="https://scdh.github.io/dts-transformations/xsl/navigation-declared.xsl"
     package-version="1.0.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -8,11 +20,9 @@
     xmlns:map="http://www.w3.org/2005/xpath-functions/map"
     xmlns:dts="https://distributed-text-services.github.io/specifications/"
     exclude-result-prefixes="#all" xpath-default-namespace="http://www.tei-c.org/ns/1.0"
-    version="3.0">
+    version="3.0" default-mode="navigation">
 
     <xsl:output method="json" indent="true"/>
-
-    <xsl:global-context-item as="document-node(element(TEI))"/>
 
     <xsl:param name="resource" as="xs:string?" select="()"/>
 
@@ -31,7 +41,8 @@
     <xsl:param name="url-template" as="xs:QName"
         select="xs:QName('dts:navigation-url-with-query-parameters')"/>
 
-    <xsl:variable name="parameters" as="map(xs:string, item())">
+    <xsl:function name="dts:validate-parameters" as="map(xs:string, item())">
+        <xsl:param name="context" as="node()"/>
         <xsl:map>
             <xsl:choose>
                 <xsl:when test="not(empty($resource))">
@@ -40,7 +51,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:message>resource from context item</xsl:message>
-                    <xsl:map-entry key="'resource'" select="base-uri(.)"/>
+                    <xsl:map-entry key="'resource'" select="base-uri($context)"/>
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:choose>
@@ -73,7 +84,7 @@
                 <xsl:map-entry key="'page'" select="$page"/>
             </xsl:if>
         </xsl:map>
-    </xsl:variable>
+    </xsl:function>
 
     <xsl:variable name="dts:make-navigation-url" as="function(map(xs:string, item())) as xs:anyURI"
         select="function-lookup($url-template, 1)"/>
@@ -81,16 +92,18 @@
     <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl"
         package-version="1.0.0"/>
 
-
-    <xsl:mode on-no-match="shallow-skip"/>
-
-    <xsl:template match="/">
-        <xsl:call-template name="navigation"/>
+    <!-- entry point with initial template and resource URL from stylesheet parameter -->
+    <xsl:template name="xsl:initial-template" as="map(xs:string, item())" visibility="public">
+        <xsl:apply-templates mode="navigation" select="doc($resource)"/>
     </xsl:template>
 
+    <!-- the navigation mode is the entry point with a global context node -->
+    <xsl:mode name="navigation" on-no-match="fail" visibility="final"/>
+
     <!-- make the Navigation JSON-LD object for the given context document -->
-    <xsl:template name="navigation" as="map(xs:string, item())" visibility="final">
-        <xsl:context-item as="document-node()" use="required"/>
+    <xsl:template mode="navigation" match="document-node()" as="map(xs:string, item())">
+        <xsl:variable name="parameters" as="map(xs:string, item()*)"
+            select="dts:validate-parameters(.)"/>
         <xsl:map>
             <xsl:map-entry key="'@context'"
                 select="concat('https://distributed-text-services.github.io/specifications/context/', $dts-version,'.json')"/>
@@ -98,7 +111,9 @@
             <xsl:map-entry key="'@type'">Navigation</xsl:map-entry>
             <xsl:map-entry key="'@id'" select="$dts:make-navigation-url($parameters)"/>
             <xsl:map-entry key="'resource'">
-                <xsl:call-template name="resource"/>
+                <xsl:call-template name="resource">
+                    <xsl:with-param name="parameters" select="$parameters"/>
+                </xsl:call-template>
             </xsl:map-entry>
             <xsl:variable name="members" as="element(dts:member)*" select="dts:members(.)"/>
             <xsl:if test="exists($down)">
@@ -133,6 +148,7 @@
     </xsl:template>
 
     <xsl:template name="resource" as="map(xs:string, item())" visibility="final">
+        <xsl:param name="parameters" as="map(xs:string, item()*)" required="true"/>
         <xsl:map>
             <xsl:map-entry key="'@id'" select="map:get($parameters, 'resource')"/>
             <xsl:map-entry key="'@type'">Resource</xsl:map-entry>

@@ -366,4 +366,16 @@
             select="4"/>
     </x:scenario>
 
+
+    <x:scenario label="initial template: resource is provided as resource stylesheet parameter">
+        <x:param name="resource" select="'../test/4ezr.xml'"/>
+        <x:call xmlns:xsl="http://www.w3.org/1999/XSL/Transform" template="xsl:initial-template"/>
+        <x:expect label="global context's base-uri as resource/@id"
+            test="map:get(., 'resource') => map:get('@id') => matches('/test/4ezr.xml$')"/>
+        <x:expect label="global context's base uri is in /@id"
+            test="map:get(., '@id') => matches('4ezr\.xml')"/>
+        <x:expect label="resource is parsed: correct count of members"
+            test="map:get(., 'member') => array:size()" select="10"/>
+    </x:scenario>
+
 </x:description>
