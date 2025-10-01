@@ -100,9 +100,7 @@
             <xsl:map-entry key="'resource'">
                 <xsl:call-template name="resource"/>
             </xsl:map-entry>
-            <xsl:variable name="members" as="element(dts:member)*">
-                <xsl:call-template name="members"/>
-            </xsl:variable>
+            <xsl:variable name="members" as="element(dts:member)*" select="dts:members(.)"/>
             <xsl:if test="exists($down)">
                 <!-- specs on absent $down:
                     "No member property in the Navigation object."
@@ -205,8 +203,9 @@
 
     <!-- member section -->
 
-    <xsl:template name="members" as="element(dts:member)*" visibility="final">
-        <xsl:context-item as="document-node()" use="required"/>
+    <!-- returns the members in the context document based on the given parameters -->
+    <xsl:function name="dts:members" as="element(dts:member)*" visibility="final">
+        <xsl:param name="context" as="document-node()"/>
         <xsl:variable name="range-requested" as="xs:boolean">
             <!--
                 whether a specific range of the citation tree in request
@@ -223,9 +222,10 @@
         </xsl:variable>
         <!-- generate the sequence of members by applying 'members' transformation -->
         <xsl:variable name="members" as="element(dts:member)*">
-            <xsl:apply-templates mode="members" select="dts:get-citeation-tree(., $tree)">
+            <xsl:apply-templates mode="members" select="dts:get-citeation-tree($context, $tree)">
                 <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="()"/>
-                <xsl:with-param name="parentContext" as="node()" tunnel="true" select="root(.)"/>
+                <xsl:with-param name="parentContext" as="node()" tunnel="true"
+                    select="root($context)"/>
                 <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
                     select="$range-requested"/>
                 <xsl:with-param name="level" as="xs:integer" tunnel="true" select="1"/>
@@ -279,7 +279,7 @@
                 <xsl:sequence select="$members-in-requested-range"/>
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:template>
+    </xsl:function>
 
     <!-- returns the right refsDecl in the context based on $name -->
     <xsl:function name="dts:get-citeation-tree" as="element()?" visibility="public">
