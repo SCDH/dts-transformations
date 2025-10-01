@@ -10,6 +10,18 @@
 
   <xsl:param name="api-base-url" as="xs:string" select="'https://example.org/api/dts'"/>
 
+  <xsl:function name="dts:collection-url" as="xs:anyURI?" visibility="public">
+    <xsl:param name="parameters" as="map(xs:string, item()*)"/>
+    <xsl:sequence select="dts:navigation-url-with-query-parameters($parameters)"/>
+  </xsl:function>
+
+  <xsl:function name="dts:collection-url-with-query-parameters" as="xs:anyURI?" visibility="final">
+    <xsl:param name="parameters" as="map(xs:string, item()*)"/>
+    <xsl:variable name="ps" as="xs:string"
+      select="map:for-each($parameters, function ($k, $v) { $k || '=' || $v }) => string-join('&amp;')"/>
+    <xsl:sequence select="($api-base-url || '/collections/?' || $ps ) => xs:anyURI()"/>
+  </xsl:function>
+
   <xsl:function name="dts:navigation-url" as="xs:anyURI?" visibility="public">
     <xsl:param name="parameters" as="map(xs:string, item()*)"/>
     <xsl:sequence select="dts:navigation-url-with-query-parameters($parameters)"/>
@@ -22,5 +34,16 @@
     <xsl:sequence select="($api-base-url || '/navigation/?' || $ps ) => xs:anyURI()"/>
   </xsl:function>
 
+  <xsl:function name="dts:document-url" as="xs:anyURI?" visibility="public">
+    <xsl:param name="parameters" as="map(xs:string, item()*)"/>
+    <xsl:sequence select="dts:navigation-url-with-query-parameters($parameters)"/>
+  </xsl:function>
+
+  <xsl:function name="dts:document-url-with-query-parameters" as="xs:anyURI?" visibility="final">
+    <xsl:param name="parameters" as="map(xs:string, item()*)"/>
+    <xsl:variable name="ps" as="xs:string"
+      select="map:for-each($parameters, function ($k, $v) { $k || '=' || $v }) => string-join('&amp;')"/>
+    <xsl:sequence select="($api-base-url || '/documents/?' || $ps ) => xs:anyURI()"/>
+  </xsl:function>
 
 </xsl:package>
