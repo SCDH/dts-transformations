@@ -44,7 +44,6 @@
         <oxygen.version>24.1.0.0</oxygen.version>
         <jing.version>20091111</jing.version>
         <schxslt.version>1.9.5</schxslt.version>
-        <xspec.version>2.2.4</xspec.version>
         <ant.version>1.10.14</ant.version>
         <ant-contrib.version>1.0b3</ant-contrib.version>
         <slf4j.version>2.0.6</slf4j.version>
@@ -127,6 +126,25 @@
                         <configuration>
                             <finalName>unwanted</finalName>
                             <classifier>unwanted</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>${project.basedir}/project.properties</file>
+                            </files>
                         </configuration>
                     </execution>
                 </executions>
