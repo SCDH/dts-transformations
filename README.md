@@ -21,8 +21,6 @@ endpoint is more a task for a text editor.
 Query parameters for the endpoints are supported through stylesheet
 parameters:
 
-❌
-
 | parameter   | [navigation](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#uri-for-navigation-endpoint-requests) | [document](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#query-parameters-2) |
 |-------------|--------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
 | `resource`  | ✅                                                                                                                             | ❌                                                                                                         |
@@ -36,11 +34,11 @@ parameters:
 
 Evaluated TEI elements:
 
-| element           | navigation | document |
-|-------------------|------------|----------|
-| `<refsDecl>`      | ✅         | ❌       |
-| `<citeStructure>` | ✅         | ❌       |
-| `<citeData>`      | ❌         | ❌       |
+| element                                                                                          | navigation | document |
+|--------------------------------------------------------------------------------------------------|------------|----------|
+| [`<refsDecl>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-refsDecl.html)           | ✅         | ❌       |
+| [`<citeStructure>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-citeStructure.html) | ✅         | ❌       |
+| [`<citeData>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-citeData.html)           | ❌         | ❌       |
 
 
 
@@ -60,7 +58,7 @@ elements in the processed TEI document.
 e.g. `test/matt.xml`
 
 ```shell
-$SAXON -xsl:saxon-local.xml -xsl:xsl/navigation.xsl -s:test/matt.xml
+$SAXON_CMD -xsl:saxon-local.xml -xsl:xsl/navigation.xsl -s:test/matt.xml
 ```
 
 ... or it can be called with an initial template (the default initial
@@ -68,7 +66,7 @@ template `xsl:initial-template`) where the source URL can then be
 passed as the `resource` stylesheet parameter:
 
 ```shell
-$SAXON -xsl:saxon-local.xml -xsl:xsl/navigation.xsl -it resource=test/matt.xml
+$SAXON_CMD -xsl:saxon-local.xml -xsl:xsl/navigation.xsl -it resource=test/matt.xml
 ```
 
 When a source document is processed, the `resource` stylesheet
@@ -114,9 +112,8 @@ Transforming:
 
 
 ```shell
-
+target/bin/xslt.sh -config:saxon.he.xml -xsl:xsl/navigation.xsl -s:test/matt.xml
 ```
-
 
 
 ## Customization
