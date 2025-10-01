@@ -17,7 +17,7 @@ from it. We have documented this approach in the [xtriples-micro's
 Wiki](https://github.com/SCDH/xtriples-micro/wiki). The **entry**
 endpoint is more a task for a text editor.
 
-## State of Implementation
+## Status of Implementation
 
 Implemented version: [1.0rc1](https://distributed-text-services.github.io/specifications/versions/1.0rc1/)
 
