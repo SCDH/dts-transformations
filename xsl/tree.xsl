@@ -224,11 +224,27 @@
         <dts:citeType>
           <xsl:value-of select="$citeStructureContext/@unit"/>
         </dts:citeType>
-        <!-- optionally wrap all the member content nodes -->
+        <!-- optionally wrap all the member content nodes and paths to the nodes -->
         <xsl:if test="$wrap-content">
           <dts:wrapper>
             <xsl:copy-of select="$memberContext"/>
           </dts:wrapper>
+          <!--
+            Elements copied to dts:member/dts:wrapper loose their document
+            context. In order to regain them in document context, we do
+            roundtripping with path expressions. Which method would be more
+            performant?
+          -->
+          <xsl:if test="$start and $identifier eq $start">
+            <dts:start-xpath>
+              <xsl:value-of select="$memberContext[1] => path()"/>
+            </dts:start-xpath>
+          </xsl:if>
+          <xsl:if test="$end and $identifier eq $end">
+            <dts:end-xpath>
+              <xsl:value-of select="$memberContext[last()] => path()"/>
+            </dts:end-xpath>
+          </xsl:if>
         </xsl:if>
         <!-- hook for additional custom data -->
         <xsl:apply-templates mode="member-metadata" select="$memberContext"/>

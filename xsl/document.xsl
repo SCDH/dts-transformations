@@ -6,6 +6,7 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:map="http://www.w3.org/2005/xpath-functions/map"
   xmlns="http://www.tei-c.org/ns/1.0"
   xmlns:dts="https://distributed-text-services.github.io/specifications/"
+  xmlns:cut="https://distributed-text-services.github.io/specifications/cut#"
   exclude-result-prefixes="#all" xpath-default-namespace="http://www.tei-c.org/ns/1.0" version="3.0"
   default-mode="document">
 
@@ -14,19 +15,43 @@
   <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl"
     package-version="1.0.0"/>
 
+  <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/cut.xsl"
+    package-version="1.0.0"/>
+
   <xsl:template name="xsl:initial-template" visibility="public">
     <xsl:apply-templates mode="document" select="doc($resource)"/>
   </xsl:template>
 
   <xsl:template mode="document" match="document-node(element(TEI))">
     <xsl:choose>
-      <xsl:when test="not(exists($ref) or exists($start) or exists($end))">
+      <xsl:when test="not($ref or $start or $end)">
         <xsl:copy-of select="."/>
       </xsl:when>
       <xsl:when test="exists($ref)">
         <TEI>
           <dtsc:wrapper xmlns:dtsc="https://w3id.org/api/dts#">
             <xsl:sequence select="dts:members(., -1, true())[1]/dts:wrapper/node()"/>
+          </dtsc:wrapper>
+        </TEI>
+      </xsl:when>
+      <xsl:when test="$start and $end">
+        <xsl:variable name="members" as="element(dts:member)*" select="dts:members(., -1, true())"/>
+        <!--
+          Elements wrapped in dts:member/dts:wrapper do not work here
+          because they have lost their document context. However, we can
+          simply get them by roundtripping with path expressions.
+        -->
+        <xsl:variable name="first" as="node()?">
+          <xsl:evaluate context-item="." as="node()?"
+            xpath="$members[1]/dts:start-xpath => string()"/>
+        </xsl:variable>
+        <xsl:variable name="last" as="node()?">
+          <xsl:evaluate context-item="." as="node()?"
+            xpath="$members[last()]/dts:end-xpath => string()"/>
+        </xsl:variable>
+        <TEI>
+          <dtsc:wrapper xmlns:dtsc="https://w3id.org/api/dts#">
+            <xsl:sequence select="cut:horizontal($first, $last)"/>
           </dtsc:wrapper>
         </TEI>
       </xsl:when>

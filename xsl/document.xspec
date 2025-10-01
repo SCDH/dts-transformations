@@ -33,4 +33,22 @@
             select="//t:body/t:div[1]/t:div[2]"/>
     </x:scenario>
 
+    <x:scenario label="$start and $end on matt.xml">
+        <x:param name="start" select="'Matt:1:2'"/>
+        <x:param name="end" select="'Matt:2:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="count of element nodes in dts:wrapper" test="count(/t:TEI/dts:wrapper/*)"
+            select="6"/>
+    </x:scenario>
+
+    <!-- Should Matt:2 be included, when Matt:2:3 was the final node in Matt:2? -->
+    <x:scenario
+        label="$start and $end on matt.xml; end on final element in container, but not on final node">
+        <x:param name="start" select="'Matt:1:2'"/>
+        <x:param name="end" select="'Matt:2:3'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="count of element nodes in dts:wrapper" test="count(/t:TEI/dts:wrapper/*)"
+            select="7"/>
+    </x:scenario>
+
 </x:description>
