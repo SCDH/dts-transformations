@@ -22,7 +22,7 @@
 
     <xsl:param name="end" as="xs:string?" select="()"/>
 
-    <xsl:param name="down" as="xs:integer" select="-1"/>
+    <xsl:param name="down" as="xs:integer?" select="-1"/>
 
     <xsl:param name="tree" as="xs:string?" select="()"/>
 
@@ -88,9 +88,9 @@
         <xsl:call-template name="navigation"/>
     </xsl:template>
 
-    <xsl:template name="xsl:initial-template" visibility="public"> </xsl:template>
-
-    <xsl:template name="navigation" as="map(xs:string, item())">
+    <!-- make the Navigation JSON-LD object for the given context document -->
+    <xsl:template name="navigation" as="map(xs:string, item())" visibility="final">
+        <xsl:context-item as="document-node()" use="required"/>
         <xsl:map>
             <xsl:map-entry key="'@context'"
                 select="concat('https://distributed-text-services.github.io/specifications/context/', $dts-version,'.json')"/>
@@ -100,27 +100,39 @@
             <xsl:map-entry key="'resource'">
                 <xsl:call-template name="resource"/>
             </xsl:map-entry>
-            <xsl:variable name="members" as="element(dts:member)*">
-                <xsl:call-template name="members"/>
-            </xsl:variable>
-            <xsl:variable name="members-in-requested-range" as="element(dts:member)*"
-                select="$members[dts:is-in-requested-range(.)]"/>
-            <xsl:map-entry key="'member'"
-                select="array { $members-in-requested-range ! dts:member-json(.) }"/>
-            <xsl:if test="$ref">
-                <xsl:map-entry key="'ref'"
-                    select="$members-in-requested-range[1] => dts:member-json()"/>
+            <xsl:variable name="members" as="element(dts:member)*" select="dts:members(.)"/>
+            <xsl:if test="exists($down)">
+                <!-- specs on absent $down:
+                    "No member property in the Navigation object."
+                -->
+                <xsl:map-entry key="'member'" select="array { $members ! dts:member-json(.) }"/>
             </xsl:if>
-            <xsl:if test="$start and $end">
-                <xsl:map-entry key="'start'"
-                    select="$members-in-requested-range[1] => dts:member-json()"/>
-                <xsl:map-entry key="'end'"
-                    select="$members-in-requested-range[last()] => dts:member-json()"/>
-            </xsl:if>
+            <xsl:choose>
+                <xsl:when test="$ref and exists($down) and $down eq 0">
+                    <!-- specs on $down=0 and given $ref:
+                        "Information about the CitableUnit identified by ref
+                        along with a member property that is an array of
+                        CitableUnits that are siblings (sharing the same
+                        parent) including the current CitableUnit identified
+                        by ref."
+                        This $members sequence does not contain *ref at start,
+                        so we have to filter the correct element.
+                    -->
+                    <xsl:map-entry key="'ref'"
+                        select="$members[dts:identifier/text() eq $ref] => dts:member-json()"/>
+                </xsl:when>
+                <xsl:when test="$ref">
+                    <xsl:map-entry key="'ref'" select="$members[1] => dts:member-json()"/>
+                </xsl:when>
+                <xsl:when test="$start and $end">
+                    <xsl:map-entry key="'start'" select="$members[1] => dts:member-json()"/>
+                    <xsl:map-entry key="'end'" select="$members[last()] => dts:member-json()"/>
+                </xsl:when>
+            </xsl:choose>
         </xsl:map>
     </xsl:template>
 
-    <xsl:template name="resource" as="map(xs:string, item())">
+    <xsl:template name="resource" as="map(xs:string, item())" visibility="final">
         <xsl:map>
             <xsl:map-entry key="'@id'" select="map:get($parameters, 'resource')"/>
             <xsl:map-entry key="'@type'">Resource</xsl:map-entry>
@@ -134,7 +146,7 @@
 
     <!-- citationTrees section -->
 
-    <xsl:template name="citationTrees" as="array(map(xs:string, item()))">
+    <xsl:template name="citationTrees" as="array(map(xs:string, item()))" visibility="final">
         <xsl:context-item as="document-node()" use="required"/>
         <xsl:variable name="citeStructures" as="map(xs:string, item())*">
             <xsl:for-each select="//refsDecl">
@@ -172,7 +184,7 @@
         <xsl:sequence select="array { $citeStructures }"/>
     </xsl:template>
 
-    <xsl:mode name="citationTrees" on-no-match="shallow-skip"/>
+    <xsl:mode name="citationTrees" on-no-match="shallow-skip" visibility="public"/>
 
     <xsl:template mode="citationTrees" match="citeStructure">
         <xsl:map>
@@ -191,8 +203,9 @@
 
     <!-- member section -->
 
-    <xsl:template name="members" as="element(dts:member)*">
-        <xsl:context-item as="document-node()" use="required"/>
+    <!-- returns the members in the context document based on the given parameters -->
+    <xsl:function name="dts:members" as="element(dts:member)*" visibility="final">
+        <xsl:param name="context" as="document-node()"/>
         <xsl:variable name="range-requested" as="xs:boolean">
             <!--
                 whether a specific range of the citation tree in request
@@ -207,35 +220,88 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
+        <!-- generate the sequence of members by applying 'members' transformation -->
+        <xsl:variable name="members" as="element(dts:member)*">
+            <xsl:apply-templates mode="members" select="dts:get-citeation-tree($context, $tree)">
+                <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="()"/>
+                <xsl:with-param name="parentContext" as="node()" tunnel="true"
+                    select="root($context)"/>
+                <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
+                    select="$range-requested"/>
+                <xsl:with-param name="level" as="xs:integer" tunnel="true" select="1"/>
+            </xsl:apply-templates>
+        </xsl:variable>
+        <!-- filter for range made up from $ref or $start and $end -->
+        <xsl:variable name="members-in-requested-range" as="element(dts:member)*"
+            select="$members[dts:is-in-requested-range(.)]"/>
+        <!-- filter levels according to $down -->
         <xsl:choose>
-            <xsl:when test="not($tree)">
-                <!-- members of default citation tree -->
-                <xsl:apply-templates mode="members"
-                    select="(//refsDecl[not(@xml:id)] | //refsDecl)[1]">
-                    <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="()"/>
-                    <xsl:with-param name="parentContext" as="node()" tunnel="true" select="root(.)"/>
-                    <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
-                        select="$range-requested"/>
-                </xsl:apply-templates>
+            <xsl:when test="exists($down) and $down eq 0">
+                <!-- specs about $down=0 with $ref:
+                    "Information about the CitableUnit identified by ref along
+                    with a member property that is an array of CitableUnits
+                    that are siblings (sharing the same parent) including the
+                    current CitableUnit identified by ref."
+                -->
+                <xsl:variable name="ref-parent-id" as="xs:string"
+                    select="$members-in-requested-range[1]/dts:parent => string()"/>
+                <xsl:sequence select="$members[string(dts:parent) = $ref-parent-id]"/>
             </xsl:when>
-            <xsl:when test="$tree">
-                <!-- members of a named citation tree -->
-                <xsl:apply-templates mode="members" select="id($tree)/self::refsDecl">
-                    <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="()"/>
-                    <xsl:with-param name="parentContext" as="node()" tunnel="true" select="root(.)"/>
-                    <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
-                        select="$range-requested"/>
-                </xsl:apply-templates>
+            <xsl:when test="$down &gt; 0">
+                <!-- specs about $down:
+                    "The maximum depth of the citation subtree to be returned,
+                    relative to the specified ref, the deeper of the start/end
+                    CitableUnit, or if these are not provided relative to the
+                    root. […]"
+                -->
+                <xsl:variable name="deepest" as="xs:integer">
+                    <xsl:choose>
+                        <xsl:when test="$ref">
+                            <xsl:sequence
+                                select="$members-in-requested-range[1]/dts:level ! xs:integer(.) + $down"
+                            />
+                        </xsl:when>
+                        <xsl:when test="$start">
+                            <xsl:sequence
+                                select="$members-in-requested-range[1 or last()]/dts:level ! xs:integer(.) => max() + $down"
+                            />
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="$down"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                <xsl:sequence
+                    select="$members-in-requested-range [xs:integer(dts:level/text()) le $deepest]"
+                />
             </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="$members-in-requested-range"/>
+            </xsl:otherwise>
         </xsl:choose>
-    </xsl:template>
+    </xsl:function>
 
-    <xsl:mode name="members" on-no-match="shallow-skip"/>
+    <!-- returns the right refsDecl in the context based on $name -->
+    <xsl:function name="dts:get-citeation-tree" as="element()?" visibility="public">
+        <xsl:param name="context" as="node()"/>
+        <xsl:param name="name" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="not($name)">
+                <xsl:sequence select="($context//refsDecl[not(@xml:id)] | $context//refsDecl)[1]"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="id($name, $context)/self::refsDecl"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+
+    <xsl:mode name="members" on-no-match="shallow-skip" visibility="public"/>
 
     <xsl:template mode="members" match="citeStructure">
         <xsl:param name="parentId" as="xs:string?" tunnel="true"/>
         <xsl:param name="parentContext" as="node()" tunnel="true"/>
         <xsl:param name="in-requested-range" as="xs:boolean" tunnel="true"/>
+        <xsl:param name="level" as="xs:integer" tunnel="true"/>
         <xsl:variable name="citeStructureContext" as="element(citeStructure)" select="."/>
         <xsl:variable name="members" as="node()*">
             <xsl:evaluate context-item="$parentContext" xpath="@match"
@@ -281,6 +347,7 @@
                         select="$memberContext"/>
                     <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
                         select="$include"/>
+                    <xsl:with-param name="level" as="xs:integer" tunnel="true" select="$level + 1"/>
                 </xsl:apply-templates>
             </xsl:variable>
             <dts:member>
@@ -298,8 +365,7 @@
                     <xsl:value-of select="$identifier"/>
                 </dts:identifier>
                 <dts:level>
-                    <xsl:value-of
-                        select="count($citeStructureContext/ancestor-or-self::citeStructure)"/>
+                    <xsl:value-of select="$level"/>
                 </dts:level>
                 <dts:parent>
                     <xsl:value-of select="$parentId"/>
@@ -337,7 +403,7 @@
     </xsl:template>
 
     <!-- make a Member JSON-LD object from an intermediate <dts:member> element -->
-    <xsl:function name="dts:member-json" as="map(xs:string, item()*)?">
+    <xsl:function name="dts:member-json" as="map(xs:string, item()*)?" visibility="final">
         <xsl:param name="member" as="element(dts:member)"/>
         <!-- xpaths on $member highly depend on making of $member, see above -->
         <xsl:map>
@@ -351,7 +417,7 @@
     </xsl:function>
 
     <!-- tests if an intermediate <dts:member> has the property that indicates that it is in the requested range -->
-    <xsl:function name="dts:is-in-requested-range" as="xs:boolean">
+    <xsl:function name="dts:is-in-requested-range" as="xs:boolean" visibility="final">
         <xsl:param name="member" as="element(dts:member)"/>
         <xsl:sequence select="$member/dts:in-requested-range => xs:boolean()"/>
     </xsl:function>
