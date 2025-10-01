@@ -21,24 +21,26 @@ endpoint is more a task for a text editor.
 Query parameters for the endpoints are supported through stylesheet
 parameters:
 
-| parameter  | [navigation]](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#uri-for-navigation-endpoint-requests) | document |
-|------------|---------------------------------------------------------------------------------------------------------------------------------|----------|
-| `resource` | ✅                                                                                                                              |          |
-| `ref`      | ✅                                                                                                                              |          |
-| `start`    | ✅                                                                                                                              |          |
-| `end`      | ✅                                                                                                                              |          |
-| `down`     | ✅                                                                                                                              |          |
-| `tree`     | ✅                                                                                                                              |          |
-| `page`     | missing                                                                                                                         |          |
 
+
+| parameter   | [navigation]](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#uri-for-navigation-endpoint-requests) | [document](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#query-parameters-2) |
+|-------------|---------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| `resource`  | ✅                                                                                                                              | missing                                                                                                    |
+| `ref`       | ✅                                                                                                                              | missing                                                                                                    |
+| `start`     | ✅                                                                                                                              | missing                                                                                                    |
+| `end`       | ✅                                                                                                                              | missing                                                                                                    |
+| `down`      | ✅                                                                                                                              | not used                                                                                                   |
+| `tree`      | ✅                                                                                                                              | missing                                                                                                    |
+| `page`      | missing                                                                                                                         | not used                                                                                                   |
+| `mediaType` | not used                                                                                                                        | missing                                                                                                    |
 
 Evaluated TEI elements:
 
-| element           | navigation |
-|-------------------|------------|
-| `<refsDecl>`      | ✅         |
-| `<citeStructure>` | ✅         |
-| `<citeData>`      | missing    |
+| element           | navigation | document |
+|-------------------|------------|----------|
+| `<refsDecl>`      | ✅         | missing  |
+| `<citeStructure>` | ✅         | missing  |
+| `<citeData>`      | missing    | missing  |
 
 
 
@@ -117,9 +119,6 @@ Transforming:
 
 
 
-
-
-
 ## Customization
 
 ### URL Templates
@@ -153,3 +152,5 @@ and other LOD properties to the member objects.
 2. The function `dts:member-metadata-json#1` can be used to access
    these additional elements in order to output additional LOD
    properties to the member objects.
+
+
