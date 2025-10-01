@@ -13,6 +13,9 @@ target/bin/xslt.sh \
     -xsl:xsl/navigation.xsl \
     -it \
     resource=test/matt.xml
+
+This package has overridable components for adding metadata to member objects.
+See the section at the end of the package.
 -->
 <xsl:package name="https://scdh.github.io/dts-transformations/xsl/navigation-declared.xsl"
     package-version="1.0.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -116,11 +119,14 @@ target/bin/xslt.sh \
                 </xsl:call-template>
             </xsl:map-entry>
             <xsl:variable name="members" as="element(dts:member)*" select="dts:members(.)"/>
+            <xsl:variable name="to-jsonld"
+                as="function (element(dts:member)) as map(xs:string, item()*)"
+                select="function ($x) { map:merge((dts:member-json($x), dts:member-meta-json($x)))}"/>
             <xsl:if test="exists($down)">
                 <!-- specs on absent $down:
                     "No member property in the Navigation object."
                 -->
-                <xsl:map-entry key="'member'" select="array { $members ! dts:member-json(.) }"/>
+                <xsl:map-entry key="'member'" select="array { $members ! $to-jsonld(.) }"/>
             </xsl:if>
             <xsl:choose>
                 <xsl:when test="$ref and exists($down) and $down eq 0">
@@ -134,14 +140,14 @@ target/bin/xslt.sh \
                         so we have to filter the correct element.
                     -->
                     <xsl:map-entry key="'ref'"
-                        select="$members[dts:identifier/text() eq $ref] => dts:member-json()"/>
+                        select="$members[dts:identifier/text() eq $ref] => $to-jsonld()"/>
                 </xsl:when>
                 <xsl:when test="$ref">
-                    <xsl:map-entry key="'ref'" select="$members[1] => dts:member-json()"/>
+                    <xsl:map-entry key="'ref'" select="$members[1] => $to-jsonld()"/>
                 </xsl:when>
                 <xsl:when test="$start and $end">
-                    <xsl:map-entry key="'start'" select="$members[1] => dts:member-json()"/>
-                    <xsl:map-entry key="'end'" select="$members[last()] => dts:member-json()"/>
+                    <xsl:map-entry key="'start'" select="$members[1] => $to-jsonld()"/>
+                    <xsl:map-entry key="'end'" select="$members[last()] => $to-jsonld()"/>
                 </xsl:when>
             </xsl:choose>
         </xsl:map>
@@ -389,7 +395,7 @@ target/bin/xslt.sh \
                 <dts:citeType>
                     <xsl:value-of select="$citeStructureContext/@unit"/>
                 </dts:citeType>
-                <!-- TODO dcterms -->
+                <xsl:apply-templates mode="member-metadata" select="$memberContext"/>
             </dts:member>
             <xsl:sequence select="$children"/>
             <xsl:next-iteration>
@@ -428,7 +434,6 @@ target/bin/xslt.sh \
             <xsl:map-entry key="'level'" select="$member/dts:level => xs:integer()"/>
             <xsl:map-entry key="'parent'" select="$member/dts:parent/text()"/>
             <xsl:map-entry key="'citeType'" select="$member/dts:citeType/text()"/>
-            <!-- TODO dcterms -->
         </xsl:map>
     </xsl:function>
 
@@ -437,5 +442,19 @@ target/bin/xslt.sh \
         <xsl:param name="member" as="element(dts:member)"/>
         <xsl:sequence select="$member/dts:in-requested-range => xs:boolean()"/>
     </xsl:function>
+
+
+
+    <!-- metadata of members -->
+
+    <!-- override this function for making additional JSON-LD properties for an intermediate <dts:member> object -->
+    <xsl:function name="dts:member-meta-json" as="map(xs:string, item()*)" visibility="public">
+        <xsl:param name="member" as="element(dts:member)"/>
+        <xsl:map/>
+    </xsl:function>
+
+    <!-- add templates to this mode to make metadata for each member
+        to add children to intermediate <dts:member> elements -->
+    <xsl:mode name="member-metadata" on-no-match="shallow-skip" visibility="public"/>
 
 </xsl:package>
