@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    xmlns:array="http://www.w3.org/2005/xpath-functions/array"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dts="https://w3id.org/api/dts#"
+    xmlns:t="http://www.tei-c.org/ns/1.0" stylesheet="../xsl/document.xsl" run-as="external">
+
+    <x:variable name="x:saxon-config" href="saxon.xml"/>
+
+    <x:param name="media-type-package"
+        select="'https://scdh.github.io/dts-transformations/xsl/post-proc-call.xsl'" static="true"/>
+
+    <x:param name="media-type-component" select="'template'" static="true"/>
+
+    <x:scenario label="$ref on matt.xml results in dts:wrapper element in TEI root">
+        <x:param name="ref" select="'Matt:2'"/>
+        <x:context href="matt.xml"/>
+        <x:expect label="TEI root element" test="exists(/*/self::t:TEI)"/>
+        <x:expect label="has /TEI/dts:wrapper" test="exists(/t:TEI/dts:wrapper)"/>
+        <x:expect label="/TEI has only on child element" test="count(/t:TEI/*)" select="1"/>
+    </x:scenario>
+
+    <x:scenario
+        label="request plain text as $mediaType and $ref on matt.xml results in non-standard root">
+        <x:param name="mediaType" select="'text/plain'"/>
+        <x:param name="ref" select="'Matt:2'"/>
+        <x:context href="matt.xml"/>
+        <x:expect label="no TEI root element" test="exists(/*/self::t:TEI) => not()"/>
+        <x:expect label="no /TEI/dts:wrapper" test="exists(/t:TEI/dts:wrapper) => not()"/>
+        <x:expect label="selected div at root" test="exists(/*/self::t:div)"/>
+    </x:scenario>
+
+</x:description>

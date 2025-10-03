@@ -1,6 +1,6 @@
 <!-- example XSLT package for post-processing using a named template as entry point
 -->
-<xsl:package name="https://scdh.github.io/dts-transformations/xsl/post-proc-call.xsl"
+<xsl:package name="https://scdh.github.io/dts-transformations/xsl/post-proc-fun.xsl"
   package-version="1.0.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:dts="https://distributed-text-services.github.io/specifications/"
