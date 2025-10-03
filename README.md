@@ -1,5 +1,9 @@
 # DTS Transformations
 
+[![Tests](https://github.com/SCDH/dts-transformations/actions/workflows/test.yaml/badge.svg)](https://github.com/SCDH/dts-transformations/actions/workflows/test.yaml)
+[![Create release](https://github.com/SCDH/dts-transformations/actions/workflows/deploy.yaml/badge.svg)](https://github.com/SCDH/dts-transformations/actions/workflows/deploy.yaml)
+
+
 This project provides XSLT stylesheets for those endpoints of
 [Distributed Text Services
 (DTS)](https://distributed-text-services.github.io/specifications/),
@@ -8,14 +12,8 @@ that can be implemented generically.
 - **navigation** endpoint
 - **document** endpoint
 
-The **collection** endpoint is not targeted by this project. We
-recommend to first extract an RDF-based knowledge graph from your set
-of documents using
-[xtriples-micro](https://github.com/scdh/xtriples-micro) and to then
-use SPARQL and JSON-LD Framing for generating the collection objects
-from it. We have documented this approach in the [xtriples-micro's
-Wiki](https://github.com/SCDH/xtriples-micro/wiki). The **entry**
-endpoint is more a task for a text editor.
+The other endpoints are not targeted by this project. But there are
+[recommendations](#other-endpoints).
 
 ## Status of Implementation
 
@@ -218,6 +216,17 @@ and other LOD properties to the member objects.
 2. The function `dts:member-metadata-json#1` can be used to access
    these additional elements in order to output additional LOD
    properties to the member objects.
+
+## Other Endpoints
+
+The **collection** endpoint is not targeted by this project. We
+recommend to first extract an RDF-based knowledge graph from your set
+of documents using
+[xtriples-micro](https://github.com/scdh/xtriples-micro) and to then
+use SPARQL and JSON-LD Framing for generating the collection objects
+from it. We have documented this approach in the [xtriples-micro's
+Wiki](https://github.com/SCDH/xtriples-micro/wiki). The **entry**
+endpoint is more a task for a text editor.
 
 ## Contributing
 
