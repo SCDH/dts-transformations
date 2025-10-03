@@ -9,22 +9,22 @@
     <artifactId>dts-transformations</artifactId>
     <version>${revision}${changelist}</version>
 
-    <name>Your TEI Processing</name>
-    <description>your description</description>
-    <url>https://zivgitlab.uni-muenster.de/SCDH/tei-processing/dts-transformations</url>
+    <name>DTS Transformations</name>
+    <description>XSLT packages for Distributes Text Services</description>
+    <url>https://gitlab.com/SCDH/dts-transformations</url>
 
     <properties>
         <!-- the main author or contributors who gain credits for this project; used in metadata of build artifacts -->
-        <author>Christian Lück</author>
+        <contributor.file>contributors.txt</contributor.file>
         <!-- where to find the software license for this project; content is used in metadata of build artifacts -->
         <license.file>LICENSE</license.file>
 
         <!-- project repository -->
-        <git.instance>zivgitlab.uni-muenster.de</git.instance>
-        <distribution.url>https://${git.instance}/api/v4/projects/\${env.CI_PROJECT_ID}/packages/maven</distribution.url>
-        <git.repo.path>/SCDH/tei-processing/dts-transformations</git.repo.path>
+        <git.instance>github.com</git.instance>
+        <distribution.url>https://maven.pkg.github.com/SCDH/dts-transformations</distribution.url>
+        <git.repo.path>/SCDH/dts-transformations</git.repo.path>
 
-        <release.url></release.url>
+        <release.url/>
 
         <!-- XSLT resources for generating the configuration for the SEED distribution -->
         <seed-config-xsl.url>${project.basedir}/distribution/seed/seed-config.xsl</seed-config-xsl.url>
@@ -409,6 +409,7 @@
                         <configuration>
                             <target>
                                 <loadfile property="license" srcFile="${license.file}"/>
+                                <loadfile property="author" srcFile="${contributor.file}"/>
                             </target>
                             <exportAntProperties>true</exportAntProperties>
                         </configuration>
