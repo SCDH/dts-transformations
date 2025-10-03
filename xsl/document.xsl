@@ -36,8 +36,7 @@ no matter what the $mediaType parameter is set to.
   <xsl:param name="mediaType" as="xs:string?" select="()"/>
 
   <!-- set this to the empty string or () if you do not want pass on to a mediaType processor -->
-  <xsl:param name="media-type-package" as="xs:string?" static="true"
-    select="()"/>
+  <xsl:param name="media-type-package" as="xs:string?" static="true" select="()"/>
 
   <!-- version of the mediaType processor package -->
   <xsl:param name="media-type-package-version" as="xs:string" static="true" select="'1.0.0'"/>
@@ -171,16 +170,18 @@ no matter what the $mediaType parameter is set to.
   <xsl:template name="transform" visibility="final"
     use-when="$media-type-package and $media-type-component eq 'function'">
     <xsl:context-item as="document-node()" use="required"/>
+    <xsl:variable name="fun"
+      as="function (node()*, xs:string, xs:string?, document-node()) as node()*"
+      select="replace($media-type-processor, '#[0-9]+$', '') => xs:QName() => function-lookup(4)"/>
     <xsl:choose>
       <xsl:when test="not($ref or $start or $end)">
-        <xsl:sequence select="$media-type-processor(., $mediaType, $resource, .)"/>
+        <xsl:sequence select="$fun(., $mediaType, $resource, .)"/>
       </xsl:when>
       <xsl:when test="exists($ref)">
-        <xsl:sequence select="$media-type-processor(dts:cut-ref(.), $mediaType, $resource, .)"/>
+        <xsl:sequence select="$fun(dts:cut-ref(.), $mediaType, $resource, .)"/>
       </xsl:when>
       <xsl:when test="$start and $end">
-        <xsl:sequence select="$media-type-processor(dts:cut-start-end(.), $mediaType, $resource, .)"
-        />
+        <xsl:sequence select="$fun(dts:cut-start-end(.), $mediaType, $resource, .)"/>
       </xsl:when>
     </xsl:choose>
   </xsl:template>
