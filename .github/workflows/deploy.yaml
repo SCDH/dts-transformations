@@ -1,0 +1,81 @@
+name: Create release
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+-?**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run the Maven verify phase
+        run: ./mvnw -Drevision=${{ github.ref_name }} -Dchangelist="" -Drelease.url=https://github.com/SCDH/dts-transformations/releases/download/${{ github.ref_name }}/ --batch-mode --update-snapshots verify
+
+      - name: Run XSpec tests
+        run: target/bin/test.sh
+
+      # - name: Push packages to the package registry, commit tag is the single source of truth for the release version
+      #   run: ./mvnw -Drevision=${{ github.ref_name }} -Dchangelist="" -Drelease.url=https://github.com/SCDH/dts-transformations/releases/download/${{ github.ref_name }}/ --batch-mode --update-snapshots deploy
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: store oxygen plugin descriptor file
+        uses: actions/upload-artifact@v4
+        with:
+          name: oxygen-plugin-descriptor
+          path: target/descriptor.xml
+          retention-days: 1
+
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+        run: |
+          gh release create "$tag" \
+              target/*.tar.gz \
+              target/*.zip \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${GITHUB_REPOSITORY#*/} ${tag}" \
+              --generate-notes
+
+
+  pages:
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: read
+    steps:
+
+      - name: Download descriptor artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: oxygen-plugin-descriptor
+
+      - name: create directory for github pages
+        run: mkdir -p public
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: copy descriptor file
+        run: cp descriptor.xml public/
+
+      - name: Deploy descriptor file on Github pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public

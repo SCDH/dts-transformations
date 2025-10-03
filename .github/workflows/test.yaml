@@ -1,0 +1,27 @@
+name: Tests
+on:
+  push:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Run the Maven verify phase
+        run: ./mvnw --batch-mode --update-snapshots verify
+
+      - name: Run XSpec tests
+        run: target/bin/test.sh
