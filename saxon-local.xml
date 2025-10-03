@@ -14,6 +14,8 @@ http://www.saxonica.com/documentation/index/configuration-file.html
             sourceLocation="xsl/cut.xsl"/>
         <package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl" version="1.0.0"
             sourceLocation="xsl/tree.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/post-proc.xsl" version="1.0.0"
+            sourceLocation="xsl/post-proc.xsl"/>
 
         <package name="https://scdh.github.io/dts-transformations/xsl/url-templates.xsl"
             base="https://scdh.github.io/dts-transformations/xsl/url-templates-with-query-parameters.xsl"

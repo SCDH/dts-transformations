@@ -26,6 +26,16 @@
         <x:expect label="/TEI has only on child element" test="count(/t:TEI/*)" select="1"/>
     </x:scenario>
 
+    <x:scenario
+        label="request plain text as $mediaType and $ref on matt.xml results in non-standard root">
+        <x:param name="mediaType" select="'text/plain'"/>
+        <x:param name="ref" select="'Matt:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="no TEI root element" test="exists(/*/self::t:TEI) => not()"/>
+        <x:expect label="no /TEI/dts:wrapper" test="exists(/t:TEI/dts:wrapper) => not()"/>
+        <x:expect label="selected div at root" test="exists(/*/self::t:div)"/>
+    </x:scenario>
+
     <x:scenario label="$ref with Matt:2 on matt.xml result in Matt:2 in dts:wrapper">
         <x:param name="ref" select="'Matt:2'"/>
         <x:context href="../test/matt.xml"/>
