@@ -27,7 +27,8 @@
     </x:scenario>
 
     <x:scenario
-        label="request plain text as $mediaType and $ref on matt.xml results in non-standard root">
+        label="request plain text as $mediaType and $ref on matt.xml results in non-standard root"
+        pending="move this test out of here">
         <x:param name="mediaType" select="'text/plain'"/>
         <x:param name="ref" select="'Matt:2'"/>
         <x:context href="../test/matt.xml"/>

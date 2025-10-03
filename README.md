@@ -164,6 +164,9 @@ source document (node identity). So you can probably use your
 well-written stylesheets for getting HTML, plain text, LaTeX, etc,
 even for parts of your documents.
 
+For the third option, see the example `post-proc-(call|fun|mode).xsl`
+packages in the [`test`](test) folder.
+
 ### URL Templates
 
 URL templates, which are required for the output of the

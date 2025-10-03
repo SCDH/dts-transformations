@@ -22,14 +22,6 @@ http://www.saxonica.com/documentation/index/configuration-file.html
         <package
             name="https://scdh.github.io/dts-transformations/xsl/url-templates-with-query-parameters.xsl"
             version="1.0.0" sourceLocation="xsl/url-templates-with-query-parameters.xsl"/>
-
-        <!-- the following packages are not required by downstream -->
-        <package name="https://scdh.github.io/dts-transformations/xsl/post-proc-apply.xsl"
-            version="1.0.0" sourceLocation="xsl/post-proc-apply.xsl"/>
-        <package name="https://scdh.github.io/dts-transformations/xsl/post-proc-call.xsl"
-            version="1.0.0" sourceLocation="xsl/post-proc-call.xsl"/>
-        <package name="https://scdh.github.io/dts-transformations/xsl/post-proc-fun.xsl"
-            version="1.0.0" sourceLocation="xsl/post-proc-fun.xsl"/>
     </xsltPackages>
 
 </configuration>

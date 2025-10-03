@@ -16,7 +16,8 @@ target/bin/xslt.sh \
 All the entpoints parameters are supported through stylesheet parameters.
 
 Post-processing for returning another mediaType than application/tei+xml can be customized
-by the static parameters $media-type-*.
+by the static parameters $media-type-*. It is turned of by default. Set to $media-type-package
+to 'https://scdh.github.io/dts-transformations/xsl/post-proc-call.xsl' for example.
 
 If you prefer to evaluate the mediaType parameter by chained transformations, set the
 $media-type-package parameter to a false value, i.e. either () or ''. In this case, the result
@@ -36,7 +37,7 @@ no matter what the $mediaType parameter is set to.
 
   <!-- set this to the empty string or () if you do not want pass on to a mediaType processor -->
   <xsl:param name="media-type-package" as="xs:string?" static="true"
-    select="'https://scdh.github.io/dts-transformations/xsl/post-proc-call.xsl'"/>
+    select="()"/>
 
   <!-- version of the mediaType processor package -->
   <xsl:param name="media-type-package-version" as="xs:string" static="true" select="'1.0.0'"/>
