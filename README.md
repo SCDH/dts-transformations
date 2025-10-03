@@ -33,7 +33,7 @@ parameters:
 | `down`      | ✅                                                                                                                             | not used                                                                                                   |
 | `tree`      | ✅                                                                                                                             | ✅                                                                                                         |
 | `page`      | ❌                                                                                                                             | not used                                                                                                   |
-| `mediaType` | not used                                                                                                                       | ❌                                                                                                         |
+| `mediaType` | not used                                                                                                                       | ✅[¹](#mediaType)                                                                                                        |
 
 Evaluated TEI elements:
 
@@ -140,6 +140,30 @@ target/bin/xslt.sh -config:saxon.he.xml -xsl:xsl/navigation.xsl -s:test/matt.xml
 
 ## Customization
 
+### mediaType
+
+Processing of the `mediaType` parameter is a matter of post-processing
+the result of applying [`xsl/document.xsl`](xsl/document.xsl). It is
+thus is up to customization. There are several approaches:
+
+1. **chaining** the output of the `xsl/document.xsl` to another
+   transformation which evaluates the `mediaType` parameter
+2. **importing** parts of `xsl/document.xsl` in an third stylesheet
+   that processes `mediaType`
+3. **compile time customization** of `xsl/document.xsl` through its
+   static parameters which determine a `media-type-package`, its
+   version, and how it is called for processing `mediaType`
+
+The first option wins the award of straighforwardness, but may have a
+downside: The source-document context of the nodes will probably be
+lost during the post-processing phase. The other approaches can get
+the full benefit from the nice feature, that the nodes returned by the
+two `dts:cut-...#1` functions in
+[`xsl/document.xsl`](xsl/document.xsl) are still in the context of the
+source document (node identity). So you can probably use your
+well-written stylesheets for getting HTML, plain text, LaTeX, etc,
+even for parts of your documents.
+
 ### URL Templates
 
 URL templates, which are required for the output of the
@@ -171,5 +195,3 @@ and other LOD properties to the member objects.
 2. The function `dts:member-metadata-json#1` can be used to access
    these additional elements in order to output additional LOD
    properties to the member objects.
-
-
