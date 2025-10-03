@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml"
+	schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>Title</title>
+         </titleStmt>
+         <publicationStmt>
+            <p>Publication Information</p>
+         </publicationStmt>
+         <sourceDesc>
+            <p>Information about the source</p>
+         </sourceDesc>
+      </fileDesc>
+      <encodingDesc>
+         <refsDecl xml:id="biblical2">
+            <citeStructure unit="book" match="//body/lg" use="@n">
+               <citeStructure unit="chapter" match="lg" use="@n" delim=":">
+                  <citeStructure unit="verse" match="l" use="@n" delim=":"/>
+               </citeStructure>
+            </citeStructure>
+         </refsDecl>
+      </encodingDesc>
+   </teiHeader>
+   <text>
+      <body>
+         <pb n="1"/>
+         <lg n="John">
+            <head>The book of John</head>
+            <lg n="1">
+               <milestone unit="theme" xml:id="creation-start"/>
+               <l n="1">In the beginning was the Word, and the Word was with God, and the Word was
+                  God.</l>
+               <l n="2">He was with God in the beginning.</l>
+               <l n="3">Through him all things were made; without him nothing was made that has been
+                  made.</l>
+               <l n="4">In him was life, and that life was the light of all mankind.</l>
+               <pb n="2"/>
+               <l n="5">The light shines in the darkness, and the darkness has not overcome
+                  it.</l>
+               <milestone unit="theme" xml:id="creation-end"/>
+               <milestone unit="theme" xml:id="john-start"/>
+               <l n="6">6 There was a man sent from God whose name was John.</l>
+               <milestone unit="theme" xml:id="john-end"/>
+               <pb n="3"/>
+            </lg>
+         </lg>
+      </body>
+   </text>
+</TEI>
