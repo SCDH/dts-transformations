@@ -107,7 +107,7 @@ Setup:
 
 ```shell
 export SAXON_CMD="java -cp ... net.sf.saxon.Transform"
-export DTST=https://scdh.github.io/dts-transformations
+export DTST=https://scdh.github.io/dts-transformations/latest
 ```
 Transforming:
 
