@@ -108,7 +108,7 @@ it as follows.
 Setup:
 
 ```shell
-export SAXON_CMD="java -cp ... net.sf.saxon.transform"
+export SAXON_CMD="java -cp ... net.sf.saxon.Transform"
 export DTST=https://scdh.github.io/dts-transformations
 ```
 Transforming:
@@ -116,6 +116,26 @@ Transforming:
 ```shell
 $SAXON_CMD -config:$DTST/saxon.he.xml -xsl:$DTST/xsl/navigation.xsl -s:YOUR_TEI.xml
 ```
+
+### Oxygen Framework
+
+You can install the transformations bundled in an Oxygen
+framework. The framework works on top of the `TEI P5` framework and
+its transformation scenarios support you well in writing cite
+structure declarations with `<refsDecl>` and `<citeStructure>`
+elements. The framework can simply be installed by putting the
+following URL into the dialog box in **Help** > **Install new add-ons
+...**.
+
+```
+https://scdh.github.io/dts-transformations/descriptor.xml
+```
+
+### Released packages
+
+You can download stable released zip packages of the project. They are
+available as [release assets](/SCDH/dts-transformations/releases).
+
 
 ### Cloning
 
@@ -198,3 +218,12 @@ and other LOD properties to the member objects.
 2. The function `dts:member-metadata-json#1` can be used to access
    these additional elements in order to output additional LOD
    properties to the member objects.
+
+## Contributing
+
+Contributions of all kinds are well come. Please see the [contributing
+guide](CONTRIBUTING.md).
+
+## License
+
+MIT
