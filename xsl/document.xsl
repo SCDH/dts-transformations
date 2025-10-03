@@ -1,7 +1,22 @@
 <!-- XSLT package for getting a part of a document as required by DTS document endpoint
 
+USAGE with TEI document as source document:
+target/bin/xslt.sh \
+    -config:saxon.he.xml
+    -xsl:xsl/document.xsl
+    -s:test/matt.xml
+
+USAGE with initial template:
+target/bin/xslt.sh \
+    -config:saxon.he.xml \
+    -xsl:xsl/document.xsl \
+    -it \
+    resource=test/matt.xml
+
+All the entpoints parameters are supported through stylesheet parameters.
+
 Post-processing for returning another mediaType than application/tei+xml can be customized
-by the static parameters $media-type-package, $media-type-package-version and $media-type-mode.
+by the static parameters $media-type-*.
 
 If you prefer to evaluate the mediaType parameter by chained transformations, set the
 $media-type-package parameter to a false value, i.e. either () or ''. In this case, the result
@@ -19,16 +34,22 @@ no matter what the $mediaType parameter is set to.
 
   <xsl:param name="mediaType" as="xs:string?" select="()"/>
 
-  <xsl:param name="default-media-types" as="xs:string+" static="true"
-    select="'application/tei+xml', 'application/xml', 'text/xml', 'text/tei+xml'"/>
-
   <!-- set this to the empty string or () if you do not want pass on to a mediaType processor -->
   <xsl:param name="media-type-package" as="xs:string?" static="true"
-    select="'https://scdh.github.io/dts-transformations/xsl/post-proc.xsl'"/>
+    select="'https://scdh.github.io/dts-transformations/xsl/post-proc-call.xsl'"/>
 
-  <xsl:param name="media-type-package-version" as="xs:string?" static="true" select="'1.0.0'"/>
+  <!-- version of the mediaType processor package -->
+  <xsl:param name="media-type-package-version" as="xs:string" static="true" select="'1.0.0'"/>
 
-  <xsl:param name="media-type-mode" as="xs:string?" static="true" select="'post-proc'"/>
+  <!-- should be 'template', 'mode', or 'function' -->
+  <xsl:param name="media-type-component" as="xs:string" static="true" select="'template'"/>
+
+  <!-- name of the template, mode or function used as an entry point for mediaType processing -->
+  <xsl:param name="media-type-processor" as="xs:string" static="true" select="'post-proc'"/>
+
+  <!-- when mediaType is processed at all, a request for types cause the document entpoints standard XML output -->
+  <xsl:param name="default-media-types" as="xs:string+" static="true"
+    select="'application/tei+xml', 'application/xml', 'text/xml', 'text/tei+xml'"/>
 
   <xsl:mode name="document" on-no-match="fail" visibility="public"/>
 
@@ -40,7 +61,8 @@ no matter what the $mediaType parameter is set to.
 
   <xsl:use-package _name="{$media-type-package}" _package-version="{$media-type-package-version}"
     use-when="$media-type-package">
-    <xsl:accept component="mode" _names="{$media-type-mode}" visibility="private"/>
+    <xsl:accept _component="{$media-type-component}" _names="{$media-type-processor}"
+      visibility="private"/>
   </xsl:use-package>
 
   <xsl:template name="xsl:initial-template" visibility="public">
@@ -86,34 +108,85 @@ no matter what the $mediaType parameter is set to.
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template name="transform" visibility="final" use-when="$media-type-package">
+  <xsl:template name="transform" visibility="final"
+    use-when="$media-type-package and $media-type-component eq 'mode'">
     <xsl:context-item as="document-node()" use="required"/>
     <xsl:choose>
       <xsl:when test="not($ref or $start or $end)">
-        <xsl:apply-templates _mode="{$media-type-mode}" select=".">
+        <xsl:apply-templates _mode="{$media-type-processor}" select=".">
           <xsl:with-param name="mediaType" as="xs:string" tunnel="true" select="$mediaType"/>
-          <xsl:with-param name="resource" as="xs:string" tunnel="true" select="$resource"/>
+          <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
           <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
         </xsl:apply-templates>
       </xsl:when>
       <xsl:when test="exists($ref)">
-        <xsl:apply-templates _mode="{$media-type-mode}" select="dts:cut-ref(.)">
+        <xsl:apply-templates _mode="{$media-type-processor}" select="dts:cut-ref(.)">
           <xsl:with-param name="mediaType" as="xs:string" tunnel="true" select="$mediaType"/>
-          <xsl:with-param name="resource" as="xs:string" tunnel="true" select="$resource"/>
+          <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
           <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
         </xsl:apply-templates>
       </xsl:when>
       <xsl:when test="$start and $end">
-        <xsl:apply-templates _mode="{$media-type-mode}" select="dts:cut-start-end(.)">
+        <xsl:apply-templates _mode="{$media-type-processor}" select="dts:cut-start-end(.)">
           <xsl:with-param name="mediaType" as="xs:string" tunnel="true" select="$mediaType"/>
-          <xsl:with-param name="resource" as="xs:string" tunnel="true" select="$resource"/>
+          <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
           <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
         </xsl:apply-templates>
       </xsl:when>
     </xsl:choose>
-
   </xsl:template>
 
+  <xsl:template name="transform" visibility="final"
+    use-when="$media-type-package and $media-type-component eq 'template'">
+    <xsl:context-item as="document-node()" use="required"/>
+    <xsl:choose>
+      <xsl:when test="not($ref or $start or $end)">
+        <xsl:call-template _name="{$media-type-processor}">
+          <xsl:with-param name="nodes" as="node()*" tunnel="false" select="."/>
+          <xsl:with-param name="mediaType" as="xs:string" tunnel="true" select="$mediaType"/>
+          <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
+          <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:when test="exists($ref)">
+        <xsl:call-template _name="{$media-type-processor}">
+          <xsl:with-param name="nodes" as="node()*" tunnel="false" select="dts:cut-ref(.)"/>
+          <xsl:with-param name="mediaType" as="xs:string" tunnel="true" select="$mediaType"/>
+          <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
+          <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:when test="$start and $end">
+        <xsl:call-template _name="{$media-type-processor}">
+          <xsl:with-param name="nodes" as="node()*" tunnel="false" select="dts:cut-start-end(.)"/>
+          <xsl:with-param name="mediaType" as="xs:string" tunnel="true" select="$mediaType"/>
+          <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
+          <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
+        </xsl:call-template>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="transform" visibility="final"
+    use-when="$media-type-package and $media-type-component eq 'function'">
+    <xsl:context-item as="document-node()" use="required"/>
+    <xsl:choose>
+      <xsl:when test="not($ref or $start or $end)">
+        <xsl:sequence select="$media-type-processor(., $mediaType, $resource, .)"/>
+      </xsl:when>
+      <xsl:when test="exists($ref)">
+        <xsl:sequence select="$media-type-processor(dts:cut-ref(.), $mediaType, $resource, .)"/>
+      </xsl:when>
+      <xsl:when test="$start and $end">
+        <xsl:sequence select="$media-type-processor(dts:cut-start-end(.), $mediaType, $resource, .)"
+        />
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+
+
+  <!-- function that returns a portion of the document when $ref is specified -->
   <xsl:function name="dts:cut-ref" as="node()*" visibility="final">
     <xsl:param name="doc" as="document-node()"/>
     <!--
@@ -126,6 +199,7 @@ no matter what the $mediaType parameter is set to.
     </xsl:for-each>
   </xsl:function>
 
+  <!-- function that returns a portion of the document when $start and $end are specified -->
   <xsl:function name="dts:cut-start-end" as="node()*" visibility="final">
     <xsl:param name="doc" as="document-node()"/>
     <xsl:variable name="members" as="element(dts:member)*" select="dts:members($doc, -1, true())"/>
