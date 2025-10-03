@@ -1,0 +1,53 @@
+<xt:extensions xmlns:xt="http://www.oxygenxml.com/ns/extension"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.oxygenxml.com/ns/extension http://www.oxygenxml.com/ns/extension/extensions.xsd">
+   <xt:extension xmlns:xt="http://www.oxygenxml.com/ns/extension" id="TEI DTS">
+      <xt:location
+         href="https://github.com/SCDH/dts-transformations/releases/download/0.0.1/dts-transformations-0.0.1-oxygen-framework.zip"/>
+      <xt:version>0.0.1</xt:version>
+      <xt:oxy_version>23.1+</xt:oxy_version>
+      <xt:type>framework</xt:type>
+      <xt:author>Christian Lück
+</xt:author>
+      <xt:name>TEI DTS</xt:name>
+      <xt:description>
+         <html xmlns="http://www.w3.org/1999/xhtml">
+            <head>
+               <title>TEI DTS</title>
+            </head>
+            <body>
+               <div>
+                  <p>This framework helps developing and testing reference declarations in TEI files
+                     based on <code>&lt;citeStructure&gt;</code> and similar elements.</p>
+                  <p>XSLT packages for Distributes Text Services</p>
+                  <p>For more details see <a href="https://gitlab.com/SCDH/dts-transformations">https://gitlab.com/SCDH/dts-transformations</a>.</p>
+               </div>
+            </body>
+         </html>
+      </xt:description>
+      <xt:license><![CDATA[
+MIT License
+
+Copyright (c) 2025 SCDH, Westfälische Wilhelms-Universität Münster
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+]]></xt:license>
+   </xt:extension>
+</xt:extensions>
