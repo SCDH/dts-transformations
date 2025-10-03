@@ -1,5 +1,6 @@
 *~
 
+# build targets
 /target
 /saxon.*.xml
 /saxon.xml
@@ -7,3 +8,7 @@
 /.project
 /.settings
 xspec
+
+# output of transformation scenarios
+*.dts-document.xml
+*.dts-navigation.json

@@ -1,24 +1,24 @@
 <xt:extensions xmlns:xt="http://www.oxygenxml.com/ns/extension"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://www.oxygenxml.com/ns/extension http://www.oxygenxml.com/ns/extension/extensions.xsd">
-   <xt:extension xmlns:xt="http://www.oxygenxml.com/ns/extension"
-      id="${project.groupId}.${project.artifactId}">
+   <xt:extension xmlns:xt="http://www.oxygenxml.com/ns/extension" id="${framework.id}">
       <xt:location
-         href="${release.url}${project.artifactId}-${project.version}-oxygen-distribution.jar"/>
+         href="${release.url}${project.artifactId}-${project.version}-oxygen-framework.zip"/>
       <xt:version>${project.version}</xt:version>
-      <xt:oxy_version>17.0+</xt:oxy_version>
-      <xt:type>plugin</xt:type>
+      <xt:oxy_version>23.1+</xt:oxy_version>
+      <xt:type>framework</xt:type>
       <xt:author>${author}</xt:author>
-      <xt:name>${project.name}</xt:name>
+      <xt:name>${framework.id}</xt:name>
       <xt:description>
          <html xmlns="http://www.w3.org/1999/xhtml">
             <head>
-               <title>${project.name}</title>
+               <title>${framework.id}</title>
             </head>
             <body>
                <div>
-                  <p>This plugin distributes the ${project.name} project for processing XML:
-                     ${project.description}</p>
+                  <p>This framework helps developing and testing reference declarations in TEI files
+                     based on <code>&lt;citeStructure&gt;</code> and similar elements.</p>
+                  <p>${project.description}</p>
                   <p>For more details see <a href="${project.url}">${project.url}</a>.</p>
                </div>
             </body>

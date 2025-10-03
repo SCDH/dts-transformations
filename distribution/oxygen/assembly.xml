@@ -4,10 +4,10 @@
    <includeBaseDirectory>true</includeBaseDirectory>
    <baseDirectory>${project.artifactId}</baseDirectory>
 
-   <id>oxygen-distribution</id>
+   <id>oxygen-framework</id>
 
    <formats>
-      <format>jar</format>
+      <format>zip</format>
    </formats>
 
    <fileSets>
@@ -17,11 +17,6 @@
          <includes>
             <include>**/*.xsl</include>
             <include>**/*.xq*</include>
-            <include>**/*.json</include>
-            <include>**/*.js</include>
-            <include>**/*.css</include>
-            <include>**/*.sty</include>
-            <include>**/*.tex</include>
          </includes>
          <excludes>
             <exclude>**/xspec/**.xsl</exclude>
@@ -57,15 +52,36 @@
             <include>saxon.*.xml</include>
          </includes>
       </fileSet>
+      <fileSet>
+         <directory>${project.basedir}/distribution/oxygen</directory>
+         <outputDirectory>/</outputDirectory>
+         <includes>
+            <include>*.scenarios</include>
+         </includes>
+         <!-- we use filtering to replace ${pdu} with ${framework(${framework.id})} -->
+         <filtered>true</filtered>
+      </fileSet>
+      <fileSet>
+         <directory>${project.basedir}/distribution/oxygen/templates</directory>
+         <outputDirectory>/templates</outputDirectory>
+         <includes>
+            <include>*.xml</include>
+         </includes>
+      </fileSet>
    </fileSets>
 
    <files>
-      <file>
+      <!--file>
          <source>saxon.xml</source>
          <outputDirectory>/</outputDirectory>
-      </file>
+      </file-->
+      <!--file>
+         <source>catalog.xml</source>
+         <outputDirectory>/</outputDirectory>
+      </file-->
       <file>
-         <source>${project.basedir}/distribution/oxygen/plugin.xml</source>
+         <source>${project.basedir}/distribution/oxygen/framework.exf</source>
+         <destName>${framework.id}.exf</destName>
          <outputDirectory>/</outputDirectory>
          <filtered>true</filtered>
       </file>

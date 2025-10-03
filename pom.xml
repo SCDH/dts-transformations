@@ -15,7 +15,7 @@
 
     <properties>
         <!-- the main author or contributors who gain credits for this project; used in metadata of build artifacts -->
-        <author>\${env.GITLAB_USER_NAME}</author>
+        <author>Christian Lück</author>
         <!-- where to find the software license for this project; content is used in metadata of build artifacts -->
         <license.file>LICENSE</license.file>
 
@@ -23,6 +23,8 @@
         <git.instance>zivgitlab.uni-muenster.de</git.instance>
         <distribution.url>https://${git.instance}/api/v4/projects/\${env.CI_PROJECT_ID}/packages/maven</distribution.url>
         <git.repo.path>/SCDH/tei-processing/dts-transformations</git.repo.path>
+
+        <release.url></release.url>
 
         <!-- XSLT resources for generating the configuration for the SEED distribution -->
         <seed-config-xsl.url>${project.basedir}/distribution/seed/seed-config.xsl</seed-config-xsl.url>
@@ -36,9 +38,11 @@
         <!-- use as @prefix/ for the npm package containing sef compilations -->
         <sef-package.prefix>@sef/</sef-package.prefix>
 
+        <framework.id>TEI DTS</framework.id>
+        <pdu>${framework(TEI DTS)}</pdu>
+
 
         <!-- Tool Versions -->
-        <ph.schematron.version>5.6.4</ph.schematron.version>
         <saxon.version>12.5</saxon.version>
         <xmlresolver.version>4.5.1</xmlresolver.version>
         <oxygen.version>24.1.0.0</oxygen.version>
