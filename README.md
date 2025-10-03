@@ -33,7 +33,7 @@ parameters:
 | `down`      | ✅                                                                                                                             | not used                                                                                                   |
 | `tree`      | ✅                                                                                                                             | ✅                                                                                                         |
 | `page`      | ❌                                                                                                                             | not used                                                                                                   |
-| `mediaType` | not used                                                                                                                       | ✅[¹](#mediaType)                                                                                                        |
+| `mediaType` | not used                                                                                                                       | ✅[¹](#mediatype)                                                                                                        |
 
 Evaluated TEI elements:
 
@@ -164,7 +164,7 @@ source document (node identity). So you can probably use your
 well-written stylesheets for getting HTML, plain text, LaTeX, etc,
 even for parts of your documents.
 
-For the third option, see the example `post-proc-(call|fun|mode).xsl`
+For the third option, see the example `post-proc-(apply|call|fun).xsl`
 packages in the [`test`](test) folder.
 
 ### URL Templates
