@@ -4,6 +4,8 @@
 
 - introduces configurable error codes that deployments can catch in
   order to return HTTP 4XX error codes
+- makes the URL template configurable by static parameters
+- makes the `@context` URL configurable
 - `<dts:wrapper>` has the `dts` name prefix, test assured
 - XSLT packages for navigation and document endpoints available
   through Saxon config
