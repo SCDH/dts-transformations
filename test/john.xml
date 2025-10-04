@@ -16,7 +16,7 @@
          </sourceDesc>
       </fileDesc>
       <encodingDesc>
-         <refsDecl xml:id="biblical2">
+         <refsDecl n="biblical2" default="true">
             <citeStructure unit="book" match="//body/lg" use="@n">
                <citeStructure unit="chapter" match="lg" use="@n" delim=":">
                   <citeStructure unit="verse" match="l" use="@n" delim=":"/>

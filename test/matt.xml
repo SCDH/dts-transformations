@@ -16,15 +16,15 @@
          </sourceDesc>
       </fileDesc>
       <encodingDesc>
-         <refsDecl xml:id="biblical2">
+         <refsDecl n="pages">
+            <citeStructure unit="page" match="//text//pb" use="@n" delim="p.&#x20;"/>
+         </refsDecl>
+         <refsDecl default="true">
             <citeStructure unit="book" match="//body/div" use="@n">
                <citeStructure unit="chapter" match="div" use="@n" delim=":">
                   <citeStructure unit="verse" match="div" use="@n" delim=":"/>
                </citeStructure>
             </citeStructure>
-         </refsDecl>
-         <refsDecl xml:id="pages">
-            <citeStructure unit="page" match="//text//pb" use="@n" delim="p.&#x20;"/>
          </refsDecl>
       </encodingDesc>
    </teiHeader>
