@@ -86,6 +86,10 @@
       </xsl:choose>
     </xsl:variable>
     <!-- generate the sequence of members by applying 'members' transformation -->
+    <xsl:assert test="exists(dts:get-citeation-tree($context, $tree))"
+      error-code="{$dts:http404 => dts:error-to-eqname()}">
+      <xsl:value-of xml:space="preserve">ERROR: citetation tree '<xsl:value-of select="$tree"/>' not found</xsl:value-of>
+    </xsl:assert>
     <xsl:variable name="members" as="element(dts:member)*">
       <xsl:apply-templates mode="members" select="dts:get-citeation-tree($context, $tree)">
         <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="()"/>

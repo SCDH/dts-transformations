@@ -94,6 +94,7 @@ no matter what the $mediaType parameter is set to.
   <xsl:template name="document" visibility="final">
     <xsl:context-item as="document-node(element(TEI))" use="required"/>
     <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')"/>
+    <!-- TODO: Do we have to assert that $tree is valid if $ref, $start and $end are absent? -->
     <xsl:choose>
       <xsl:when test="not($ref or $start or $end)">
         <xsl:copy-of select="."/>
