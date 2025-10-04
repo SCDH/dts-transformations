@@ -27,7 +27,7 @@ no matter what the $mediaType parameter is set to.
 <xsl:package name="https://scdh.github.io/dts-transformations/xsl/document.xsl"
   package-version="1.0.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:map="http://www.w3.org/2005/xpath-functions/map"
-  xmlns="http://www.tei-c.org/ns/1.0"
+  xmlns:err="http://www.w3.org/2005/xqt-errors" xmlns="http://www.tei-c.org/ns/1.0"
   xmlns:dts="https://distributed-text-services.github.io/specifications/"
   xmlns:cut="https://distributed-text-services.github.io/specifications/cut#"
   exclude-result-prefixes="#all" xpath-default-namespace="http://www.tei-c.org/ns/1.0" version="3.0"
@@ -59,6 +59,9 @@ no matter what the $mediaType parameter is set to.
   <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/cut.xsl"
     package-version="1.0.0"/>
 
+  <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl"
+    package-version="1.0.0"/>
+
   <xsl:use-package _name="{$media-type-package}" _package-version="{$media-type-package-version}"
     use-when="$media-type-package">
     <xsl:accept _component="{$media-type-component}" _names="{$media-type-processor}"
@@ -66,6 +69,9 @@ no matter what the $mediaType parameter is set to.
   </xsl:use-package>
 
   <xsl:template name="xsl:initial-template" visibility="public">
+    <xsl:assert test="$resource" error-code="{$dts:http400 => dts:error-to-eqname()}">
+      <xsl:value-of xml:space="preserve">ERROR: resource parameter missing</xsl:value-of>
+    </xsl:assert>
     <xsl:apply-templates mode="document" select="doc($resource)"/>
   </xsl:template>
 
@@ -82,11 +88,17 @@ no matter what the $mediaType parameter is set to.
 
   <xsl:template mode="document" match="document-node(element(TEI))"
     use-when="not($media-type-package)">
+    <xsl:assert test="empty($mediaType) or $mediaType = $default-media-types"
+      error-code="{$dts:http404 => dts:error-to-eqname()}">
+      <xsl:value-of xml:space="preserve">ERROR: media type '<xsl:value-of select="$mediaType"/>' not supported</xsl:value-of>
+    </xsl:assert>
     <xsl:call-template name="document"/>
   </xsl:template>
 
   <xsl:template name="document" visibility="final">
     <xsl:context-item as="document-node(element(TEI))" use="required"/>
+    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')"/>
+    <!-- TODO: Do we have to assert that $tree is valid if $ref, $start and $end are absent? -->
     <xsl:choose>
       <xsl:when test="not($ref or $start or $end)">
         <xsl:copy-of select="."/>
@@ -113,6 +125,7 @@ no matter what the $mediaType parameter is set to.
   <xsl:template name="transform" visibility="final"
     use-when="$media-type-package and $media-type-component eq 'mode'">
     <xsl:context-item as="document-node()" use="required"/>
+    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')"/>
     <xsl:choose>
       <xsl:when test="not($ref or $start or $end)">
         <xsl:apply-templates _mode="{$media-type-processor}" select=".">
@@ -141,6 +154,7 @@ no matter what the $mediaType parameter is set to.
   <xsl:template name="transform" visibility="final"
     use-when="$media-type-package and $media-type-component eq 'template'">
     <xsl:context-item as="document-node()" use="required"/>
+    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')"/>
     <xsl:choose>
       <xsl:when test="not($ref or $start or $end)">
         <xsl:call-template _name="{$media-type-processor}">
@@ -172,6 +186,7 @@ no matter what the $mediaType parameter is set to.
   <xsl:template name="transform" visibility="final"
     use-when="$media-type-package and $media-type-component eq 'function'">
     <xsl:context-item as="document-node()" use="required"/>
+    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')"/>
     <xsl:variable name="fun"
       as="function (node()*, xs:string, xs:string?, document-node()) as node()*"
       select="replace($media-type-processor, '#[0-9]+$', '') => xs:QName() => function-lookup(4)"/>
@@ -198,7 +213,12 @@ no matter what the $mediaType parameter is set to.
       document context. However, we can get them in context by
       roundtripping with path expressions.
     -->
-    <xsl:for-each select="dts:members($doc, -1, true())[1]/dts:ref-xpath ! string(.)">
+    <xsl:variable name="members" as="element(dts:member)*" select="dts:members($doc, -1, true())"/>
+    <xsl:assert test="exists($members[1][string(dts:identifier) eq $ref])"
+      error-code="{$dts:http404 => dts:error-to-eqname()}">
+      <xsl:value-of xml:space="preserve">ERROR: member '<xsl:value-of select="$ref"/>' not found</xsl:value-of>
+    </xsl:assert>
+    <xsl:for-each select="$members[1]/dts:ref-xpath ! string(.)">
       <xsl:evaluate as="node()?" context-item="$doc" xpath="."/>
     </xsl:for-each>
   </xsl:function>
@@ -208,15 +228,22 @@ no matter what the $mediaType parameter is set to.
     <xsl:param name="doc" as="document-node()"/>
     <xsl:variable name="members" as="element(dts:member)*" select="dts:members($doc, -1, true())"/>
     <!-- see explaintion for using xpath above -->
-    <xsl:variable name="first" as="node()?">
-      <xsl:evaluate context-item="$doc" as="node()?" xpath="$members[1]/dts:start-xpath => string()"
-      />
-    </xsl:variable>
-    <xsl:variable name="last" as="node()?">
-      <xsl:evaluate context-item="$doc" as="node()?"
-        xpath="$members[last()]/dts:end-xpath => string()"/>
-    </xsl:variable>
-    <xsl:sequence select="cut:horizontal($first, $last)"/>
+    <xsl:try>
+      <xsl:variable name="first" as="node()?">
+        <xsl:evaluate context-item="$doc" as="node()?"
+          xpath="$members[1]/dts:start-xpath => string()"/>
+      </xsl:variable>
+      <xsl:variable name="last" as="node()?">
+        <xsl:evaluate context-item="$doc" as="node()?"
+          xpath="$members[last()]/dts:end-xpath => string()"/>
+      </xsl:variable>
+      <xsl:sequence select="cut:horizontal($first, $last)"/>
+      <xsl:catch errors="err:XTDE3160">
+        <xsl:message terminate="yes" error-code="{$dts:http404 => dts:error-to-eqname()}">
+          <xsl:value-of xml:space="preserve">ERROR: $start or $end member not found</xsl:value-of>
+        </xsl:message>
+      </xsl:catch>
+    </xsl:try>
   </xsl:function>
 
 </xsl:package>

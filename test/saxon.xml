@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-This Saxon configuration file registeres the example packages for processing mediaType, which are located in this directory
+Saxon configuration used for for testing.
+
+This configuration
+
+- registeres the example packages for processing mediaType, which are located in this directory
+- enables assertions
 -->
 <configuration edition="HE" xmlns="http://saxon.sf.net/ns/configuration">
+
+    <!-- assertions are enabled for the tests -->
+    <xslt enableAssertions="true"/>
 
     <xsltPackages>
         <package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl" version="1.0.0"
             sourceLocation="../xsl/dts.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl" version="1.0.0"
+            sourceLocation="../xsl/errors.xsl"/>
         <package name="https://scdh.github.io/dts-transformations/xsl/cut.xsl" version="1.0.0"
             sourceLocation="../xsl/cut.xsl"/>
         <package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl" version="1.0.0"

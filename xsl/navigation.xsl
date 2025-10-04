@@ -38,6 +38,14 @@ See the section at the end of the package.
     <xsl:function name="dts:validate-navigation-parameters" as="map(xs:string, item())"
         visibility="final">
         <xsl:param name="context" as="node()"/>
+        <xsl:assert test="empty(($down, $ref, $start, $end)) => not()"
+            error-code="{$dts:http400 => dts:error-to-eqname()}">
+            <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: $down, $ref, $start+$end may not all be absent</xsl:value-of>
+        </xsl:assert>
+        <xsl:assert test="not(exists($down) and $down eq 0 and empty($ref))"
+            error-code="{$dts:http400 => dts:error-to-eqname()}">
+            <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: $down = 0 requires $ref set</xsl:value-of>
+        </xsl:assert>
         <xsl:variable name="navigation-specific" as="map(xs:string, item()*)">
             <xsl:map>
                 <xsl:if test="$down">
@@ -61,8 +69,14 @@ See the section at the end of the package.
     <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl"
         package-version="1.0.0"/>
 
+    <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl"
+        package-version="1.0.0"/>
+
     <!-- entry point with initial template and resource URL from stylesheet parameter -->
     <xsl:template name="xsl:initial-template" as="map(xs:string, item())" visibility="public">
+        <xsl:assert test="$resource" error-code="{$dts:http400 => dts:error-to-eqname()}">
+            <xsl:value-of xml:space="preserve">ERROR: resource parameter missing</xsl:value-of>
+        </xsl:assert>
         <xsl:apply-templates mode="navigation" select="doc($resource)"/>
     </xsl:template>
 
@@ -71,6 +85,10 @@ See the section at the end of the package.
 
     <!-- make the Navigation JSON-LD object for the given context document -->
     <xsl:template mode="navigation" match="document-node()" as="map(xs:string, item())">
+        <!-- Calling dts:validate-navigation-parameters() results only then in a validation
+            when the returned result is also used for making the transformation's output,
+            since XSLT is lazy! So we use the output, even if we could do the rest without.
+        -->
         <xsl:variable name="parameters" as="map(xs:string, item()*)"
             select="dts:validate-navigation-parameters(.)"/>
         <xsl:map>
@@ -86,6 +104,10 @@ See the section at the end of the package.
             </xsl:map-entry>
             <xsl:variable name="members" as="element(dts:member)*"
                 select="dts:members(., $down, false())"/>
+            <!--
+                The non-empty parameter of the to-json function is important for catching errors
+                Thus, we definitly want to declare it here, not only in a possibly overridden function.
+            -->
             <xsl:variable name="to-jsonld"
                 as="function (element(dts:member)) as map(xs:string, item()*)"
                 select="function ($x) { map:merge((dts:member-json($x), dts:member-meta-json($x)))}"/>
@@ -106,15 +128,51 @@ See the section at the end of the package.
                         This $members sequence does not contain *ref at start,
                         so we have to filter the correct element.
                     -->
-                    <xsl:map-entry key="'ref'"
-                        select="$members[dts:identifier/text() eq $ref] => $to-jsonld()"/>
+                    <xsl:try>
+                        <xsl:map-entry key="'ref'"
+                            select="$members[dts:identifier/text() eq $ref] => $to-jsonld()"/>
+                        <xsl:catch>
+                            <xsl:message terminate="yes"
+                                error-code="{$dts:http404 => dts:error-to-eqname()}">
+                                <xsl:value-of xml:space="preserve">ERROR: $ref '<xsl:value-of select="$ref"/>' not found</xsl:value-of>
+                            </xsl:message>
+                        </xsl:catch>
+                    </xsl:try>
                 </xsl:when>
                 <xsl:when test="$ref">
-                    <xsl:map-entry key="'ref'" select="$members[1] => $to-jsonld()"/>
+                    <xsl:try>
+                        <xsl:map-entry key="'ref'"
+                            select="$members[1][string(dts:identifier) eq $ref] => $to-jsonld()"/>
+                        <!-- XPTY0004 -->
+                        <xsl:catch>
+                            <xsl:message terminate="yes"
+                                error-code="{$dts:http404 => dts:error-to-eqname()}">
+                                <xsl:value-of xml:space="preserve">ERROR: $ref '<xsl:value-of select="$ref"/>' not found</xsl:value-of>
+                            </xsl:message>
+                        </xsl:catch>
+                    </xsl:try>
                 </xsl:when>
                 <xsl:when test="$start and $end">
-                    <xsl:map-entry key="'start'" select="$members[1] => $to-jsonld()"/>
-                    <xsl:map-entry key="'end'" select="$members[last()] => $to-jsonld()"/>
+                    <xsl:try>
+                        <xsl:map-entry key="'start'"
+                            select="$members[1][string(dts:identifier) eq $start] => $to-jsonld()"/>
+                        <xsl:catch>
+                            <xsl:message terminate="yes"
+                                error-code="{$dts:http404 => dts:error-to-eqname()}">
+                                <xsl:value-of xml:space="preserve">ERROR: $start '<xsl:value-of select="$start"/>' not found</xsl:value-of>
+                            </xsl:message>
+                        </xsl:catch>
+                    </xsl:try>
+                    <xsl:try>
+                        <xsl:map-entry key="'end'"
+                            select="$members[last()][string(dts:identifier) eq $end] => $to-jsonld()"/>
+                        <xsl:catch>
+                            <xsl:message terminate="yes"
+                                error-code="{$dts:http404 => dts:error-to-eqname()}">
+                                <xsl:value-of xml:space="preserve">ERROR: $end '<xsl:value-of select="$end"/>' not found</xsl:value-of>
+                            </xsl:message>
+                        </xsl:catch>
+                    </xsl:try>
                 </xsl:when>
             </xsl:choose>
         </xsl:map>
