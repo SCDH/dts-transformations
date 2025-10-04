@@ -375,4 +375,145 @@
             test="map:get(., 'member') => array:size()" select="10"/>
     </x:scenario>
 
+
+    <x:scenario label="error: $ref and $start + $end given" catch="yes">
+        <x:param name="down" select="()"/>
+        <x:param name="ref" select="'Matt:2'"/>
+        <x:param name="start" select="'Matt:1:2'"/>
+        <x:param name="end" select="'Matt:2:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="throws error" test="exists($x:result?err?code)"/>
+        <x:expect label="400 error code" test="$x:result?err?code => string() => matches('400')"
+            pending="issue 1"/>
+        <x:expect label="has error message" test="exists($x:result?err?description)"/>
+        <x:expect label="error message is"
+            test="matches($x:result?err?value, 'bad parameter combination')"/>
+    </x:scenario>
+
+    <x:scenario label="error: $start present, but $end not" catch="yes">
+        <x:param name="down" select="()"/>
+        <x:param name="ref" select="()"/>
+        <x:param name="start" select="'Matt:1:2'"/>
+        <x:param name="end" select="()"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="throws error" test="exists($x:result?err?code)"/>
+        <x:expect label="400 error code" test="$x:result?err?code => string() => matches('400')"
+            pending="issue 1"/>
+        <x:expect label="has error message" test="exists($x:result?err?description)"/>
+        <x:expect label="error message is"
+            test="matches($x:result?err?value, 'bad parameter combination')"/>
+    </x:scenario>
+
+    <x:scenario label="error: $start not present, but $end" catch="yes">
+        <x:param name="down" select="()"/>
+        <x:param name="ref" select="()"/>
+        <x:param name="start" select="()"/>
+        <x:param name="end" select="'Matt:1:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="throws error" test="exists($x:result?err?code)"/>
+        <x:expect label="400 error code" test="$x:result?err?code => string() => matches('400')"
+            pending="issue 1"/>
+        <x:expect label="has error message" test="exists($x:result?err?description)"/>
+        <x:expect label="error message is"
+            test="matches($x:result?err?value, 'bad parameter combination')"/>
+    </x:scenario>
+
+
+    <x:scenario label="error: member specified by $ref not found" catch="yes">
+        <x:param name="down" select="()"/>
+        <x:param name="ref" select="'Matt:42'"/>
+        <x:param name="start" select="()"/>
+        <x:param name="end" select="()"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="throws error" test="exists($x:result?err?code)"/>
+        <x:expect label="404 error code" test="$x:result?err?code => string() => matches('404')"
+            pending="issue 1"/>
+        <x:expect label="has error message" test="exists($x:result?err?description)"/>
+        <x:expect label="error message is" test="matches($x:result?err?value, 'not found')"/>
+    </x:scenario>
+
+    <x:scenario label="error: member specified by $start not found" catch="yes">
+        <x:param name="down" select="()"/>
+        <x:param name="ref" select="()"/>
+        <x:param name="start" select="'Matt:1:42'"/>
+        <x:param name="end" select="'Matt:2:3'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="throws error" test="exists($x:result?err?code)"/>
+        <x:expect label="404 error code" test="$x:result?err?code => string() => matches('404')"
+            pending="issue 1"/>
+        <x:expect label="has error message" test="exists($x:result?err?description)"/>
+        <x:expect label="error message is" test="matches($x:result?err?value, 'not found')"/>
+    </x:scenario>
+
+    <x:scenario label="error: $tree not found" catch="yes">
+        <x:param name="down" select="()"/>
+        <x:param name="ref" select="()"/>
+        <x:param name="start" select="'Matt:1:2'"/>
+        <x:param name="end" select="'Matt:2:3'"/>
+        <x:param name="tree" select="'zebra'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="throws error" test="exists($x:result?err?code)"/>
+        <x:expect label="404 error code" test="$x:result?err?code => string() => matches('404')"
+            pending="issue 1"/>
+        <x:expect label="has error message" test="exists($x:result?err?description)"/>
+        <x:expect label="error message is" test="matches($x:result?err?value, 'not found')"/>
+    </x:scenario>
+
+
+    <x:scenario label="error: member specified by $end not found" catch="yes">
+        <x:param name="down" select="()"/>
+        <x:param name="ref" select="()"/>
+        <x:param name="start" select="'Matt:1:3'"/>
+        <x:param name="end" select="'Matt:42'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="throws error" test="exists($x:result?err?code)"/>
+        <x:expect label="404 error code" test="$x:result?err?code => string() => matches('404')"
+            pending="issue 1"/>
+        <x:expect label="has error message" test="exists($x:result?err?description)"/>
+        <x:expect label="error message is" test="matches($x:result?err?value, 'not found')"/>
+    </x:scenario>
+
+
+    <x:scenario label="error: none of $down, $ref, $start, $end" catch="yes">
+        <x:param name="down" select="()"/>
+        <x:param name="ref" select="()"/>
+        <x:param name="start" select="()"/>
+        <x:param name="end" select="()"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="throws error" test="exists($x:result?err?code)"/>
+        <x:expect label="400 error code" test="$x:result?err?code => string() => matches('400')"
+            pending="issue 1"/>
+        <x:expect label="has error message" test="exists($x:result?err?description)"/>
+        <x:expect label="error message is"
+            test="matches($x:result?err?value, 'bad parameter combination')"/>
+    </x:scenario>
+
+    <x:scenario label="error: $down = 0 and none of $ref, $start, $end" catch="yes">
+        <x:param name="down" select="0"/>
+        <x:param name="ref" select="()"/>
+        <x:param name="start" select="()"/>
+        <x:param name="end" select="()"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="throws error" test="exists($x:result?err?code)"/>
+        <x:expect label="400 error code" test="$x:result?err?code => string() => matches('400')"
+            pending="issue 1"/>
+        <x:expect label="has error message" test="exists($x:result?err?description)"/>
+        <x:expect label="error message is"
+            test="matches($x:result?err?value, 'bad parameter combination')"/>
+    </x:scenario>
+
+    <x:scenario label="error: $down = 0 and $start + $end given" catch="yes">
+        <x:param name="down" select="0"/>
+        <x:param name="ref" select="()"/>
+        <x:param name="start" select="'Matt:1:2'"/>
+        <x:param name="end" select="'Matt:2:2'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="throws error" test="exists($x:result?err?code)"/>
+        <x:expect label="400 error code" test="$x:result?err?code => string() => matches('400')"
+            pending="issue 1"/>
+        <x:expect label="has error message" test="exists($x:result?err?description)"/>
+        <x:expect label="error message is"
+            test="matches($x:result?err?value, 'bad parameter combination')"/>
+    </x:scenario>
+
 </x:description>
