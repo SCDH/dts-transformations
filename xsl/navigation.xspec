@@ -6,7 +6,7 @@
     xmlns:dts="https://distributed-text-services.github.io/specifications/"
     xmlns:t="http://www.tei-c.org/ns/1.0" stylesheet="navigation.xsl" run-as="external">
 
-    <x:variable name="x:saxon-config" href="../saxon.he.xml"/>
+    <x:variable name="x:saxon-config" href="../test/saxon.xml"/>
 
     <x:scenario label="presence of properties of Navigation">
         <x:context href="../test/4ezr.xml"/>

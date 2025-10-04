@@ -5,7 +5,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dts="https://w3id.org/api/dts#"
     xmlns:t="http://www.tei-c.org/ns/1.0" stylesheet="document.xsl" run-as="external">
 
-    <x:variable name="x:saxon-config" href="../saxon.he.xml"/>
+    <x:variable name="x:saxon-config" href="../test/saxon.xml"/>
 
     <x:scenario label="whole document as source matt.xml">
         <x:context href="../test/matt.xml"/>

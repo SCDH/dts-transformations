@@ -38,11 +38,11 @@ See the section at the end of the package.
     <xsl:function name="dts:validate-navigation-parameters" as="map(xs:string, item())"
         visibility="final">
         <xsl:param name="context" as="node()"/>
-        <xsl:assert test="empty(($down, $ref, $start, $end))"
+        <xsl:assert test="empty(($down, $ref, $start, $end)) => not()"
             error-code="{$dts:http400 => dts:error-to-eqname()}">
             <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: $down, $ref, $start+$end may not all be absent</xsl:value-of>
         </xsl:assert>
-        <xsl:assert test="exists($down) and $down eq 0 and empty($ref)"
+        <xsl:assert test="not(exists($down) and $down eq 0 and empty($ref))"
             error-code="{$dts:http400 => dts:error-to-eqname()}">
             <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: $down = 0 requires $ref set</xsl:value-of>
         </xsl:assert>
@@ -104,6 +104,10 @@ See the section at the end of the package.
             </xsl:map-entry>
             <xsl:variable name="members" as="element(dts:member)*"
                 select="dts:members(., $down, false())"/>
+            <!--
+                The non-empty parameter of the to-json function is important for catching errors
+                Thus, we definitly want to declare it here, not only in a possibly overridden function.
+            -->
             <xsl:variable name="to-jsonld"
                 as="function (element(dts:member)) as map(xs:string, item()*)"
                 select="function ($x) { map:merge((dts:member-json($x), dts:member-meta-json($x)))}"/>
