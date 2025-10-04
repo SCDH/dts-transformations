@@ -93,16 +93,18 @@ no matter what the $mediaType parameter is set to.
       </xsl:when>
       <xsl:when test="exists($ref)">
         <TEI>
-          <dtsc:wrapper xmlns:dtsc="https://w3id.org/api/dts#">
-            <xsl:sequence select="dts:cut-ref(.)"/>
-          </dtsc:wrapper>
+          <dts:wrapper xmlns:dts="https://w3id.org/api/dts#">
+            <xsl:sequence xmlns:dts="https://distributed-text-services.github.io/specifications/"
+              select="dts:cut-ref(.)"/>
+          </dts:wrapper>
         </TEI>
       </xsl:when>
       <xsl:when test="$start and $end">
         <TEI>
-          <dtsc:wrapper xmlns:dtsc="https://w3id.org/api/dts#">
-            <xsl:sequence select="dts:cut-start-end(.)"/>
-          </dtsc:wrapper>
+          <dts:wrapper xmlns:dts="https://w3id.org/api/dts#">
+            <xsl:sequence xmlns:dts="https://distributed-text-services.github.io/specifications/"
+              select="dts:cut-start-end(.)"/>
+          </dts:wrapper>
         </TEI>
       </xsl:when>
     </xsl:choose>

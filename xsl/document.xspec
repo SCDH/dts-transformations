@@ -23,6 +23,9 @@
         <x:context href="../test/matt.xml"/>
         <x:expect label="TEI root element" test="exists(/*/self::t:TEI)"/>
         <x:expect label="has /TEI/dts:wrapper" test="exists(/t:TEI/dts:wrapper)"/>
+        <x:expect label="dts:wrapper has the dts prefix"
+            test="/t:TEI/dts:wrapper => node-name() => prefix-from-QName() => string()"
+            select="'dts'"/>
         <x:expect label="/TEI has only on child element" test="count(/t:TEI/*)" select="1"/>
     </x:scenario>
 
@@ -48,6 +51,11 @@
         <x:param name="start" select="'Matt:1:2'"/>
         <x:param name="end" select="'Matt:2:2'"/>
         <x:context href="../test/matt.xml"/>
+        <x:expect label="TEI root element" test="exists(/*/self::t:TEI)"/>
+        <x:expect label="has /TEI/dts:wrapper" test="exists(/t:TEI/dts:wrapper)"/>
+        <x:expect label="dts:wrapper has the dts prefix"
+            test="/t:TEI/dts:wrapper => node-name() => prefix-from-QName() => string()"
+            select="'dts'"/>
         <x:expect label="count of element nodes in dts:wrapper" test="count(/t:TEI/dts:wrapper/*)"
             select="6"/>
     </x:scenario>
