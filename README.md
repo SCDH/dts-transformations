@@ -256,6 +256,19 @@ The value of JSON-LD `@context` property can be configured through the
 `context` parameters in `xsl/dts.xsl`.
 
 
+### JSON-LD Serialization
+
+The JSON-LD output of has an asserted order where order matters: in
+arrays. The members array is in document order. The order of object
+properties does not carry any information and there are no guarantees
+about it. So the `@context` property of the root object may occur as
+the first or the last property or somewhere in the middle.
+
+Saxon's JSON serializer per default escapes slashes with
+backslashes. If this matters, first think about [configuring the
+serializer](https://www.saxonica.com/documentation12/index.html#!configuration/configuration-file/config-serialization):
+There's a `escape-solidus` option.
+
 ## Other Endpoints
 
 The **collection** endpoint is not targeted by this project. We
