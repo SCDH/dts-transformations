@@ -10,6 +10,8 @@ http://www.saxonica.com/documentation/index/configuration-file.html
     <xsltPackages>
         <package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl" version="1.0.0"
             sourceLocation="xsl/dts.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl" version="1.0.0"
+            sourceLocation="xsl/errors.xsl"/>
         <package name="https://scdh.github.io/dts-transformations/xsl/cut.xsl" version="1.0.0"
             sourceLocation="xsl/cut.xsl"/>
         <package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl" version="1.0.0"

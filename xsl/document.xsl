@@ -59,6 +59,9 @@ no matter what the $mediaType parameter is set to.
   <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/cut.xsl"
     package-version="1.0.0"/>
 
+  <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl"
+    package-version="1.0.0"/>
+
   <xsl:use-package _name="{$media-type-package}" _package-version="{$media-type-package-version}"
     use-when="$media-type-package">
     <xsl:accept _component="{$media-type-component}" _names="{$media-type-processor}"
@@ -66,6 +69,9 @@ no matter what the $mediaType parameter is set to.
   </xsl:use-package>
 
   <xsl:template name="xsl:initial-template" visibility="public">
+    <xsl:assert test="$resource" error-code="{$dts:http400 => dts:error-to-eqname()}">
+      <xsl:value-of xml:space="preserve">ERROR: resource parameter missing</xsl:value-of>
+    </xsl:assert>
     <xsl:apply-templates mode="document" select="doc($resource)"/>
   </xsl:template>
 
@@ -87,6 +93,7 @@ no matter what the $mediaType parameter is set to.
 
   <xsl:template name="document" visibility="final">
     <xsl:context-item as="document-node(element(TEI))" use="required"/>
+    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')"/>
     <xsl:choose>
       <xsl:when test="not($ref or $start or $end)">
         <xsl:copy-of select="."/>
@@ -113,6 +120,7 @@ no matter what the $mediaType parameter is set to.
   <xsl:template name="transform" visibility="final"
     use-when="$media-type-package and $media-type-component eq 'mode'">
     <xsl:context-item as="document-node()" use="required"/>
+    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')"/>
     <xsl:choose>
       <xsl:when test="not($ref or $start or $end)">
         <xsl:apply-templates _mode="{$media-type-processor}" select=".">
@@ -141,6 +149,7 @@ no matter what the $mediaType parameter is set to.
   <xsl:template name="transform" visibility="final"
     use-when="$media-type-package and $media-type-component eq 'template'">
     <xsl:context-item as="document-node()" use="required"/>
+    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')"/>
     <xsl:choose>
       <xsl:when test="not($ref or $start or $end)">
         <xsl:call-template _name="{$media-type-processor}">
@@ -172,6 +181,7 @@ no matter what the $mediaType parameter is set to.
   <xsl:template name="transform" visibility="final"
     use-when="$media-type-package and $media-type-component eq 'function'">
     <xsl:context-item as="document-node()" use="required"/>
+    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')"/>
     <xsl:variable name="fun"
       as="function (node()*, xs:string, xs:string?, document-node()) as node()*"
       select="replace($media-type-processor, '#[0-9]+$', '') => xs:QName() => function-lookup(4)"/>

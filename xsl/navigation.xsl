@@ -38,6 +38,14 @@ See the section at the end of the package.
     <xsl:function name="dts:validate-navigation-parameters" as="map(xs:string, item())"
         visibility="final">
         <xsl:param name="context" as="node()"/>
+        <xsl:assert test="empty(($down, $ref, $start, $end))"
+            error-code="{$dts:http400 => dts:error-to-eqname()}">
+            <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: $down, $ref, $start+$end may not all be absent</xsl:value-of>
+        </xsl:assert>
+        <xsl:assert test="exists($down) and $down eq 0 and empty($ref)"
+            error-code="{$dts:http400 => dts:error-to-eqname()}">
+            <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: $down = 0 requires $ref set</xsl:value-of>
+        </xsl:assert>
         <xsl:variable name="navigation-specific" as="map(xs:string, item()*)">
             <xsl:map>
                 <xsl:if test="$down">
@@ -61,8 +69,14 @@ See the section at the end of the package.
     <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl"
         package-version="1.0.0"/>
 
+    <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl"
+        package-version="1.0.0"/>
+
     <!-- entry point with initial template and resource URL from stylesheet parameter -->
     <xsl:template name="xsl:initial-template" as="map(xs:string, item())" visibility="public">
+        <xsl:assert test="$resource" error-code="{$dts:http400 => dts:error-to-eqname()}">
+            <xsl:value-of xml:space="preserve">ERROR: resource parameter missing</xsl:value-of>
+        </xsl:assert>
         <xsl:apply-templates mode="navigation" select="doc($resource)"/>
     </xsl:template>
 
@@ -71,6 +85,10 @@ See the section at the end of the package.
 
     <!-- make the Navigation JSON-LD object for the given context document -->
     <xsl:template mode="navigation" match="document-node()" as="map(xs:string, item())">
+        <!-- Calling dts:validate-navigation-parameters() results only then in a validation
+            when the returned result is also used for making the transformation's output,
+            since XSLT is lazy! So we use the output, even if we could do the rest without.
+        -->
         <xsl:variable name="parameters" as="map(xs:string, item()*)"
             select="dts:validate-navigation-parameters(.)"/>
         <xsl:map>
