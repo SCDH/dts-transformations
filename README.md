@@ -215,9 +215,9 @@ LOD object, must of course be adaptable to specific project
 needs.
 
 The adaption can be done by providing an custom XSLT package to the
-`xsl/navigation.xsl` by its static parameters `url-template-package`
-and `url-template-package-version`. An implementation must expose two
-functions:
+`xsl/navigation.xsl` through its static parameters
+`url-template-package` and `url-template-package-version`. An
+implementation must expose two functions:
 
 ```
 dts:url-template-map-entries ($resource as ducument-node(), parameters as map(xs:string, item()*) as item()*
@@ -249,7 +249,12 @@ and other LOD properties to the member objects.
    these additional elements in order to output additional LOD
    properties to the member objects.
 
+
 ### `@context`
+
+The value of JSON-LD `@context` property can be configured through the
+`context` parameters in `xsl/dts.xsl`.
+
 
 ## Other Endpoints
 
