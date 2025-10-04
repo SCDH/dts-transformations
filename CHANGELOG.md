@@ -1,6 +1,6 @@
 # Changes
 
-## 0.1.0 (dev)
+## 0.1.0
 
 - introduces configurable error codes that deployments can catch in
   order to return HTTP 4XX error codes
