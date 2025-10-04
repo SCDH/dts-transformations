@@ -164,6 +164,15 @@ soon.
 
 ## Customization
 
+### Citation Trees
+
+To add custom citation tree constructions not based on
+`<citeStructure>`, you can add templates to the `citationTrees` mode
+defined in [`xsl/tree.xsl`](xsl/tree.xsl). It is initiated on every
+`refsDecl` and is first called on `self::refsDecl`. It runs in
+shallow-skip mode.
+
+
 ### HTTP Status Codes
 
 To get the HTTP status codes, that the DTS specs prescribe for certain
@@ -179,6 +188,7 @@ switch](https://www.saxonica.com/documentation12/index.html#!using-xsl/commandli
 or by the [`/configration/xslt/@enableAssertions` configuration file
 option](https://www.saxonica.com/documentation12/index.html#!configuration/configuration-file)
 to enable assertions.
+
 
 ### mediaType
 
