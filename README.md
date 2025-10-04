@@ -155,8 +155,30 @@ Transforming:
 target/bin/xslt.sh -config:saxon.he.xml -xsl:xsl/navigation.xsl -s:test/matt.xml
 ```
 
+### Deployment
+
+To make DTS endpoints, the XSL transformations from this package need
+to be deployed on a web service. There are several options and we will
+publish a PoC for a deployment in a micro service architecture very
+soon.
 
 ## Customization
+
+### HTTP Status Codes
+
+To get the HTTP status codes, that the DTS specs prescribe for certain
+errors, the static parameters in [`xsl/errors.xsl`](xsl/errors.xsl)
+can be used. They define error codes that a web service can catch and
+then return HTTP status codes accordingly.
+
+Please note, that the XSLT uses `<xsl:assert>` in some places, which
+does not throw errors per default, but needs the XSLT processor
+configured to do so. Saxon HE can be told by the [`-ea:on` command
+line
+switch](https://www.saxonica.com/documentation12/index.html#!using-xsl/commandline)
+or by the [`/configration/xslt/@enableAssertions` configuration file
+option](https://www.saxonica.com/documentation12/index.html#!configuration/configuration-file)
+to enable assertions.
 
 ### mediaType
 
