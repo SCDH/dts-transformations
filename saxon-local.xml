@@ -22,12 +22,12 @@ http://www.saxonica.com/documentation/index/configuration-file.html
             sourceLocation="xsl/document.xsl"/>
 
         <package name="https://scdh.github.io/dts-transformations/xsl/url-templates.xsl"
-            base="https://scdh.github.io/dts-transformations/xsl/url-templates-with-query-parameters.xsl"
-            version="1.0.0" sourceLocation="xsl/url-templates-with-query-parameters.xsl"
+            base="https://scdh.github.io/dts-transformations/xsl/url-templates/query-parameters.xsl"
+            version="1.0.0" sourceLocation="xsl/url-templates/query-parameters.xsl"
             priority="100"/>
         <package
-            name="https://scdh.github.io/dts-transformations/xsl/url-templates-with-query-parameters.xsl"
-            version="1.0.0" sourceLocation="xsl/url-templates-with-query-parameters.xsl"/>
+            name="https://scdh.github.io/dts-transformations/xsl/url-templates/query-parameters.xsl"
+            version="1.0.0" sourceLocation="xsl/url-templates/query-parameters.xsl"/>
     </xsltPackages>
 
 </configuration>

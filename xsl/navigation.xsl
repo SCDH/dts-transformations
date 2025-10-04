@@ -35,6 +35,11 @@ See the section at the end of the package.
 
     <!-- more parameters defined in tree.xsl -->
 
+    <xsl:param name="url-templates-package" as="xs:string" static="true"
+        select="'https://scdh.github.io/dts-transformations/xsl/url-templates/query-parameters.xsl'"/>
+
+    <xsl:param name="url-templates-package-version" as="xs:string" static="true" select="'1.0.0'"/>
+
     <xsl:function name="dts:validate-navigation-parameters" as="map(xs:string, item())"
         visibility="final">
         <xsl:param name="context" as="node()"/>
@@ -63,8 +68,12 @@ See the section at the end of the package.
     <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl"
         package-version="1.0.0"/>
 
-    <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/url-templates.xsl"
-        package-version="1.0.0"/>
+    <xsl:use-package _name="{$url-templates-package}"
+        _package-version="{$url-templates-package-version}">
+        <!-- an URL templates package must provide two functions -->
+        <xsl:accept component="function" names="dts:url-template-map-entries#2" visibility="public"/>
+        <xsl:accept component="function" names="dts:navigation-url#2" visibility="public"/>
+    </xsl:use-package>
 
     <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl"
         package-version="1.0.0"/>
@@ -96,7 +105,7 @@ See the section at the end of the package.
                 select="concat('https://distributed-text-services.github.io/specifications/context/', $dts-version,'.json')"/>
             <xsl:map-entry key="'dtsVersion'" select="$dts-version"/>
             <xsl:map-entry key="'@type'">Navigation</xsl:map-entry>
-            <xsl:map-entry key="'@id'" select="dts:navigation-url($parameters)"/>
+            <xsl:map-entry key="'@id'" select="dts:navigation-url(., $parameters)"/>
             <xsl:map-entry key="'resource'">
                 <xsl:call-template name="resource">
                     <xsl:with-param name="parameters" select="$parameters"/>
@@ -179,13 +188,12 @@ See the section at the end of the package.
     </xsl:template>
 
     <xsl:template name="resource" as="map(xs:string, item())" visibility="final">
+        <xsl:context-item as="document-node()" use="required"/>
         <xsl:param name="parameters" as="map(xs:string, item()*)" required="true"/>
         <xsl:map>
             <xsl:map-entry key="'@id'" select="map:get($parameters, 'resource')"/>
             <xsl:map-entry key="'@type'">Resource</xsl:map-entry>
-            <xsl:map-entry key="'collection'" select="dts:collection-url($parameters)"/>
-            <xsl:map-entry key="'navigation'" select="dts:navigation-url($parameters)"/>
-            <xsl:map-entry key="'document'" select="dts:document-url($parameters)"/>
+            <xsl:sequence select="dts:url-template-map-entries(., $parameters)"/>
             <xsl:map-entry key="'citationTrees'">
                 <xsl:call-template name="citationTrees"/>
             </xsl:map-entry>
