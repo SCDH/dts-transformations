@@ -12,6 +12,8 @@ This configuration
     <!-- assertions are enabled for the tests -->
     <xslt enableAssertions="true"/>
 
+    <serialization escape-solidus="false"/>
+
     <xsltPackages>
         <package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl" version="1.0.0"
             sourceLocation="../xsl/dts.xsl"/>
