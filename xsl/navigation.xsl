@@ -205,40 +205,58 @@ See the section at the end of the package.
 
     <xsl:template name="citationTrees" as="array(map(xs:string, item()))" visibility="final">
         <xsl:context-item as="document-node()" use="required"/>
+        <!--
+            Specs: "If a Resource has multiple CitationTrees,
+            then the first listed in citationTrees is the default
+            CitationTree and cannot have an identifier."
+            How about a Resource with a single CitationTree? Can
+            it have a an identifier? Would the absence of
+            an unnamed (unidenfiable) CitationTree mean, that
+            there's no default CitationTree?
+        -->
+        <xsl:assert test="count(/*/teiHeader/encodingDesc/refsDecl[@default eq 'true']) eq 1"
+            error-code="{$dts:http404 => dts:error-to-eqname()}">
+            <xsl:value-of xml:space="preserve">ERROR: there must be exactly 1 default citation tree by declaration, but found <xsl:value-of select="count(/*/teiHeader/encodingDesc/refsDecl[@default eq 'true'])"/></xsl:value-of>
+        </xsl:assert>
+        <xsl:assert
+            test="/*/teiHeader/encodingDesc/refsDecl[empty(@default) or @default eq 'false'][empty(@n)] => exists() => not()"
+            error-code="{$dts:http404 => dts:error-to-eqname()}">
+            <xsl:value-of xml:space="preserve">ERROR: there are unlabelled refsDecl which are not the default citation tree</xsl:value-of>
+        </xsl:assert>
         <xsl:variable name="citeStructures" as="map(xs:string, item())*">
-            <xsl:for-each select="//refsDecl">
-                <xsl:map>
-                    <xsl:map-entry key="'@type'">CitationTree</xsl:map-entry>
-                    <!--
-                        Specs: "If a Resource has multiple CitationTrees,
-                        then the first listed in citationTrees is the default
-                        CitationTree and cannot have an identifier."
-                        How about a Resource with a single CitationTree? Can
-                        it have a an identifier? Would the absence of
-                        an unnamed (unidenfiable) CitationTree mean, that
-                        there's no default CitationTree?
-                    -->
-                    <xsl:if test="position() > 1">
-                        <xsl:map-entry key="'identifier'" select="@xml:id => string()"/>
-                    </xsl:if>
-                    <xsl:if test="p | ab">
-                        <!--
-                            Where to get the description from? <refsDecl> may not
-                            contain a <desc>!
-                        -->
-                        <xsl:map-entry key="'description'"
-                            select="(p | ab) => string-join() => normalize-space()"/>
-                    </xsl:if>
-                    <xsl:variable name="trees" as="map(xs:string, item())*">
-                        <xsl:apply-templates mode="citationTrees"/>
-                    </xsl:variable>
-                    <xsl:map-entry key="'citeStructure'">
-                        <xsl:sequence select="array { $trees }"/>
-                    </xsl:map-entry>
-                </xsl:map>
+            <xsl:call-template name="citation-tree">
+                <xsl:with-param name="refsDecl"
+                    select="/*/teiHeader/encodingDesc/refsDecl[@default eq 'true']"/>
+            </xsl:call-template>
+            <xsl:for-each select="/*/teiHeader/encodingDesc/refsDecl[not(@default eq 'true')]">
+                <xsl:call-template name="citation-tree"/>
             </xsl:for-each>
         </xsl:variable>
         <xsl:sequence select="array { $citeStructures }"/>
+    </xsl:template>
+
+    <xsl:template name="citation-tree" as="map(xs:string, item())" visibility="final">
+        <xsl:param name="refsDecl" as="element(refsDecl)" required="false" select="."/>
+        <xsl:map>
+            <xsl:map-entry key="'@type'">CitationTree</xsl:map-entry>
+            <xsl:if test="$refsDecl[empty(@default) or @default ne 'true']">
+                <xsl:map-entry key="'identifier'" select="$refsDecl/@n => string()"/>
+            </xsl:if>
+            <xsl:if test="$refsDecl/(p | ab)">
+                <!--
+                            Where to get the description from? <refsDecl> may not
+                            contain a <desc>!
+                        -->
+                <xsl:map-entry key="'description'"
+                    select="$refsDecl/(p | ab) => string-join() => normalize-space()"/>
+            </xsl:if>
+            <xsl:variable name="tree" as="map(xs:string, item())*">
+                <xsl:apply-templates mode="citationTrees" select="$refsDecl"/>
+            </xsl:variable>
+            <xsl:map-entry key="'citeStructure'">
+                <xsl:sequence select="array { $tree }"/>
+            </xsl:map-entry>
+        </xsl:map>
     </xsl:template>
 
     <xsl:mode name="citationTrees" on-no-match="shallow-skip" visibility="public"/>

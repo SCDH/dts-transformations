@@ -86,7 +86,7 @@
       </xsl:choose>
     </xsl:variable>
     <!-- generate the sequence of members by applying 'members' transformation -->
-    <xsl:assert test="exists(dts:get-citeation-tree($context, $tree))"
+    <xsl:assert test="count(dts:get-citeation-tree($context, $tree)) eq 1"
       error-code="{$dts:http404 => dts:error-to-eqname()}">
       <xsl:value-of xml:space="preserve">ERROR: citetation tree '<xsl:value-of select="$tree"/>' not found</xsl:value-of>
     </xsl:assert>
@@ -149,15 +149,15 @@
   </xsl:function>
 
   <!-- returns the right refsDecl in the context based on $name -->
-  <xsl:function name="dts:get-citeation-tree" as="element()?" visibility="public">
+  <xsl:function name="dts:get-citeation-tree" as="element(refsDecl)*" visibility="public">
     <xsl:param name="context" as="node()"/>
     <xsl:param name="name" as="xs:string?"/>
     <xsl:choose>
       <xsl:when test="not($name)">
-        <xsl:sequence select="($context//refsDecl[not(@xml:id)] | $context//refsDecl)[1]"/>
+        <xsl:sequence select="$context/*/teiHeader/encodingDesc/refsDecl[@default eq 'true']"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:sequence select="id($name, $context)/self::refsDecl"/>
+        <xsl:sequence select="$context/*/teiHeader/encodingDesc/refsDecl[@n eq $name]"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
