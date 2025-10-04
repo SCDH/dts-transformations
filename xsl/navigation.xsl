@@ -19,7 +19,7 @@ Use 'java -cp $CLASSPATH saxon-10.9.jar' instead of 'target/bin/xslt.sh'.
 This package has overridable components for adding metadata to member objects.
 See the section at the end of the package.
 -->
-<xsl:package name="https://scdh.github.io/dts-transformations/xsl/navigation-declared.xsl"
+<xsl:package name="https://scdh.github.io/dts-transformations/xsl/navigation.xsl"
     package-version="1.0.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:map="http://www.w3.org/2005/xpath-functions/map"
