@@ -212,18 +212,28 @@ packages in the [`test`](test) folder.
 URL templates, which are required for the output of the
 [`dts:Resource`](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#scheme-for-navigation-endpoint-responses)
 LOD object, must of course be adaptable to specific project
-needs. Generally, adaption can be done by implementing an URL template
-XSLT package named
-`https://scdh.github.io/dts-transformations/xsl/url-templates.xsl`,
-version 1.0.0, and tell the XSLT processor to use it instead of the
-default one through the [Saxon configuration
-file](https://www.saxonica.com/documentation12/index.html#!configuration/configuration-file/config-xsltPackages),
-like in [`saxon-local.xml`](saxon-local.xml).
+needs.
 
-There are alternative implementations in this project:
+The adaption can be done by providing an custom XSLT package to the
+`xsl/navigation.xsl` by its static parameters `url-template-package`
+and `url-template-package-version`. An implementation must expose two
+functions:
 
-- `xsl/url-templates-with-query-parameters.xsl`
-- `xsl/url-templates-with-selection.xsl`
+```
+dts:url-template-map-entries ($resource as ducument-node(), parameters as map(xs:string, item()*) as item()*
+```
+
+```
+dts:navigation-url ($resource as ducument-node(), parameters as map(xs:string, item()*) as xs:anyURI?
+```
+
+They get the resource document and the query parameters for maximum
+flexiblity. The first function must return a sequence of
+`<xsl:map-entry>` elements.
+
+The [`xsl/url-templates/`](xsl/url-templates/) folder offers different
+implementations.
+
 
 ### Additional Metadata
 
@@ -238,6 +248,8 @@ and other LOD properties to the member objects.
 2. The function `dts:member-metadata-json#1` can be used to access
    these additional elements in order to output additional LOD
    properties to the member objects.
+
+### `@context`
 
 ## Other Endpoints
 
