@@ -17,23 +17,32 @@
 
   <xsl:param name="tree" as="xs:string?" select="()"/>
 
+  <!-- turn this to false() to make processing DTS endpoint conformant -->
+  <xsl:param name="absent-resource-from-baseuri" as="xs:boolean" static="true" select="true()"/>
+
+  <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl"
+    package-version="1.0.0"/>
+
   <xsl:function name="dts:validate-parameters" as="map(xs:string, item())" visibility="final">
     <xsl:param name="context" as="node()"/>
     <xsl:map>
       <xsl:choose>
         <xsl:when test="not(empty($resource))">
-          <xsl:message>setting resource</xsl:message>
           <xsl:map-entry key="'resource'" select="$resource"/>
         </xsl:when>
-        <xsl:otherwise>
-          <xsl:message>resource from context item</xsl:message>
+        <xsl:when test="$absent-resource-from-baseuri">
           <xsl:map-entry key="'resource'" select="base-uri($context)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:message terminate="yes" error-code="{$dts:http400 => dts:error-to-eqname()}">
+            <xsl:value-of xml:space="preserve">ERROR: resource parameter missing</xsl:value-of>
+          </xsl:message>
         </xsl:otherwise>
       </xsl:choose>
       <xsl:choose>
         <xsl:when test="$ref and ($start or $end)">
-          <xsl:message terminate="yes">
-            <xsl:text>ERROR: bad parameter combination: when ref is used, start and end must not</xsl:text>
+          <xsl:message terminate="yes" error-code="{$dts:http400 => dts:error-to-eqname()}">
+            <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: when ref is used, start and end must not</xsl:value-of>
           </xsl:message>
         </xsl:when>
         <xsl:when test="$ref">
@@ -45,8 +54,8 @@
         </xsl:when>
         <xsl:when test="not($start or $end)"/>
         <xsl:otherwise>
-          <xsl:message terminate="yes">
-            <xsl:text>ERROR: bad parameter combination: start required end and vice versa</xsl:text>
+          <xsl:message terminate="yes" error-code="{$dts:http400 => dts:error-to-eqname()}">
+            <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: start required end and vice versa</xsl:value-of>
           </xsl:message>
         </xsl:otherwise>
       </xsl:choose>
@@ -77,6 +86,10 @@
       </xsl:choose>
     </xsl:variable>
     <!-- generate the sequence of members by applying 'members' transformation -->
+    <xsl:assert test="exists(dts:get-citeation-tree($context, $tree))"
+      error-code="{$dts:http404 => dts:error-to-eqname()}">
+      <xsl:value-of xml:space="preserve">ERROR: citetation tree '<xsl:value-of select="$tree"/>' not found</xsl:value-of>
+    </xsl:assert>
     <xsl:variable name="members" as="element(dts:member)*">
       <xsl:apply-templates mode="members" select="dts:get-citeation-tree($context, $tree)">
         <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="()"/>

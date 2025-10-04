@@ -7,11 +7,14 @@ http://www.saxonica.com/documentation/index/configuration-file.html
 
     <xsltPackages>
         <package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl" version="1.0.0" sourceLocation="xsl/dts.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl" version="1.0.0" sourceLocation="xsl/errors.xsl"/>
         <package name="https://scdh.github.io/dts-transformations/xsl/cut.xsl" version="1.0.0" sourceLocation="xsl/cut.xsl"/>
         <package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl" version="1.0.0" sourceLocation="xsl/tree.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/navigation.xsl" version="1.0.0" sourceLocation="xsl/navigation.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/document.xsl" version="1.0.0" sourceLocation="xsl/document.xsl"/>
 
-        <package name="https://scdh.github.io/dts-transformations/xsl/url-templates.xsl" base="https://scdh.github.io/dts-transformations/xsl/url-templates-with-query-parameters.xsl" version="1.0.0" sourceLocation="xsl/url-templates-with-query-parameters.xsl" priority="100"/>
-        <package name="https://scdh.github.io/dts-transformations/xsl/url-templates-with-query-parameters.xsl" version="1.0.0" sourceLocation="xsl/url-templates-with-query-parameters.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/url-templates.xsl" base="https://scdh.github.io/dts-transformations/xsl/url-templates/query-parameters.xsl" version="1.0.0" sourceLocation="xsl/url-templates/query-parameters.xsl" priority="100"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/url-templates/query-parameters.xsl" version="1.0.0" sourceLocation="xsl/url-templates/query-parameters.xsl"/>
     
     </xsltPackages>
 

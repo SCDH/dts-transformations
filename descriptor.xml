@@ -3,8 +3,8 @@
    xsi:schemaLocation="http://www.oxygenxml.com/ns/extension http://www.oxygenxml.com/ns/extension/extensions.xsd">
    <xt:extension xmlns:xt="http://www.oxygenxml.com/ns/extension" id="TEI DTS">
       <xt:location
-         href="https://github.com/SCDH/dts-transformations/releases/download/0.0.2/dts-transformations-0.0.2-oxygen-framework.zip"/>
-      <xt:version>0.0.2</xt:version>
+         href="https://github.com/SCDH/dts-transformations/releases/download/0.1.0/dts-transformations-0.1.0-oxygen-framework.zip"/>
+      <xt:version>0.1.0</xt:version>
       <xt:oxy_version>23.1+</xt:oxy_version>
       <xt:type>framework</xt:type>
       <xt:author>Christian Lück

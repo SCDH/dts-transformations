@@ -6,9 +6,11 @@
 
   <xsl:param name="dts-version" as="xs:string" select="'1.0rc1'"/>
 
+  <xsl:param name="context-url" as="xs:string"
+    select="'https://distributed-text-services.github.io/specifications/context/' || $dts-version ||'.json'"/>
+
   <xsl:variable name="context" visibility="final">
-    <xsl:map-entry key="'@context'"
-      select="concat('https://distributed-text-services.github.io/specifications/context/', $dts-version,'.json')"/>
+    <xsl:map-entry key="'@context'" select="$context-url"/>
     <xsl:map-entry key="'dtsVersion'" select="$dts-version"/>
   </xsl:variable>
 
