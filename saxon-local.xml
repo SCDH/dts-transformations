@@ -7,6 +7,10 @@ http://www.saxonica.com/documentation/index/configuration-file.html
 -->
 <configuration edition="HE" xmlns="http://saxon.sf.net/ns/configuration">
 
+    <xslt enableAssertions="true" disableXslEvaluate="false"/>
+
+    <serialization escape-solidus="false"/>
+
     <xsltPackages>
         <package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl" version="1.0.0"
             sourceLocation="xsl/dts.xsl"/>
@@ -23,8 +27,7 @@ http://www.saxonica.com/documentation/index/configuration-file.html
 
         <package name="https://scdh.github.io/dts-transformations/xsl/url-templates.xsl"
             base="https://scdh.github.io/dts-transformations/xsl/url-templates/query-parameters.xsl"
-            version="1.0.0" sourceLocation="xsl/url-templates/query-parameters.xsl"
-            priority="100"/>
+            version="1.0.0" sourceLocation="xsl/url-templates/query-parameters.xsl" priority="100"/>
         <package
             name="https://scdh.github.io/dts-transformations/xsl/url-templates/query-parameters.xsl"
             version="1.0.0" sourceLocation="xsl/url-templates/query-parameters.xsl"/>
