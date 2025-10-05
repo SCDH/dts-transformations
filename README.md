@@ -101,7 +101,7 @@ $SAXON_CMD -xsl:saxon-local.xml -xsl:xsl/document.xsl -it resource=test/matt.xml
 If you have Saxon HE at hand, simply use it as follows.
 
 1. Download released zip packages of the project. They are available
-   as [release assets](/SCDH/dts-transformations/releases).
+   as [release assets](https://github.com/SCDH/dts-transformations/releases/).
    ```shell
    unzip dts-transformations-VERSION-package.zip 
    ```
