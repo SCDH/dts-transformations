@@ -516,4 +516,33 @@
             test="matches($x:result?err?value, 'bad parameter combination')"/>
     </x:scenario>
 
+
+    <x:scenario label="bad TEI: missing default citation tree" catch="yes">
+        <x:context href="../test/missing-default.xml"/>
+        <x:expect label="throws error" test="exists($x:result?err?code)"/>
+        <x:expect label="404 error code" test="$x:result?err?code => string() => matches('404')"
+            pending="issue 1"/>
+        <x:expect label="has error message" test="exists($x:result?err?description)"/>
+        <x:expect label="error message is" test="matches($x:result?err?value, 'but found 0')"/>
+    </x:scenario>
+
+    <x:scenario label="bad TEI: multiple default citation trees" catch="yes">
+        <x:context href="../test/multiple-default.xml"/>
+        <x:expect label="throws error" test="exists($x:result?err?code)"/>
+        <x:expect label="404 error code" test="$x:result?err?code => string() => matches('404')"
+            pending="issue 1"/>
+        <x:expect label="has error message" test="exists($x:result?err?description)"/>
+        <x:expect label="error message is" test="matches($x:result?err?value, 'but found 2')"/>
+    </x:scenario>
+
+    <x:scenario label="bad TEI: unnamed non-default citation tree" catch="yes">
+        <x:context href="../test/unnamed.xml"/>
+        <x:expect label="throws error" test="exists($x:result?err?code)"/>
+        <x:expect label="404 error code" test="$x:result?err?code => string() => matches('404')"
+            pending="issue 1"/>
+        <x:expect label="has error message" test="exists($x:result?err?description)"/>
+        <x:expect label="error message is"
+            test="matches($x:result?err?value, 'unlabelled refsDecl')"/>
+    </x:scenario>
+
 </x:description>
