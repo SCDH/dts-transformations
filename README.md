@@ -99,7 +99,7 @@ $SAXON_CMD -xsl:saxon-local.xml -xsl:xsl/document.xsl -it resource=test/matt.xml
 ### First shot via remote
 
 All XSLT related material is on [github
-pages](https://scdh.github.io/dts-transform/saxon.he.xml) with the
+pages](https://scdh.github.io/dts-transform/latest/saxon.he.xml) with the
 repo's directory structure. If you have Saxon HE at hand, simply use
 it as follows.
 
