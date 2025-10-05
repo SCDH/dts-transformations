@@ -96,24 +96,24 @@ $SAXON_CMD -xsl:saxon-local.xml -xsl:xsl/document.xsl -it resource=test/matt.xml
 
 ## Getting started
 
-### First shot via remote
+### Command Line
 
-All XSLT related material is on [github
-pages](https://scdh.github.io/dts-transformations/latest/saxon.he.xml)
-with the repo's directory structure. If you have Saxon HE at hand,
-simply use it as follows.
+If you have Saxon HE at hand, simply use it as follows.
 
-Setup:
+1. Download released zip packages of the project. They are available
+   as [release assets](/SCDH/dts-transformations/releases).
+   ```shell
+   unzip dts-transformations-VERSION-package.zip 
+   ```
+2. Setup the class path for Saxon:
+   ```shell
+   export SAXON_CMD="java -cp ... net.sf.saxon.Transform"
+   ```
+3. Transform:
+   ```shell
+   $SAXON_CMD -config:dts-transformations/saxon.he.xml -xsl:dts-transformations/xsl/navigation.xsl -s:YOUR_TEI.xml
+   ```
 
-```shell
-export SAXON_CMD="java -cp ... net.sf.saxon.Transform"
-export DTST=https://scdh.github.io/dts-transformations/latest
-```
-Transforming:
-
-```shell
-$SAXON_CMD -config:$DTST/saxon.he.xml -xsl:$DTST/xsl/navigation.xsl -s:YOUR_TEI.xml
-```
 
 ### Oxygen Framework
 
@@ -128,12 +128,6 @@ following URL into the dialog box in **Help** > **Install new add-ons
 ```
 https://scdh.github.io/dts-transformations/descriptor.xml
 ```
-
-### Released packages
-
-You can download stable released zip packages of the project. They are
-available as [release assets](/SCDH/dts-transformations/releases).
-
 
 ### Cloning
 
