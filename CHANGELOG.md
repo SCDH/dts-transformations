@@ -1,5 +1,12 @@
 # Changes
 
+## 0.1.1
+
+- choose default citation tree and names of other trees on the basis
+  of `refsDecl/@default` and `refsDecl/@n`
+- assert that there's exactly one default citation tree by declaration
+- assert that all other citation trees are labelled
+
 ## 0.1.0
 
 - introduces configurable error codes that deployments can catch in
