@@ -268,11 +268,13 @@ The value of JSON-LD `@context` property can be configured through the
 
 ### JSON-LD Serialization
 
-The JSON-LD output of has an asserted order where order matters: in
-arrays. The members array is in document order. The order of object
-properties does not carry any information and there are no guarantees
-about it. So the `@context` property of the root object may occur as
-the first or the last property or somewhere in the middle.
+The JSON-LD output has an asserted order where order matters: in
+arrays. **The members array is in document order.**
+
+The order of object properties does not carry any information and
+there are no guarantees about it. So the `@context` property of the
+root object may occur as the first or the last property or somewhere
+in the middle.
 
 Saxon's JSON serializer per default escapes slashes with
 backslashes. If this matters, first think about [configuring the
