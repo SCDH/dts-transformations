@@ -12,3 +12,7 @@ xspec
 # output of transformation scenarios
 *.dts-document.xml
 *.dts-navigation.json
+
+# wiki repo if stored in project directory
+/wiki
+/dts-transformations.wiki
