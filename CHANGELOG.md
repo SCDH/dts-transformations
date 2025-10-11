@@ -1,5 +1,9 @@
 # Changes
 
+## 0.1.2
+
+- fixes issue #3
+
 ## 0.1.1
 
 - choose default citation tree and names of other trees on the basis
