@@ -17,6 +17,11 @@
 
   <xsl:param name="tree" as="xs:string?" select="()"/>
 
+  <!-- experimental: When true(), members at level 2 and above have the boolean
+    property dts:inParentSubtree. It indicates, if the constructed subtree is
+    contained in the constructed subtree of the parent member. -->
+  <xsl:param name="marked-virtual-children" as="xs:boolean" select="false()"/>
+
   <!-- turn this to false() to make processing DTS endpoint conformant -->
   <xsl:param name="absent-resource-from-baseuri" as="xs:boolean" static="true" select="true()"/>
 
@@ -237,6 +242,14 @@
         <dts:citeType>
           <xsl:value-of select="$citeStructureContext/@unit"/>
         </dts:citeType>
+        <!-- experimantal information if contained in parent's constructed subtree -->
+        <dts:containedInParentSubtree>
+          <xsl:variable name="parent-element-id" as="xs:string"
+            select="$parentContext => generate-id()"/>
+          <xsl:value-of
+            select="some $id in $memberContext/ancestor-or-self::node() ! generate-id() satisfies $id eq $parent-element-id"
+          />
+        </dts:containedInParentSubtree>
         <!-- optionally wrap all the member content nodes and paths to the nodes -->
         <xsl:if test="$wrap-content">
           <dts:wrapper>
@@ -317,6 +330,10 @@
       <xsl:map-entry key="'level'" select="$member/dts:level => xs:integer()"/>
       <xsl:map-entry key="'parent'" select="$member/dts:parent/text()"/>
       <xsl:map-entry key="'citeType'" select="$member/dts:citeType/text()"/>
+      <xsl:if test="$marked-virtual-children and $member/dts:level => xs:integer() gt 1">
+        <xsl:map-entry key="'dts:inParentSubtree'"
+          select="$member/dts:containedInParentSubtree => xs:boolean()"/>
+      </xsl:if>
     </xsl:map>
   </xsl:function>
 

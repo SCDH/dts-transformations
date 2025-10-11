@@ -545,4 +545,34 @@
             test="matches($x:result?err?value, 'unlabelled refsDecl')"/>
     </x:scenario>
 
+
+    <x:scenario label="marked virtual children">
+        <x:param name="marked-virtual-children" select="true()" as="xs:boolean"/>
+        <x:param name="tree" select="'page-level2-start-end'"/>
+        <x:context href="../test/john.xml"/>
+        <x:expect label="firt member: p.1"
+            test="map:get(., 'member') => array:get(1) => map:get('identifier') => string()"
+            select="'p.1'"/>
+        <x:expect label="p.1 member does not have a dts:inParentSubtree property"
+            test="map:get(., 'member') => array:get(1) => map:contains('dts:inParentSubtree') => not()"/>
+        <!--x:expect label="p.1 is contained in its parent's subtree"
+            test="map:get(., 'member') => array:get(1) => map:get('dts:inParentSubtree')"/-->
+        <!-- page start -->
+        <x:expect label="second member: p.1.start"
+            test="map:get(., 'member') => array:get(2) => map:get('identifier') => string()"
+            select="'p.1.start'"/>
+        <x:expect label="p.1.start member has dts:inParentSubtree property"
+            test="map:get(., 'member') => array:get(2) => map:contains('dts:inParentSubtree')"/>
+        <x:expect label="p.1.start is contained in its parent's subtree"
+            test="map:get(., 'member') => array:get(2) => map:get('dts:inParentSubtree')"/>
+        <!-- page end -->
+        <x:expect label="second member: p.1.end"
+            test="map:get(., 'member') => array:get(3) => map:get('identifier') => string()"
+            select="'p.1.end'"/>
+        <x:expect label="p.1.end member has dts:inParentSubtree property"
+            test="map:get(., 'member') => array:get(3) => map:contains('dts:inParentSubtree')"/>
+        <x:expect label="p.1.end is not contained in its parent's subtree"
+            test="map:get(., 'member') => array:get(3) => map:get('dts:inParentSubtree') => not()"/>
+    </x:scenario>
+
 </x:description>
