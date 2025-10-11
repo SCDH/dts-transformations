@@ -23,6 +23,34 @@
                </citeStructure>
             </citeStructure>
          </refsDecl>
+         <refsDecl n="page-milestones">
+            <citeStructure unit="page" match="//body//pb" use="@n" delim="p."/>
+         </refsDecl>
+         <refsDecl n="page-content-by-intersection">
+            <citeStructure unit="page"
+               match="for $pb in //pb return (let $next:=$pb/following::pb[1] return outermost(($pb, $pb/following::node() intersect $next/preceding::node())))"
+               use="@n" delim="p."/>
+         </refsDecl>
+         <refsDecl n="page-content-xquery-like">
+            <citeStructure unit="page"
+               match="for $pb in //pb return element {ab} {(let $next:=$pb/following::pb[1] return outermost(($pb, $pb/following::node() intersect $next/preceding::node())))}"
+               use="@n" delim="p."/>
+         </refsDecl>
+         <refsDecl n="page-content-by-intersection-2">
+            <citeStructure unit="page-beginning" match="//body//pb" use="@n" delim="p.">
+               <citeStructure unit="page-content"
+                  match="let $pb:=self::pb, $next:=$pb/following::pb[1] return (($pb, $pb/following::node() intersect $next/preceding::node()))"
+                  use="" delim=" content"/>
+            </citeStructure>
+         </refsDecl>
+         <refsDecl n="page-level2-end">
+            <citeStructure unit="page" match="//body//pb" use="@n" delim="p.">
+               <citeStructure unit="page-start" match="self::pb"
+                  use="''" delim=".start"/>
+               <citeStructure unit="page-end" match="self::pb/following::pb[1]/preceding::node()[1]"
+                  use="''" delim=".end"/>
+            </citeStructure>
+         </refsDecl>
       </encodingDesc>
    </teiHeader>
    <text>
@@ -37,10 +65,8 @@
                <l n="2">He was with God in the beginning.</l>
                <l n="3">Through him all things were made; without him nothing was made that has been
                   made.</l>
-               <l n="4">In him was life, and that life was the light of all mankind.</l>
-               <pb n="2"/>
-               <l n="5">The light shines in the darkness, and the darkness has not overcome
-                  it.</l>
+               <l n="4" xml:space="preserve">In him was life, and that life was the light<pb n="2"/> of all mankind.</l>
+               <l n="5">The light shines in the darkness, and the darkness has not overcome it.</l>
                <milestone unit="theme" xml:id="creation-end"/>
                <milestone unit="theme" xml:id="john-start"/>
                <l n="6">6 There was a man sent from God whose name was John.</l>
