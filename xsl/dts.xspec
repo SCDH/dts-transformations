@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    xmlns:array="http://www.w3.org/2005/xpath-functions/array"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:dts="https://distributed-text-services.github.io/specifications/"
+    xmlns:t="http://www.tei-c.org/ns/1.0" stylesheet="dts.xsl" run-as="external">
+
+    <x:variable name="x:saxon-config" href="../test/saxon.xml"/>
+
+    <x:scenario label="default context map">
+        <x:call function="dts:parse-context"/>
+        <x:expect label="size 1" test="map:size(.)" select="1"/>
+        <x:expect label="has @context" test="map:contains(., '@context')"/>
+        <x:expect label="size of @context" test="map:get(., '@context') => map:size()" select="39"/>
+        <x:expect label="@context defines dts prefix"
+            test="map:get(., '@context') => map:contains('dts')"/>
+    </x:scenario>
+
+    <x:scenario label="compact URI, that has prefix, but no property mapping">
+        <x:param name="dts-version" select="'1.0rc1'"/>
+        <x:call function="dts:compact">
+            <x:param name="value" select="'https://w3id.org/dts/api#endMember'"/>
+        </x:call>
+        <x:expect label="some compaction"
+            test="string-length(.) &lt; string-length('https://w3id.org/dts/api#endMember')"/>
+        <x:expect label="result" select="'dts:endMember'"/>
+    </x:scenario>
+
+    <x:scenario label="compact prefixed property that has mapping">
+        <x:param name="dts-version" select="'1.0rc1'"/>
+        <x:call function="dts:compact">
+            <x:param name="value" select="'dts:CitableUnit'"/>
+        </x:call>
+        <x:expect label="some compaction"
+            test="string-length(.) &lt; string-length('dts:CitableUnit')"/>
+        <x:expect label="result" select="'CitableUnit'"/>
+    </x:scenario>
+
+    <x:scenario label="compact URI that has prefix and a property mapping">
+        <x:param name="dts-version" select="'1.0rc1'"/>
+        <x:call function="dts:compact">
+            <x:param name="value" select="'https://w3id.org/dts/api#CitableUnit'"/>
+        </x:call>
+        <x:expect label="some compaction"
+            test="string-length(.) &lt; string-length('dts:CitableUnit')"/>
+        <x:expect label="result" select="'CitableUnit'"/>
+    </x:scenario>
+
+    <x:scenario label="uses configured context URI">
+        <x:param name="dts-version" select="'1.0rcx'"/>
+        <x:call function="dts:compact">
+            <x:param name="value" select="'https://w3id.org/dts/api#endMember'"/>
+        </x:call>
+        <x:expect label="some compaction"
+            test="string-length(.) &lt; string-length('https://w3id.org/dts/api#endMember')"/>
+        <x:expect label="result" select="'endMember'"/>
+    </x:scenario>
+
+
+
+</x:description>
