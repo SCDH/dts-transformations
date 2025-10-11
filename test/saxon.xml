@@ -24,6 +24,8 @@ This configuration
         <package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl" version="1.0.0"
             sourceLocation="../xsl/tree.xsl"/>
 
+        <package name="https://scdh.github.io/dts-transformations/xsl/uri-templates/base.xsl"
+            version="1.0.0" sourceLocation="../xsl/uri-templates/base.xsl"/>
         <package
             name="https://scdh.github.io/dts-transformations/xsl/uri-templates/query-parameters.xsl"
             version="1.0.0" sourceLocation="../xsl/uri-templates/query-parameters.xsl"/>
