@@ -226,31 +226,31 @@ even for parts of your documents.
 For the third option, see the example `post-proc-(apply|call|fun).xsl`
 packages in the [`test`](test) folder.
 
-### URL Templates
+### URI Templates
 
-URL templates, which are required for the output of the
+URI templates, which are required for the output of the
 [`dts:Resource`](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#scheme-for-navigation-endpoint-responses)
 LOD object, must of course be adaptable to specific project
 needs.
 
 The adaption can be done by providing an custom XSLT package to the
 `xsl/navigation.xsl` through its static parameters
-`url-template-package` and `url-template-package-version`. An
+`uri-template-package` and `uri-template-package-version`. An
 implementation must expose two functions:
 
 ```
-dts:url-template-map-entries ($resource as ducument-node(), parameters as map(xs:string, item()*) as item()*
+dts:uri-template-map-entries ($resource as ducument-node(), parameters as map(xs:string, item()*) as item()*
 ```
 
 ```
-dts:navigation-url ($resource as ducument-node(), parameters as map(xs:string, item()*) as xs:anyURI?
+dts:navigation-uri ($resource as ducument-node(), parameters as map(xs:string, item()*) as xs:anyURI?
 ```
 
 They get the resource document and the query parameters for maximum
 flexiblity. The first function must return a sequence of
 `<xsl:map-entry>` elements.
 
-The [`xsl/url-templates/`](xsl/url-templates/) folder offers different
+The [`xsl/uri-templates/`](xsl/uri-templates/) folder offers different
 implementations.
 
 

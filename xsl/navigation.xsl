@@ -35,10 +35,10 @@ See the section at the end of the package.
 
     <!-- more parameters defined in tree.xsl -->
 
-    <xsl:param name="url-templates-package" as="xs:string" static="true"
-        select="'https://scdh.github.io/dts-transformations/xsl/url-templates/query-parameters.xsl'"/>
+    <xsl:param name="uri-templates-package" as="xs:string" static="true"
+        select="'https://scdh.github.io/dts-transformations/xsl/uri-templates/query-parameters.xsl'"/>
 
-    <xsl:param name="url-templates-package-version" as="xs:string" static="true" select="'1.0.0'"/>
+    <xsl:param name="uri-templates-package-version" as="xs:string" static="true" select="'1.0.0'"/>
 
     <xsl:function name="dts:validate-navigation-parameters" as="map(xs:string, item())"
         visibility="final">
@@ -68,11 +68,11 @@ See the section at the end of the package.
     <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl"
         package-version="1.0.0"/>
 
-    <xsl:use-package _name="{$url-templates-package}"
-        _package-version="{$url-templates-package-version}">
-        <!-- an URL templates package must provide two functions -->
-        <xsl:accept component="function" names="dts:url-template-map-entries#2" visibility="public"/>
-        <xsl:accept component="function" names="dts:navigation-url#2" visibility="public"/>
+    <xsl:use-package _name="{$uri-templates-package}"
+        _package-version="{$uri-templates-package-version}">
+        <!-- an URI templates package must provide two functions -->
+        <xsl:accept component="function" names="dts:uri-template-map-entries#2" visibility="public"/>
+        <xsl:accept component="function" names="dts:navigation-uri#2" visibility="public"/>
     </xsl:use-package>
 
     <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl"
@@ -105,7 +105,7 @@ See the section at the end of the package.
                 select="concat('https://distributed-text-services.github.io/specifications/context/', $dts-version,'.json')"/>
             <xsl:map-entry key="'dtsVersion'" select="$dts-version"/>
             <xsl:map-entry key="'@type'">Navigation</xsl:map-entry>
-            <xsl:map-entry key="'@id'" select="dts:navigation-url(., $parameters)"/>
+            <xsl:map-entry key="'@id'" select="dts:navigation-uri(., $parameters)"/>
             <xsl:map-entry key="'resource'">
                 <xsl:call-template name="resource">
                     <xsl:with-param name="parameters" select="$parameters"/>
@@ -193,7 +193,7 @@ See the section at the end of the package.
         <xsl:map>
             <xsl:map-entry key="'@id'" select="map:get($parameters, 'resource')"/>
             <xsl:map-entry key="'@type'">Resource</xsl:map-entry>
-            <xsl:sequence select="dts:url-template-map-entries(., $parameters)"/>
+            <xsl:sequence select="dts:uri-template-map-entries(., $parameters)"/>
             <xsl:map-entry key="'citationTrees'">
                 <xsl:call-template name="citationTrees"/>
             </xsl:map-entry>
