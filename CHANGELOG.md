@@ -3,6 +3,8 @@
 ## 0.1.2
 
 - fixes issue #3
+- corrects name *URL templates* to *URI templates* and changes paths
+  accordingly
 
 ## 0.1.1
 
