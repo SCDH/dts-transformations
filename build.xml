@@ -25,6 +25,7 @@
         <antcall target="test-test-post-proc-apply.xsl"/>
         <antcall target="test-test-post-proc-fun.xsl"/>
         <antcall target="test-test-post-proc-call.xsl"/>
+        <antcall target="test-xsl-uri-templates-query-parameters.xsl"/>
     </target>
 
     <target name="test-xsl-dts.xsl">
@@ -60,6 +61,12 @@
     <target name="test-test-post-proc-call.xsl">
         <antcall target="xspec.xspec" inheritall="false">
             <param name="xspec.xml" location="${basedir}/test/post-proc-call.xspec"/>
+        </antcall>
+    </target>
+
+    <target name="test-xsl-uri-templates-query-parameters.xsl">
+        <antcall target="xspec.xspec" inheritall="false">
+            <param name="xspec.xml" location="${basedir}/xsl/uri-templates/query-parameters.xspec"/>
         </antcall>
     </target>
 
