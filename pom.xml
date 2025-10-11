@@ -215,6 +215,26 @@
                 </executions>
             </plugin>
 
+	    <plugin>
+                <groupId>io.github.download-maven-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <version>2.0.0</version>
+                <executions>
+                    <execution>
+                        <id>install-titanium-cli</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <configuration>
+                            <url>https://github.com/filip26/ld-cli/releases/download/v${titanium-cli.version}/ld-cli-${titanium-cli.version}-ubuntu-latest.zip</url>
+                            <unpack>true</unpack>
+                            <outputDirectory>${project.build.directory}/bin/</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.0.2</version>
