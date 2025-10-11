@@ -40,10 +40,10 @@
             <citeStructure unit="page-beginning" match="//body//pb" use="@n" delim="p.">
                <citeStructure unit="page-content"
                   match="let $pb:=self::pb, $next:=$pb/following::pb[1] return (($pb, $pb/following::node() intersect $next/preceding::node()))"
-                  use="" delim=" content"/>
+                  use="''" delim=" content"/>
             </citeStructure>
          </refsDecl>
-         <refsDecl n="page-level2-end">
+         <refsDecl n="page-level2-start-end">
             <citeStructure unit="page" match="//body//pb" use="@n" delim="p.">
                <citeStructure unit="page-start" match="self::pb"
                   use="''" delim=".start"/>
