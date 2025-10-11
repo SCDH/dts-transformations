@@ -1,5 +1,18 @@
 # Changes
 
+## 0.2.0
+
+- introduces function `dts:compact($s as xs:string)` for making URI's
+  or prefixed values compact according to the configured `@context`
+- support `<citeData>` for the navigation endpoint
+  - uses compaction function for compacting the property's name and value
+  - does not yet treat dublin core metadata in any special way
+- adds experimental stylesheet parameter
+  `marked-virtual-children`. When set to `true()`, this adds a boolean
+  property `dts:inParentSubtree` to each member, indicating whether
+  its constructed subtree is a descendant of the root of the subtree
+  that is constructed for the parent member.
+
 ## 0.1.2
 
 - fixes issue #3
@@ -32,4 +45,3 @@
 - XLST for navigation and document endpoints
 - oxygen framework with transformation scenarios
 - URL templates are the most obvious issue
-

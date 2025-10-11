@@ -39,8 +39,12 @@ Evaluated TEI elements:
 |--------------------------------------------------------------------------------------------------|------------|----------|
 | [`<refsDecl>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-refsDecl.html)           | ✅         | ✅       |
 | [`<citeStructure>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-citeStructure.html) | ✅         | ✅       |
-| [`<citeData>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-citeData.html)           | ❌         | ❌       |
+| [`<citeData>`](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-citeData.html)           | ✅²        | not used |
 
+**Notes**
+
+1. see section about [mediaType](#mediatype)
+2. supported, but `dcterms` do not yet come out as a map as shown in the specification's examples
 
 
 ## XSLT for Endpoints
