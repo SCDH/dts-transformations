@@ -313,7 +313,7 @@
     <!-- xpaths on $member highly depend on making of $member, see above -->
     <xsl:map>
       <xsl:map-entry key="'identifier'" select="$member/dts:identifier/text()"/>
-      <xsl:map-entry key="'@type'">CiteableUnit</xsl:map-entry>
+      <xsl:map-entry key="'@type'">CitableUnit</xsl:map-entry>
       <xsl:map-entry key="'level'" select="$member/dts:level => xs:integer()"/>
       <xsl:map-entry key="'parent'" select="$member/dts:parent/text()"/>
       <xsl:map-entry key="'citeType'" select="$member/dts:citeType/text()"/>
