@@ -17,10 +17,18 @@
 
   <xsl:param name="tree" as="xs:string?" select="()"/>
 
+  <!-- experimental: When true(), members at level 2 and above have the boolean
+    property dts:inParentSubtree. It indicates, if the constructed subtree is
+    contained in the constructed subtree of the parent member. -->
+  <xsl:param name="marked-virtual-children" as="xs:boolean" select="false()"/>
+
   <!-- turn this to false() to make processing DTS endpoint conformant -->
   <xsl:param name="absent-resource-from-baseuri" as="xs:boolean" static="true" select="true()"/>
 
   <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl"
+    package-version="1.0.0"/>
+
+  <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl"
     package-version="1.0.0"/>
 
   <xsl:function name="dts:validate-parameters" as="map(xs:string, item())" visibility="final">
@@ -237,6 +245,21 @@
         <dts:citeType>
           <xsl:value-of select="$citeStructureContext/@unit"/>
         </dts:citeType>
+        <!-- evaluate citeData -->
+        <xsl:for-each select="$citeStructureContext/citeData">
+          <dts:citeData>
+            <xsl:attribute name="property" select="@property"/>
+            <xsl:evaluate context-item="$memberContext" xpath="@use" namespace-context="."/>
+          </dts:citeData>
+        </xsl:for-each>
+        <!-- experimantal information if contained in parent's constructed subtree -->
+        <dts:containedInParentSubtree>
+          <xsl:variable name="parent-element-id" as="xs:string"
+            select="$parentContext => generate-id()"/>
+          <xsl:value-of
+            select="some $id in $memberContext/ancestor-or-self::node() ! generate-id() satisfies $id eq $parent-element-id"
+          />
+        </dts:containedInParentSubtree>
         <!-- optionally wrap all the member content nodes and paths to the nodes -->
         <xsl:if test="$wrap-content">
           <dts:wrapper>
@@ -317,6 +340,26 @@
       <xsl:map-entry key="'level'" select="$member/dts:level => xs:integer()"/>
       <xsl:map-entry key="'parent'" select="$member/dts:parent/text()"/>
       <xsl:map-entry key="'citeType'" select="$member/dts:citeType/text()"/>
+      <xsl:if test="$marked-virtual-children and $member/dts:level => xs:integer() gt 1">
+        <xsl:map-entry key="'dts:inParentSubtree'"
+          select="$member/dts:containedInParentSubtree => xs:boolean()"/>
+      </xsl:if>
+    </xsl:map>
+  </xsl:function>
+
+  <!-- make map from properties declared with <citeData> -->
+  <xsl:function name="dts:cite-data-json" as="map(xs:string, item()*)" visibility="public">
+    <xsl:param name="member" as="element(dts:member)"/>
+    <!-- TODO: Do we need to treat dcterms meta data in a special way? -->
+    <xsl:map>
+      <xsl:for-each select="$member/dts:citeData">
+        <xsl:map-entry key="@property => string() => dts:compact()">
+          <xsl:variable name="val" as="xs:string">
+            <xsl:value-of select="."/>
+          </xsl:variable>
+          <xsl:sequence select="dts:compact($val)"/>
+        </xsl:map-entry>
+      </xsl:for-each>
     </xsl:map>
   </xsl:function>
 
