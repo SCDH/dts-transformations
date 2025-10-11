@@ -109,9 +109,9 @@
         <x:expect label="member 1 is first in document order"
             test="map:get(., 'member') => array:get(1) => map:get('identifier') => string()"
             select="'4 Ezra'"/>
-        <x:expect label="member 1 is a CiteableUnit"
+        <x:expect label="member 1 is a CitableUnit"
             test="map:get(., 'member') => array:get(1) => map:get('@type') => string()"
-            select="'CiteableUnit'"/>
+            select="'CitableUnit'"/>
         <x:expect label="member 1 is in level 1"
             test="map:get(., 'member') => array:get(1) => map:get('level')" select="1"/>
         <x:expect label="member 1 has no parent"
