@@ -103,7 +103,7 @@ If you have Saxon HE at hand, simply use it as follows.
 1. Download released zip packages of the project. They are available
    as [release assets](https://github.com/SCDH/dts-transformations/releases/).
    ```shell
-   unzip dts-transformations-VERSION-package.zip 
+   unzip dts-transformations-VERSION-package.zip
    ```
 2. Setup the class path for Saxon:
    ```shell
@@ -129,6 +129,9 @@ following URL into the dialog box in **Help** > **Install new add-ons
 https://scdh.github.io/dts-transformations/descriptor.xml
 ```
 
+There is a detailed installation guide in the
+[Wiki](https://github.com/SCDH/dts-transformations/wiki).
+
 ### Cloning
 
 You can also clone this repo and set up and use its conveniant
@@ -142,12 +145,24 @@ cd dts-transformations
 ./mvnw package            # sets up tooling
 ```
 
-Transforming:
+Besides a wrapper script for Saxon-HE under `target/bin/xslt.sh`, this
+also provides you with [Apache Jena
+RIOT](https://jena.apache.org/documentation/io/) under
+`target/bin/riot.sh` and the command line interface of [Titanium
+JSON-LD](https://github.com/filip26/ld-cli) under `target/bin/ld-cli`.
 
+Transforming:
 
 ```shell
 target/bin/xslt.sh -config:saxon.he.xml -xsl:xsl/navigation.xsl -s:test/matt.xml
 ```
+
+Other RDF serialization (e.g. expanded JSON-LD):
+
+```shell
+target/bin/xslt.sh -config:saxon.he.xml -xsl:xsl/navigation.xsl -s:test/matt.xml | target/bin/ld-cli expand -op
+```
+
 
 ### Deployment
 
@@ -290,6 +305,10 @@ endpoint is more a task for a text editor.
 
 Contributions of all kinds are well come. Please see the [contributing
 guide](CONTRIBUTING.md).
+
+There's also a
+[Wiki](https://github.com/SCDH/dts-transformations/wiki) which lives
+from community content.
 
 ## License
 
