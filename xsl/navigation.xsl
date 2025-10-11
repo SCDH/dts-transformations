@@ -119,7 +119,7 @@ See the section at the end of the package.
             -->
             <xsl:variable name="to-jsonld"
                 as="function (element(dts:member)) as map(xs:string, item()*)"
-                select="function ($x) { map:merge((dts:member-json($x), dts:member-meta-json($x)))}"/>
+                select="function ($x) { map:merge((dts:member-json($x), dts:cite-data-json($x), dts:member-meta-json($x)))}"/>
             <xsl:if test="exists($down)">
                 <!-- specs on absent $down:
                     "No member property in the Navigation object."

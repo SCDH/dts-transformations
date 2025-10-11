@@ -51,6 +51,16 @@
                   use="''" delim=".end"/>
             </citeStructure>
          </refsDecl>
+         <refsDecl n="page-hateoas">
+            <citeStructure unit="page" match="//body//pb" use="@n" delim="p.">
+               <citeData use="'p.' || @n || '.start'" property="https://w3id.org/dts/api#startMember"/>
+               <citeData use="'p.' || @n || '.end'" property="https://w3id.org/dts/api#endMember"/>
+               <citeStructure unit="page-start" match="self::pb"
+                  use="''" delim=".start"/>
+               <citeStructure unit="page-end" match="self::pb/following::pb[1]/preceding::node()[1]"
+                  use="''" delim=".end"/>
+            </citeStructure>
+         </refsDecl>
       </encodingDesc>
    </teiHeader>
    <text>

@@ -242,6 +242,13 @@
         <dts:citeType>
           <xsl:value-of select="$citeStructureContext/@unit"/>
         </dts:citeType>
+        <!-- evaluate citeData -->
+        <xsl:for-each select="$citeStructureContext/citeData">
+          <dts:citeData>
+            <xsl:attribute name="property" select="@property"/>
+            <xsl:evaluate context-item="$memberContext" xpath="@use" namespace-context="."/>
+          </dts:citeData>
+        </xsl:for-each>
         <!-- experimantal information if contained in parent's constructed subtree -->
         <dts:containedInParentSubtree>
           <xsl:variable name="parent-element-id" as="xs:string"
@@ -334,6 +341,19 @@
         <xsl:map-entry key="'dts:inParentSubtree'"
           select="$member/dts:containedInParentSubtree => xs:boolean()"/>
       </xsl:if>
+    </xsl:map>
+  </xsl:function>
+
+  <!-- make map from properties declared with <citeData> -->
+  <xsl:function name="dts:cite-data-json" as="map(xs:string, item()*)" visibility="public">
+    <xsl:param name="member" as="element(dts:member)"/>
+    <!-- TODO: Do we need to treat dcterms meta data in a special way? -->
+    <xsl:map>
+      <xsl:for-each select="$member/dts:citeData">
+        <xsl:map-entry key="@property => string()">
+          <xsl:value-of select="."/>
+        </xsl:map-entry>
+      </xsl:for-each>
     </xsl:map>
   </xsl:function>
 
