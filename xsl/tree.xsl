@@ -28,6 +28,9 @@
   <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl"
     package-version="1.0.0"/>
 
+  <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl"
+    package-version="1.0.0"/>
+
   <xsl:function name="dts:validate-parameters" as="map(xs:string, item())" visibility="final">
     <xsl:param name="context" as="node()"/>
     <xsl:map>
@@ -350,8 +353,11 @@
     <!-- TODO: Do we need to treat dcterms meta data in a special way? -->
     <xsl:map>
       <xsl:for-each select="$member/dts:citeData">
-        <xsl:map-entry key="@property => string()">
-          <xsl:value-of select="."/>
+        <xsl:map-entry key="@property => string() => dts:compact()">
+          <xsl:variable name="val" as="xs:string">
+            <xsl:value-of select="."/>
+          </xsl:variable>
+          <xsl:sequence select="dts:compact($val)"/>
         </xsl:map-entry>
       </xsl:for-each>
     </xsl:map>

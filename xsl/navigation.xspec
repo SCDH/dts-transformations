@@ -583,20 +583,20 @@
             test="map:get(., 'member') => array:get(1) => map:get('identifier') => string()"
             select="'p.1'"/>
         <x:expect label="p.1 has ...startMember property"
-            test="map:get(., 'member') => array:get(1) => map:contains('https://w3id.org/dts/api#startMember')"/>
+            test="map:get(., 'member') => array:get(1) => map:contains('dts:startMember')"/>
         <x:expect label="p.1 has ...endMember property"
-            test="map:get(., 'member') => array:get(1) => map:contains('https://w3id.org/dts/api#endMember')"/>
+            test="map:get(., 'member') => array:get(1) => map:contains('dts:endMember')"/>
         <x:expect label="p.1's ...startMember is 'p.1.start"
-            test="map:get(., 'member') => array:get(1) => map:get('https://w3id.org/dts/api#startMember') => string()"
+            test="map:get(., 'member') => array:get(1) => map:get('dts:startMember') => string()"
             select="'p.1.start'"/>
         <x:expect label="p.1's ...endMember is 'p.1.end"
-            test="map:get(., 'member') => array:get(1) => map:get('https://w3id.org/dts/api#endMember') => string()"
+            test="map:get(., 'member') => array:get(1) => map:get('dts:endMember') => string()"
             select="'p.1.end'"/>
         <!-- not present on p.1.start child -->
         <x:expect label="p.1.start has no ...startMember property"
-            test="map:get(., 'member') => array:get(2) => map:contains('https://w3id.org/dts/api#startMember') => not()"/>
+            test="map:get(., 'member') => array:get(2) => map:contains('dts:startMember') => not()"/>
         <x:expect label="p.1.start has no ...endMember property"
-            test="map:get(., 'member') => array:get(2) => map:contains('https://w3id.org/dts/api#endMember') => not()"
+            test="map:get(., 'member') => array:get(2) => map:contains('dts:endMember') => not()"
         />
     </x:scenario>
 
