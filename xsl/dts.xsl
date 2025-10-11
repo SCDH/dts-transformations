@@ -71,34 +71,41 @@
         <xsl:sequence select="$value"/>
       </xsl:on-completion>
       <xsl:variable name="key" as="xs:string" select="."/>
-      <xsl:message use-when="system-property('debug') eq 'true'">
-        <xsl:text>testing key </xsl:text>
-        <xsl:value-of select="$key"/>
-      </xsl:message>
-      <xsl:choose>
-        <xsl:when test="matches($key, '^dublinCore')">
+      <xsl:try>
+        <xsl:variable name="val" as="xs:string">
+          <xsl:value-of select="map:get($context, $key)"/>
+        </xsl:variable>
+        <xsl:message use-when="system-property('debug') eq 'true'">
+          <xsl:text>testing key </xsl:text>
+          <xsl:value-of select="$key"/>
+        </xsl:message>
+        <xsl:choose>
+          <xsl:when test="$value eq map:get($context, $key)">
+            <xsl:message use-when="system-property('debug') eq 'true'">
+              <xsl:text>is mapped property</xsl:text>
+            </xsl:message>
+            <xsl:sequence select="$key"/>
+            <xsl:break/>
+          </xsl:when>
+          <xsl:when
+            test="matches(map:get($context, $key), '[/#]$') and matches($value, concat('^', map:get($context, $key)))">
+            <!-- prefix - URI mapping -->
+            <xsl:message use-when="system-property('debug') eq 'true'">
+              <xsl:text>found prefix mapping</xsl:text>
+            </xsl:message>
+            <xsl:sequence
+              select="($key || ':' || substring($value, string-length(map:get($context, $key)) + 1)) => dts:compact()"/>
+            <xsl:break/>
+          </xsl:when>
+        </xsl:choose>
+        <xsl:catch>
+          <!-- doing nothing here means: continue with next iteration -->
           <xsl:message use-when="system-property('debug') eq 'true'">
-            <xsl:text>dropping dublinCore</xsl:text>
+            <xsl:text>continued compacting on key </xsl:text>
+            <xsl:value-of select="$key"/>
           </xsl:message>
-        </xsl:when>
-        <xsl:when test="$value eq map:get($context, $key)">
-          <xsl:message use-when="system-property('debug') eq 'true'">
-            <xsl:text>is mapped property</xsl:text>
-          </xsl:message>
-          <xsl:sequence select="$key"/>
-          <xsl:break/>
-        </xsl:when>
-        <xsl:when
-          test="matches(map:get($context, $key), '[/#]$') and matches($value, concat('^', map:get($context, $key)))">
-          <!-- prefix - URI mapping -->
-          <xsl:message use-when="system-property('debug') eq 'true'">
-            <xsl:text>found prefix mapping</xsl:text>
-          </xsl:message>
-          <xsl:sequence
-            select="($key || ':' || substring($value, string-length(map:get($context, $key)) + 1)) => dts:compact()"/>
-          <xsl:break/>
-        </xsl:when>
-      </xsl:choose>
+        </xsl:catch>
+      </xsl:try>
     </xsl:iterate>
   </xsl:function>
 

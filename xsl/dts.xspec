@@ -57,6 +57,14 @@
         <x:expect label="result" select="'endMember'"/>
     </x:scenario>
 
-
+    <x:scenario label="no exception on unexpected sub-map">
+        <x:param name="dts-version" select="'1.0test'"/>
+        <x:call function="dts:compact">
+            <x:param name="value" select="'https://w3id.org/dts/api#endMember'"/>
+        </x:call>
+        <x:expect label="some compaction"
+            test="string-length(.) &lt; string-length('https://w3id.org/dts/api#endMember')"/>
+        <x:expect label="result" select="'endMember'"/>
+    </x:scenario>
 
 </x:description>
