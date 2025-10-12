@@ -1,5 +1,10 @@
 # Changes
 
+## 0.3.0
+
+- fixes issue #2 by providing a package for URL templates with query parameters
+- introduces alternative URL templates with path parameters
+
 ## 0.2.0
 
 - introduces function `dts:compact($s as xs:string)` for making URI's
