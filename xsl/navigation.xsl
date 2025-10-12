@@ -68,6 +68,12 @@ See the section at the end of the package.
     <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl"
         package-version="1.0.0"/>
 
+    <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/resource.xsl"
+        package-version="1.0.0">
+        <xsl:accept component="function" names="dts:resource-uri#0" visibility="public"/>
+        <xsl:accept component="*" names="*" visibility="hidden"/>
+    </xsl:use-package>
+
     <xsl:use-package _name="{$uri-templates-package}"
         _package-version="{$uri-templates-package-version}">
         <!-- an URI templates package must provide two functions -->
@@ -86,7 +92,7 @@ See the section at the end of the package.
         <xsl:assert test="$resource" error-code="{$dts:http400 => dts:error-to-eqname()}">
             <xsl:value-of xml:space="preserve">ERROR: resource parameter missing</xsl:value-of>
         </xsl:assert>
-        <xsl:apply-templates mode="navigation" select="doc($resource)"/>
+        <xsl:apply-templates mode="navigation" select="dts:resource-uri() => doc()"/>
     </xsl:template>
 
     <!-- the navigation mode is the entry point with a global context node -->

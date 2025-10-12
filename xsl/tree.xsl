@@ -7,8 +7,6 @@
   xmlns:dts="https://distributed-text-services.github.io/specifications/"
   exclude-result-prefixes="#all" xpath-default-namespace="http://www.tei-c.org/ns/1.0" version="3.0">
 
-  <xsl:param name="resource" as="xs:string?" select="()"/>
-
   <xsl:param name="ref" as="xs:string?" select="()"/>
 
   <xsl:param name="start" as="xs:string?" select="()"/>
@@ -22,8 +20,11 @@
     contained in the constructed subtree of the parent member. -->
   <xsl:param name="marked-virtual-children" as="xs:boolean" select="false()"/>
 
-  <!-- turn this to false() to make processing DTS endpoint conformant -->
-  <xsl:param name="absent-resource-from-baseuri" as="xs:boolean" static="true" select="true()"/>
+  <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/resource.xsl"
+    package-version="1.0.0">
+    <xsl:accept component="variable" names="resource" visibility="public"/>
+    <xsl:accept component="function" names="dts:validate-resource-parameter#1" visibility="public"/>
+  </xsl:use-package>
 
   <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl"
     package-version="1.0.0"/>
@@ -33,44 +34,34 @@
 
   <xsl:function name="dts:validate-parameters" as="map(xs:string, item())" visibility="final">
     <xsl:param name="context" as="node()"/>
-    <xsl:map>
-      <xsl:choose>
-        <xsl:when test="not(empty($resource))">
-          <xsl:map-entry key="'resource'" select="$resource"/>
-        </xsl:when>
-        <xsl:when test="$absent-resource-from-baseuri">
-          <xsl:map-entry key="'resource'" select="base-uri($context)"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:message terminate="yes" error-code="{$dts:http400 => dts:error-to-eqname()}">
-            <xsl:value-of xml:space="preserve">ERROR: resource parameter missing</xsl:value-of>
-          </xsl:message>
-        </xsl:otherwise>
-      </xsl:choose>
-      <xsl:choose>
-        <xsl:when test="$ref and ($start or $end)">
-          <xsl:message terminate="yes" error-code="{$dts:http400 => dts:error-to-eqname()}">
-            <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: when ref is used, start and end must not</xsl:value-of>
-          </xsl:message>
-        </xsl:when>
-        <xsl:when test="$ref">
-          <xsl:map-entry key="'ref'" select="$ref"/>
-        </xsl:when>
-        <xsl:when test="$start and $end">
-          <xsl:map-entry key="'start'" select="$start"/>
-          <xsl:map-entry key="'end'" select="$end"/>
-        </xsl:when>
-        <xsl:when test="not($start or $end)"/>
-        <xsl:otherwise>
-          <xsl:message terminate="yes" error-code="{$dts:http400 => dts:error-to-eqname()}">
-            <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: start required end and vice versa</xsl:value-of>
-          </xsl:message>
-        </xsl:otherwise>
-      </xsl:choose>
-      <xsl:if test="$tree">
-        <xsl:map-entry key="'tree'" select="$tree"/>
-      </xsl:if>
-    </xsl:map>
+    <xsl:variable name="parms" as="map(xs:string, item())">
+      <xsl:map>
+        <xsl:choose>
+          <xsl:when test="$ref and ($start or $end)">
+            <xsl:message terminate="yes" error-code="{$dts:http400 => dts:error-to-eqname()}">
+              <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: when ref is used, start and end must not</xsl:value-of>
+            </xsl:message>
+          </xsl:when>
+          <xsl:when test="$ref">
+            <xsl:map-entry key="'ref'" select="$ref"/>
+          </xsl:when>
+          <xsl:when test="$start and $end">
+            <xsl:map-entry key="'start'" select="$start"/>
+            <xsl:map-entry key="'end'" select="$end"/>
+          </xsl:when>
+          <xsl:when test="not($start or $end)"/>
+          <xsl:otherwise>
+            <xsl:message terminate="yes" error-code="{$dts:http400 => dts:error-to-eqname()}">
+              <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: start required end and vice versa</xsl:value-of>
+            </xsl:message>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:if test="$tree">
+          <xsl:map-entry key="'tree'" select="$tree"/>
+        </xsl:if>
+      </xsl:map>
+    </xsl:variable>
+    <xsl:sequence select="map:merge(($parms, dts:validate-resource-parameter($context)))"/>
   </xsl:function>
 
 
