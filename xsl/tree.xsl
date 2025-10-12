@@ -23,7 +23,7 @@
   <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/resource.xsl"
     package-version="1.0.0">
     <xsl:accept component="variable" names="resource" visibility="public"/>
-    <xsl:accept component="function" names="dts:validate-resource-parameter#1" visibility="public"/>
+    <xsl:accept component="function" names="dts:validate-resource-parameter#1" visibility="abstract"/>
   </xsl:use-package>
 
   <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl"

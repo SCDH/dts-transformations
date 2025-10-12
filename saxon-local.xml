@@ -20,6 +20,9 @@ http://www.saxonica.com/documentation/index/configuration-file.html
             sourceLocation="xsl/tree-hook.xsl"/>
         <package name="https://scdh.github.io/dts-transformations/xsl/resource.xsl" version="1.0.0"
             sourceLocation="xsl/resource.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/resource/uri.xsl"
+            version="1.0.0" sourceLocation="xsl/resource/uri.xsl"/>
+
         <package name="https://scdh.github.io/dts-transformations/xsl/navigation.xsl"
             version="1.0.0" sourceLocation="xsl/navigation.xsl"/>
         <package name="https://scdh.github.io/dts-transformations/xsl/document.xsl" version="1.0.0"

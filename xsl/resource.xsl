@@ -6,36 +6,13 @@
 
   <xsl:param name="resource" as="xs:string?" select="()"/>
 
-  <!-- turn this to false() to make processing DTS endpoint conformant -->
-  <xsl:param name="absent-resource-from-baseuri" as="xs:boolean" static="true" select="true()"/>
-
-  <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl"
-    package-version="1.0.0"/>
-
   <!-- used as part of the parameter validation -->
   <xsl:function name="dts:validate-resource-parameter" as="map(xs:string, item())"
-    visibility="public">
+    visibility="abstract">
     <xsl:param name="context" as="node()"/>
-    <xsl:map>
-      <xsl:choose>
-        <xsl:when test="not(empty($resource))">
-          <xsl:map-entry key="'resource'" select="$resource"/>
-        </xsl:when>
-        <xsl:when test="$absent-resource-from-baseuri">
-          <xsl:map-entry key="'resource'" select="base-uri($context)"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:message terminate="yes" error-code="{$dts:http400 => dts:error-to-eqname()}">
-            <xsl:value-of xml:space="preserve">ERROR: resource parameter missing</xsl:value-of>
-          </xsl:message>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:map>
   </xsl:function>
 
-  <!-- Maps the resource parameter to a URI. This implementation is identity. -->
-  <xsl:function name="dts:resource-uri" as="xs:string?" visibility="public">
-    <xsl:sequence select="$resource"/>
-  </xsl:function>
+  <!-- maps the resource parameter to a URI -->
+  <xsl:function name="dts:resource-uri" as="xs:string?" visibility="abstract"/>
 
 </xsl:package>

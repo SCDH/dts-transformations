@@ -35,6 +35,13 @@ no matter what the $mediaType parameter is set to.
 
   <xsl:param name="mediaType" as="xs:string?" select="()"/>
 
+  <!-- choose a package for processing the resource parameter -->
+  <xsl:param name="resource-package" as="xs:string" static="true"
+    select="'https://scdh.github.io/dts-transformations/xsl/resource/uri.xsl'"/>
+
+  <!-- package version for processing the resource parameter -->
+  <xsl:param name="resource-package-version" as="xs:string" static="true" select="'1.0.0'"/>
+
   <!-- set this to the empty string or () if you do not want pass on to a mediaType processor -->
   <xsl:param name="media-type-package" as="xs:string?" static="true" select="()"/>
 
@@ -55,8 +62,13 @@ no matter what the $mediaType parameter is set to.
 
   <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/resource.xsl"
     package-version="1.0.0">
-    <xsl:accept component="function" names="dts:resource-uri#0" visibility="public"/>
     <xsl:accept component="*" names="*" visibility="hidden"/>
+  </xsl:use-package>
+
+  <xsl:use-package _name="{$resource-package}" _package-version="{$resource-package-version}">
+    <xsl:accept component="variable" names="resource" visibility="hidden"/>
+    <xsl:accept component="function" names="dts:resource-uri#0 dts:validate-resource-parameter#1"
+      visibility="public"/>
   </xsl:use-package>
 
   <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/tree-hook.xsl"

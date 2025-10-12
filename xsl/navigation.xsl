@@ -35,6 +35,13 @@ See the section at the end of the package.
 
     <!-- more parameters defined in tree.xsl -->
 
+    <!-- choose a package for processing the resource parameter -->
+    <xsl:param name="resource-package" as="xs:string" static="true"
+        select="'https://scdh.github.io/dts-transformations/xsl/resource/uri.xsl'"/>
+
+    <!-- version of the resource parameter processing package -->
+    <xsl:param name="resource-package-version" as="xs:string" static="true" select="'1.0.0'"/>
+
     <xsl:param name="uri-templates-package" as="xs:string" static="true"
         select="'https://scdh.github.io/dts-transformations/xsl/uri-templates/query-parameters.xsl'"/>
 
@@ -70,8 +77,23 @@ See the section at the end of the package.
 
     <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/resource.xsl"
         package-version="1.0.0">
-        <xsl:accept component="function" names="dts:resource-uri#0" visibility="public"/>
-        <xsl:accept component="*" names="*" visibility="hidden"/>
+        <xsl:accept component="variable" names="resource" visibility="hidden"/>
+        <xsl:accept component="function" names="*" visibility="hidden"/>
+        <!--        
+        <xsl:override>
+            <xsl:function name="dts:validate-resource-parameter" as="map(xs:string, item())"
+                visibility="private">
+                <xsl:param name="context" as="node()"/>
+                <xsl:sequence select="dts:validate-resource-parameter($context)"/>
+            </xsl:function>
+        </xsl:override>
+        -->
+    </xsl:use-package>
+
+    <xsl:use-package _name="{$resource-package}" _package-version="{$resource-package-version}">
+        <xsl:accept component="variable" names="resource" visibility="hidden"/>
+        <xsl:accept component="function"
+            names="dts:resource-uri#0 dts:validate-resource-parameter#1" visibility="public"/>
     </xsl:use-package>
 
     <xsl:use-package _name="{$uri-templates-package}"
@@ -193,7 +215,7 @@ See the section at the end of the package.
         </xsl:map>
     </xsl:template>
 
-    <xsl:template name="resource" as="map(xs:string, item())" visibility="final">
+    <xsl:template name="resource" as="map(xs:string, item()*)" visibility="final">
         <xsl:context-item as="document-node()" use="required"/>
         <xsl:param name="parameters" as="map(xs:string, item()*)" required="true"/>
         <xsl:map>
