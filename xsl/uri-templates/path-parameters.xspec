@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    xmlns:array="http://www.w3.org/2005/xpath-functions/array"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:dts="https://distributed-text-services.github.io/specifications/"
+    xmlns:t="http://www.tei-c.org/ns/1.0" stylesheet="path-parameters.xsl" run-as="external">
+
+    <x:variable name="x:saxon-config" href="../../test/saxon.xml"/>
+
+    <x:param name="encode" select="encode-for-uri#1"/>
+
+    <x:scenario label="navigation uri; empty parameters map">
+        <x:call function="dts:navigation-uri">
+            <x:param name="resource" href="../../test/matt.xml"/>
+            <x:param name="parameters" select="map { }"/>
+        </x:call>
+        <x:expect label="result"
+            select="matches($x:result, '^https://example.org/api/dts/navigation/+')" pending="todo"
+        />
+    </x:scenario>
+
+    <x:scenario label="navigation uri; silly parameters map">
+        <x:call function="dts:navigation-uri">
+            <x:param name="resource" href="../../test/matt.xml"/>
+            <x:param name="parameters" select="map { 'tree': 'av', 'c': 'cv'}"/>
+        </x:call>
+        <x:expect label="result" select="xs:anyURI('https://example.org/api/dts/navigation//av')"/>
+    </x:scenario>
+
+    <x:scenario label="navigation uri; silly parameters map, reversed order">
+        <x:call function="dts:navigation-uri">
+            <x:param name="resource" href="../../test/matt.xml"/>
+            <x:param name="parameters" select="map { 'c': 'cv', 'tree': 'av' }"/>
+        </x:call>
+        <x:expect label="result" select="xs:anyURI('https://example.org/api/dts/navigation//av')"/>
+    </x:scenario>
+
+    <x:scenario label="navigation uri template; silly parameters">
+        <x:call function="dts:navigation-uri-template-on-resource">
+            <x:param name="resource" href="../../test/matt.xml"/>
+            <x:param name="parameters" select="map { 'c': 'cv', 'a': 'av' }"/>
+        </x:call>
+        <x:expect label="result"
+            select="xs:anyURI('https://example.org/api/dts/navigation//{ref,down,start,end,tree,page}')"
+        />
+    </x:scenario>
+
+    <x:scenario label="navigation uri template; silly parameters and resource">
+        <x:call function="dts:navigation-uri-template-on-resource">
+            <x:param name="resource" href="../../test/matt.xml"/>
+            <x:param name="parameters"
+                select="map { 'c': 'cv', 'a': 'av', 'resource': 'http://abgedre.ht/zuckt' }"/>
+        </x:call>
+        <x:expect label="result"
+            select="xs:anyURI('https://example.org/api/dts/navigation/http%3A%2F%2Fabgedre.ht%2Fzuckt/{ref,down,start,end,tree,page}')"
+        />
+    </x:scenario>
+
+    <x:scenario label="collection uri template; silly parameters and resource">
+        <x:call function="dts:collection-uri-template-on-resource">
+            <x:param name="resource" href="../../test/matt.xml"/>
+            <x:param name="parameters"
+                select="map { 'c': 'cv', 'a': 'av', 'resource': 'http://abgedre.ht/zuckt' }"/>
+        </x:call>
+        <x:expect label="result"
+            select="xs:anyURI('https://example.org/api/dts/collection/http%3A%2F%2Fabgedre.ht%2Fzuckt/{page,nav}')"
+        />
+    </x:scenario>
+
+    <x:scenario label="document uri template; silly parameters and resource">
+        <x:call function="dts:document-uri-template-on-resource">
+            <x:param name="resource" href="../../test/matt.xml"/>
+            <x:param name="parameters"
+                select="map { 'c': 'cv', 'a': 'av', 'resource': 'http://abgedre.ht/zuckt' }"/>
+        </x:call>
+        <x:expect label="result"
+            select="xs:anyURI('https://example.org/api/dts/document/http%3A%2F%2Fabgedre.ht%2Fzuckt/{ref,start,end,tree,mediaType}')"
+        />
+    </x:scenario>
+
+    <x:scenario label="templates for navigation entpoint">
+        <x:call function="dts:uri-template-map-entries">
+            <x:param name="resource" href="../../test/matt.xml"/>
+            <x:param name="parameters"
+                select="map { 'c': 'cv', 'a': 'av', 'resource': 'http://abgedre.ht/zuckt' }"/>
+        </x:call>
+        <x:expect label="has collection uri template"
+            test="$x:result[map:contains(., 'collection')] => exists()"/>
+        <x:expect label="has document uri template"
+            test="$x:result[map:contains(., 'document')] => exists()"/>
+        <x:expect label="has navigation uri template"
+            test="$x:result[map:contains(., 'navigation')] => exists()"/>
+        <x:expect label="does not have unknown uri template"
+            test="$x:result[map:contains(., 'unknown')] => exists() => not()"/>
+    </x:scenario>
+
+</x:description>

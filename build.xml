@@ -26,6 +26,7 @@
         <antcall target="test-test-post-proc-fun.xsl"/>
         <antcall target="test-test-post-proc-call.xsl"/>
         <antcall target="test-xsl-uri-templates-query-parameters.xsl"/>
+        <antcall target="test-xsl-uri-templates-path-parameters.xsl"/>
     </target>
 
     <target name="test-xsl-dts.xsl">
@@ -70,5 +71,10 @@
         </antcall>
     </target>
 
+    <target name="test-xsl-uri-templates-path-parameters.xsl">
+        <antcall target="xspec.xspec" inheritall="false">
+            <param name="xspec.xml" location="${basedir}/xsl/uri-templates/path-parameters.xspec"/>
+        </antcall>
+    </target>
 
 </project>
