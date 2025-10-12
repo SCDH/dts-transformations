@@ -13,8 +13,10 @@ http://www.saxonica.com/documentation/index/configuration-file.html
         <package name="https://scdh.github.io/dts-transformations/xsl/navigation.xsl" version="1.0.0" sourceLocation="xsl/navigation.xsl"/>
         <package name="https://scdh.github.io/dts-transformations/xsl/document.xsl" version="1.0.0" sourceLocation="xsl/document.xsl"/>
 
+        <package name="https://scdh.github.io/dts-transformations/xsl/uri-templates/base.xsl" version="1.0.0" sourceLocation="xsl/uri-templates/base.xsl"/>
         <package name="https://scdh.github.io/dts-transformations/xsl/uri-templates.xsl" base="https://scdh.github.io/dts-transformations/xsl/uri-templates/query-parameters.xsl" version="1.0.0" sourceLocation="xsl/uri-templates/query-parameters.xsl" priority="100"/>
         <package name="https://scdh.github.io/dts-transformations/xsl/uri-templates/query-parameters.xsl" version="1.0.0" sourceLocation="xsl/uri-templates/query-parameters.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/uri-templates/path-parameters.xsl" version="1.0.0" sourceLocation="xsl/uri-templates/path-parameters.xsl"/>
     
     </xsltPackages>
 
