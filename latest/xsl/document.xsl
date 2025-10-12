@@ -53,7 +53,13 @@ no matter what the $mediaType parameter is set to.
 
   <xsl:mode name="document" on-no-match="fail" visibility="public"/>
 
-  <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl"
+  <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/resource.xsl"
+    package-version="1.0.0">
+    <xsl:accept component="function" names="dts:resource-uri#0" visibility="public"/>
+    <xsl:accept component="*" names="*" visibility="hidden"/>
+  </xsl:use-package>
+
+  <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/tree-hook.xsl"
     package-version="1.0.0"/>
 
   <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/cut.xsl"
@@ -72,7 +78,7 @@ no matter what the $mediaType parameter is set to.
     <xsl:assert test="$resource" error-code="{$dts:http400 => dts:error-to-eqname()}">
       <xsl:value-of xml:space="preserve">ERROR: resource parameter missing</xsl:value-of>
     </xsl:assert>
-    <xsl:apply-templates mode="document" select="doc($resource)"/>
+    <xsl:apply-templates mode="document" select="dts:resource-uri() => doc()"/>
   </xsl:template>
 
   <xsl:template mode="document" match="document-node(element(TEI))" use-when="$media-type-package">
