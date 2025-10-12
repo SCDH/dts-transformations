@@ -24,14 +24,14 @@ parameters:
 
 | parameter   | [navigation](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#uri-for-navigation-endpoint-requests) | [document](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#query-parameters-2) |
 |-------------|--------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| `resource`  | ✅                                                                                                                             | ✅                                                                                                         |
+| `resource`  | ✅ [³](#resource)                                                                                                              | ✅ [³](#resource)                                                                                          |
 | `ref`       | ✅                                                                                                                             | ✅                                                                                                         |
 | `start`     | ✅                                                                                                                             | ✅                                                                                                         |
 | `end`       | ✅                                                                                                                             | ✅                                                                                                         |
 | `down`      | ✅                                                                                                                             | not used                                                                                                   |
 | `tree`      | ✅                                                                                                                             | ✅                                                                                                         |
 | `page`      | ❌                                                                                                                             | not used                                                                                                   |
-| `mediaType` | not used                                                                                                                       | ✅[¹](#mediatype)                                                                                                        |
+| `mediaType` | not used                                                                                                                       | ✅[¹](#mediatype)                                                                                          |
 
 Evaluated TEI elements:
 
@@ -45,6 +45,8 @@ Evaluated TEI elements:
 
 1. see section about [mediaType](#mediatype)
 2. supported, but `dcterms` do not yet come out as a map as shown in the specification's examples
+3. for mapping of the values of `resource` to document URIs see the
+   [`resource`](#resource) section
 
 
 ## XSLT for Endpoints
@@ -176,6 +178,16 @@ publish a PoC for a deployment in a micro service architecture very
 soon.
 
 ## Customization
+
+### `resource`
+
+The value coming in via the `resource` parameter must somehow be
+mapped to a document URI (at least when calling the initial
+template). There is a mapping function, that can easily be
+replaced. It's called `dts:resource-uri#1` and defined in
+[`xsl/resource.xsl`](xsl/resource.xsl). This package can be replaced
+with one that suits your needs by the Saxon configuration file.
+
 
 ### Citation Trees
 

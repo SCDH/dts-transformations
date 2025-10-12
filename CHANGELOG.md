@@ -1,5 +1,13 @@
 # Changes
 
+## 0.4.0
+
+- allows customization of the relation of `resource` and the document
+  location by replacing the `.../resource.xsl` XSLT package via a
+  Saxon configuration file
+- fixes the Oxygen transformation scenarios, which were still behind
+  version 0.1.1
+
 ## 0.3.0
 
 - fixes issue #2 by providing a package for URL templates with query parameters
