@@ -53,7 +53,7 @@ no matter what the $mediaType parameter is set to.
 
   <xsl:mode name="document" on-no-match="fail" visibility="public"/>
 
-  <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl"
+  <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/tree-hook.xsl"
     package-version="1.0.0"/>
 
   <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/cut.xsl"

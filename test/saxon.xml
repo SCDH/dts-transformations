@@ -23,6 +23,8 @@ This configuration
             sourceLocation="../xsl/cut.xsl"/>
         <package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl" version="1.0.0"
             sourceLocation="../xsl/tree.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/tree-hook.xsl" version="1.0.0"
+            sourceLocation="../xsl/tree-hook.xsl"/>
 
         <package name="https://scdh.github.io/dts-transformations/xsl/uri-templates/base.xsl"
             version="1.0.0" sourceLocation="../xsl/uri-templates/base.xsl"/>

@@ -75,7 +75,7 @@ See the section at the end of the package.
         <xsl:accept component="function" names="dts:navigation-uri#2" visibility="public"/>
     </xsl:use-package>
 
-    <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl"
+    <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/tree-hook.xsl"
         package-version="1.0.0"/>
 
     <xsl:use-package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl"

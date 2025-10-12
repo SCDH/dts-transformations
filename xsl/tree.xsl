@@ -94,12 +94,12 @@
       </xsl:choose>
     </xsl:variable>
     <!-- generate the sequence of members by applying 'members' transformation -->
-    <xsl:assert test="count(dts:get-citeation-tree($context, $tree)) eq 1"
+    <xsl:assert test="count(dts:get-citation-tree($context, $tree)) eq 1"
       error-code="{$dts:http404 => dts:error-to-eqname()}">
       <xsl:value-of xml:space="preserve">ERROR: citetation tree '<xsl:value-of select="$tree"/>' not found</xsl:value-of>
     </xsl:assert>
     <xsl:variable name="members" as="element(dts:member)*">
-      <xsl:apply-templates mode="members" select="dts:get-citeation-tree($context, $tree)">
+      <xsl:apply-templates mode="members" select="dts:get-citation-tree($context, $tree)">
         <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="()"/>
         <xsl:with-param name="parentContext" as="node()" tunnel="true" select="root($context)"/>
         <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
@@ -157,7 +157,7 @@
   </xsl:function>
 
   <!-- returns the right refsDecl in the context based on $name -->
-  <xsl:function name="dts:get-citeation-tree" as="element(refsDecl)*" visibility="public">
+  <xsl:function name="dts:get-citation-tree" as="element(refsDecl)*" visibility="public">
     <xsl:param name="context" as="node()"/>
     <xsl:param name="name" as="xs:string?"/>
     <xsl:choose>
