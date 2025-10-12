@@ -1,4 +1,4 @@
-<!-- An implementation of the required uri-templates following the all-query-parameters pattern
+<!-- An implementation of the required uri-templates following the all-path-parameters pattern
 
 -->
 <xsl:package name="https://scdh.github.io/dts-transformations/xsl/uri-templates/path-parameters.xsl"
