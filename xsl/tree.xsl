@@ -169,124 +169,148 @@
     <xsl:param name="in-requested-range" as="xs:boolean" tunnel="true"/>
     <xsl:param name="level" as="xs:integer" tunnel="true"/>
     <xsl:param name="wrap-content" as="xs:boolean" tunnel="true"/>
-    <xsl:variable name="citeStructureContext" as="element(citeStructure)" select="."/>
     <xsl:variable name="members" as="node()*">
-      <xsl:evaluate context-item="$parentContext" xpath="@match"
-        namespace-context="$citeStructureContext"/>
+      <xsl:evaluate context-item="$parentContext" xpath="@match" namespace-context="."/>
     </xsl:variable>
-    <xsl:iterate select="$members">
-      <xsl:param name="in-requested-range-before" as="xs:boolean" select="$in-requested-range"/>
-      <xsl:param name="last-was-requested-end" as="xs:boolean" select="false()"/>
-      <xsl:variable name="memberContext" as="node()" select="."/>
-      <xsl:variable name="use" as="item()*">
-        <xsl:evaluate context-item="$memberContext" xpath="$citeStructureContext/@use"
-          namespace-context="$citeStructureContext"/>
-      </xsl:variable>
-      <xsl:variable name="identifier" select="concat($parentId, $citeStructureContext/@delim, $use)"/>
-      <!-- make intermediate <dts:member> element -->
-      <xsl:variable name="include" as="xs:boolean">
-        <xsl:choose>
-          <!-- $last=$end,$here -->
-          <xsl:when test="$last-was-requested-end">
-            <xsl:sequence select="false()"/>
-          </xsl:when>
-          <!-- $here=$start -->
-          <xsl:when
-            test="$start and $end and not($in-requested-range-before) and ($identifier eq $start)">
-            <xsl:sequence select="true()"/>
-          </xsl:when>
-          <!-- $here=$ref -->
-          <xsl:when test="$ref and ($identifier eq $ref)">
-            <xsl:sequence select="true()"/>
-          </xsl:when>
-          <!-- keep state as has been before -->
-          <xsl:otherwise>
-            <xsl:sequence select="$in-requested-range-before"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <xsl:message use-when="system-property('debug') eq 'true'">
-        <xsl:text>member state </xsl:text>
-        <xsl:value-of select="$identifier"/>
-        <xsl:text> in-requested-range-before=</xsl:text>
-        <xsl:value-of select="$in-requested-range-before"/>
-        <xsl:text>   last-end=</xsl:text>
-        <xsl:value-of select="$last-was-requested-end"/>
-      </xsl:message>
-      <xsl:variable name="children" as="element(dts:member)*">
-        <xsl:apply-templates mode="members" select="$citeStructureContext/node()">
-          <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="$identifier"/>
-          <xsl:with-param name="parentContext" as="node()" tunnel="true" select="$memberContext"/>
-          <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true" select="$include"/>
-          <xsl:with-param name="level" as="xs:integer" tunnel="true" select="$level + 1"/>
-        </xsl:apply-templates>
-      </xsl:variable>
-      <!-- output member -->
-      <dts:member>
-        <!-- <dts:in-requested-range> keeps the state -->
-        <dts:in-requested-range>
-          <xsl:sequence
-            select="$include and (every $child in $children satisfies dts:is-in-requested-range($child))"
-          />
-        </dts:in-requested-range>
-        <!-- <dts:start/> keeps track of state by demarking the $start member -->
-        <xsl:if test="$start and $identifier eq $start">
-          <xsl:message use-when="system-property('debug') eq 'true'">
-            <xsl:text>this is requrested START </xsl:text>
-            <xsl:value-of select="$identifier"/>
-            <xsl:text> Is it in the requested range? </xsl:text>
-            <xsl:value-of
-              select="$include and (every $child in $children satisfies dts:is-in-requested-range($child))"
-            />
-          </xsl:message>
-          <dts:start/>
-        </xsl:if>
-        <!-- <dts:end> keeps the state by demarking the $end member -->
-        <xsl:if test="$end and $identifier eq $end">
-          <xsl:message use-when="system-property('debug') eq 'true'">
-            <xsl:text>this is requrested END </xsl:text>
-            <xsl:value-of select="$identifier"/>
-            <xsl:text> Is it in the requested range? </xsl:text>
-            <xsl:value-of
-              select="$include and (every $child in $children satisfies dts:is-in-requested-range($child))"
-            />
-          </xsl:message>
-          <dts:end/>
-        </xsl:if>
-        <dts:identifier>
+    <xsl:sequence select="dts:cite-structure-member(
+      $members,
+      $in-requested-range,
+      false(),
+      .,
+      $parentContext,
+      $parentId,
+      $level,
+      $wrap-content
+      )"/>
+  </xsl:template>
+
+  <!-- recursive function doing all the work -->
+  <xsl:function name="dts:cite-structure-member" as="element(dts:member)*">
+    <xsl:param name="members" as="node()*"/>
+    <xsl:param name="in-requested-range-before" as="xs:boolean"/>
+    <xsl:param name="last-was-requested-end" as="xs:boolean"/>
+    <xsl:param name="citeStructureContext" as="element(citeStructure)"/>
+    <xsl:param name="parentContext" as="node()"/>
+    <xsl:param name="parentId" as="xs:string?"/>
+    <xsl:param name="level" as="xs:integer"/>
+    <xsl:param name="wrap-content" as="xs:boolean"/>
+    <xsl:choose>
+      <xsl:when test="not(exists($members))"/>
+      <xsl:otherwise>
+        <xsl:variable name="memberContext" as="node()" select="head($members)"/>
+        <xsl:variable name="use" as="item()*">
+          <xsl:evaluate context-item="$memberContext" xpath="$citeStructureContext/@use"
+            namespace-context="$citeStructureContext"/>
+        </xsl:variable>
+        <xsl:variable name="identifier"
+          select="concat($parentId, $citeStructureContext/@delim, $use)"/>
+        <!-- make intermediate <dts:member> element -->
+        <xsl:variable name="include" as="xs:boolean">
+          <xsl:choose>
+            <!-- $last=$end,$here -->
+            <xsl:when test="$last-was-requested-end">
+              <xsl:sequence select="false()"/>
+            </xsl:when>
+            <!-- $here=$start -->
+            <xsl:when
+              test="$start and $end and not($in-requested-range-before) and ($identifier eq $start)">
+              <xsl:sequence select="true()"/>
+            </xsl:when>
+            <!-- $here=$ref -->
+            <xsl:when test="$ref and ($identifier eq $ref)">
+              <xsl:sequence select="true()"/>
+            </xsl:when>
+            <!-- keep state as has been before -->
+            <xsl:otherwise>
+              <xsl:sequence select="$in-requested-range-before"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:message use-when="system-property('debug') eq 'true'">
+          <xsl:text>member state </xsl:text>
           <xsl:value-of select="$identifier"/>
-        </dts:identifier>
-        <dts:level>
-          <xsl:value-of select="$level"/>
-        </dts:level>
-        <dts:parent>
-          <xsl:value-of select="$parentId"/>
-        </dts:parent>
-        <dts:citeType>
-          <xsl:value-of select="$citeStructureContext/@unit"/>
-        </dts:citeType>
-        <!-- evaluate citeData -->
-        <xsl:for-each select="$citeStructureContext/citeData">
-          <dts:citeData>
-            <xsl:attribute name="property" select="@property"/>
-            <xsl:evaluate context-item="$memberContext" xpath="@use" namespace-context="."/>
-          </dts:citeData>
-        </xsl:for-each>
-        <!-- experimantal information if contained in parent's constructed subtree -->
-        <dts:containedInParentSubtree>
-          <xsl:variable name="parent-element-id" as="xs:string"
-            select="$parentContext => generate-id()"/>
-          <xsl:value-of
-            select="some $id in $memberContext/ancestor-or-self::node() ! generate-id() satisfies $id eq $parent-element-id"
-          />
-        </dts:containedInParentSubtree>
-        <!-- optionally wrap all the member content nodes and paths to the nodes -->
-        <xsl:if test="$wrap-content">
-          <dts:wrapper>
-            <xsl:copy-of select="$memberContext"/>
-          </dts:wrapper>
-        </xsl:if>
-        <!--
+          <xsl:text> in-requested-range-before=</xsl:text>
+          <xsl:value-of select="$in-requested-range-before"/>
+          <xsl:text>   last-end=</xsl:text>
+          <xsl:value-of select="$last-was-requested-end"/>
+        </xsl:message>
+        <xsl:variable name="children" as="element(dts:member)*">
+          <xsl:apply-templates mode="members" select="$citeStructureContext/node()">
+            <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="$identifier"/>
+            <xsl:with-param name="parentContext" as="node()" tunnel="true" select="$memberContext"/>
+            <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
+              select="$include"/>
+            <xsl:with-param name="level" as="xs:integer" tunnel="true" select="$level + 1"/>
+            <xsl:with-param name="wrap-content" as="xs:boolean" tunnel="true" select="$wrap-content"
+            />
+          </xsl:apply-templates>
+        </xsl:variable>
+        <!-- output member -->
+        <dts:member>
+          <!-- <dts:in-requested-range> keeps the state -->
+          <dts:in-requested-range>
+            <xsl:sequence
+              select="$include and (every $child in $children satisfies dts:is-in-requested-range($child))"
+            />
+          </dts:in-requested-range>
+          <!-- <dts:start/> keeps track of state by demarking the $start member -->
+          <xsl:if test="$start and $identifier eq $start">
+            <xsl:message use-when="system-property('debug') eq 'true'">
+              <xsl:text>this is requrested START </xsl:text>
+              <xsl:value-of select="$identifier"/>
+              <xsl:text> Is it in the requested range? </xsl:text>
+              <xsl:value-of
+                select="$include and (every $child in $children satisfies dts:is-in-requested-range($child))"
+              />
+            </xsl:message>
+            <dts:start/>
+          </xsl:if>
+          <!-- <dts:end> keeps the state by demarking the $end member -->
+          <xsl:if test="$end and $identifier eq $end">
+            <xsl:message use-when="system-property('debug') eq 'true'">
+              <xsl:text>this is requrested END </xsl:text>
+              <xsl:value-of select="$identifier"/>
+              <xsl:text> Is it in the requested range? </xsl:text>
+              <xsl:value-of
+                select="$include and (every $child in $children satisfies dts:is-in-requested-range($child))"
+              />
+            </xsl:message>
+            <dts:end/>
+          </xsl:if>
+          <dts:identifier>
+            <xsl:value-of select="$identifier"/>
+          </dts:identifier>
+          <dts:level>
+            <xsl:value-of select="$level"/>
+          </dts:level>
+          <dts:parent>
+            <xsl:value-of select="$parentId"/>
+          </dts:parent>
+          <dts:citeType>
+            <xsl:value-of select="$citeStructureContext/@unit"/>
+          </dts:citeType>
+          <!-- evaluate citeData -->
+          <xsl:for-each select="$citeStructureContext/citeData">
+            <dts:citeData>
+              <xsl:attribute name="property" select="@property"/>
+              <xsl:evaluate context-item="$memberContext" xpath="@use" namespace-context="."/>
+            </dts:citeData>
+          </xsl:for-each>
+          <!-- experimantal information if contained in parent's constructed subtree -->
+          <dts:containedInParentSubtree>
+            <xsl:variable name="parent-element-id" as="xs:string"
+              select="$parentContext => generate-id()"/>
+            <xsl:value-of
+              select="some $id in $memberContext/ancestor-or-self::node() ! generate-id() satisfies $id eq $parent-element-id"
+            />
+          </dts:containedInParentSubtree>
+          <!-- optionally wrap all the member content nodes and paths to the nodes -->
+          <xsl:if test="$wrap-content">
+            <dts:wrapper>
+              <xsl:copy-of select="$memberContext"/>
+            </dts:wrapper>
+          </xsl:if>
+          <!--
             Elements copied to dts:member/dts:wrapper loose their document
             context. In order to regain them in document context, we do
             roundtripping with path expressions. Which method would be more
@@ -297,17 +321,17 @@
             edges are required; however, since $start and $end may equal,
             we have to use different elements to store them!
         -->
-        <dts:xpath>
-          <xsl:value-of select="path($memberContext)"/>
-        </dts:xpath>
-        <!-- hook for additional custom data -->
-        <xsl:apply-templates mode="member-metadata" select="$memberContext"/>
-      </dts:member>
-      <!-- output children members -->
-      <xsl:sequence select="$children"/>
-      <!-- pass state to the next iteration -->
-      <xsl:next-iteration>
-        <xsl:with-param name="in-requested-range-before" as="xs:boolean">
+          <dts:xpath>
+            <xsl:value-of select="path($memberContext)"/>
+          </dts:xpath>
+          <!-- hook for additional custom data -->
+          <xsl:apply-templates mode="member-metadata" select="$memberContext"/>
+        </dts:member>
+        <!-- output children members -->
+        <xsl:sequence select="$children"/>
+        <!-- pass state to the next iteration -->
+
+        <xsl:variable name="next-in-requested-range-before" as="xs:boolean">
           <xsl:choose>
             <xsl:when test="$start and $identifier eq $start">
               <xsl:message use-when="system-property('debug') eq 'true'">
@@ -331,12 +355,30 @@
               <xsl:sequence select="$include"/>
             </xsl:otherwise>
           </xsl:choose>
-        </xsl:with-param>
-        <xsl:with-param name="last-was-requested-end" as="xs:boolean"
-          select="$end and $identifier eq $end"/>
-      </xsl:next-iteration>
-    </xsl:iterate>
-  </xsl:template>
+        </xsl:variable>
+        <!-- 
+          <xsl:param name="members" as="node()*"/>
+          <xsl:param name="in-requested-range-before" as="xs:boolean"/>
+          <xsl:param name="last-was-requested-end" as="xs:boolean"/>
+          <xsl:param name="citeStructureContext" as="element(citeStructure)"/>
+          <xsl:param name="parentContext" as="element()"/>
+          <xsl:param name="parentId" as="xs:string"/>
+          <xsl:param name="level" as="xs:integer"/>
+          <xsl:param name="wrap-content" as="xs:boolean"/> 
+        -->
+        <xsl:sequence select="dts:cite-structure-member(
+          $members[position() gt 1],
+          $next-in-requested-range-before,
+          ($end and $identifier eq $end),
+          $citeStructureContext,
+          $parentContext,
+          $parentId,
+          $level,
+          $wrap-content
+          )"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
 
   <!-- tests if an intermediate <dts:member> has the property that indicates that it is in the requested range -->
   <xsl:function name="dts:is-in-requested-range" as="xs:boolean" visibility="final">
