@@ -234,6 +234,12 @@ no matter what the $mediaType parameter is set to.
     <xsl:param name="doc" as="document-node()"/>
     <xsl:variable name="members" as="element(dts:member)*" select="dts:members($doc, -1, true())"/>
     <!-- see explaintion for using xpath above -->
+    <xsl:message use-when="system-property('debug') eq 'true'">
+      <xsl:text>cutting from start node </xsl:text>
+      <xsl:sequence select="$members[1]"/>
+      <xsl:text>&#xa;to end node&#xa;</xsl:text>
+      <xsl:sequence select="$members[last()]"/>
+    </xsl:message>
     <xsl:try>
       <xsl:variable name="first" as="node()?">
         <xsl:evaluate context-item="$doc" as="node()?"
