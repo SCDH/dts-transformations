@@ -224,7 +224,7 @@ no matter what the $mediaType parameter is set to.
       error-code="{$dts:http404 => dts:error-to-eqname()}">
       <xsl:value-of xml:space="preserve">ERROR: member '<xsl:value-of select="$ref"/>' not found</xsl:value-of>
     </xsl:assert>
-    <xsl:for-each select="$members[1]/dts:ref-xpath ! string(.)">
+    <xsl:for-each select="$members[1]/dts:xpath ! string(.)">
       <xsl:evaluate as="node()?" context-item="$doc" xpath="."/>
     </xsl:for-each>
   </xsl:function>
@@ -238,16 +238,19 @@ no matter what the $mediaType parameter is set to.
       <xsl:text>cutting from start node </xsl:text>
       <xsl:sequence select="$members[1]"/>
       <xsl:text>&#xa;to end node&#xa;</xsl:text>
-      <xsl:sequence select="$members[last()]"/>
+      <xsl:sequence select="$members[dts:end]"/>
+      <xsl:text>&#xa;</xsl:text>
+      <xsl:value-of select="count($members)"/>
+      <xsl:text> members in cut:&#xa;</xsl:text>
+      <xsl:value-of select="$members/dts:identifier => string-join('&#xa;')"/>
     </xsl:message>
     <xsl:try>
       <xsl:variable name="first" as="node()?">
-        <xsl:evaluate context-item="$doc" as="node()?"
-          xpath="$members[1]/dts:start-xpath => string()"/>
+        <xsl:evaluate context-item="$doc" as="node()?" xpath="$members[1]/dts:xpath => string()"/>
       </xsl:variable>
       <xsl:variable name="last" as="node()?">
         <xsl:evaluate context-item="$doc" as="node()?"
-          xpath="$members[last()]/dts:end-xpath => string()"/>
+          xpath="$members[dts:end]/dts:xpath => string()"/>
       </xsl:variable>
       <xsl:sequence select="cut:horizontal($first, $last)"/>
       <xsl:catch errors="err:XTDE3160">

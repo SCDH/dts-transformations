@@ -213,6 +213,7 @@
           <xsl:with-param name="level" as="xs:integer" tunnel="true" select="$level + 1"/>
         </xsl:apply-templates>
       </xsl:variable>
+      <!-- output member -->
       <dts:member>
         <!-- <dts:in-requested-range> keeps the state -->
         <dts:in-requested-range>
@@ -256,7 +257,8 @@
           <dts:wrapper>
             <xsl:copy-of select="$memberContext"/>
           </dts:wrapper>
-          <!--
+        </xsl:if>
+        <!--
             Elements copied to dts:member/dts:wrapper loose their document
             context. In order to regain them in document context, we do
             roundtripping with path expressions. Which method would be more
@@ -266,29 +268,16 @@
             regaining them all is required! For $start and $end, only the
             edges are required; however, since $start and $end may equal,
             we have to use different elements to store them!
-          -->
-          <xsl:if test="$ref and $identifier eq $ref">
-            <xsl:for-each select="$memberContext">
-              <dts:ref-xpath>
-                <xsl:value-of select="path(.)"/>
-              </dts:ref-xpath>
-            </xsl:for-each>
-          </xsl:if>
-          <xsl:if test="$start and $identifier eq $start">
-            <dts:start-xpath>
-              <xsl:value-of select="$memberContext[1] => path()"/>
-            </dts:start-xpath>
-          </xsl:if>
-          <xsl:if test="$end and $identifier eq $end">
-            <dts:end-xpath>
-              <xsl:value-of select="$memberContext[last()] => path()"/>
-            </dts:end-xpath>
-          </xsl:if>
-        </xsl:if>
+        -->
+        <dts:xpath>
+          <xsl:value-of select="path($memberContext)"/>
+        </dts:xpath>
         <!-- hook for additional custom data -->
         <xsl:apply-templates mode="member-metadata" select="$memberContext"/>
       </dts:member>
+      <!-- output children members -->
       <xsl:sequence select="$children"/>
+      <!-- pass state to the next iteration -->
       <xsl:next-iteration>
         <xsl:with-param name="in-requested-range-before" as="xs:boolean">
           <xsl:choose>
