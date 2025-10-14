@@ -76,6 +76,17 @@
         <x:param name="tree" select="'page-hateoas'"/>
         <x:context href="../test/john.xml"/>
         <x:expect label="contains pb of page 1" test="exists(/t:TEI/dts:wrapper//t:pb[@n eq 2])"/>
+        <x:expect label="contains one pb element" test="count(//t:pb)" select="1"/>
+    </x:scenario>
+
+    <x:scenario
+        label="Regression against issue 4: $start and $end on john.xml from different levels; page-hateoas">
+        <x:param name="start" select="'p.2'"/>
+        <x:param name="end" select="'p.2.end'"/>
+        <x:param name="tree" select="'page-hateoas'"/>
+        <x:context href="../test/john.xml"/>
+        <x:expect label="contains pb of page 1" test="exists(/t:TEI/dts:wrapper//t:pb[@n eq 2])"/>
+        <x:expect label="contains one pb element" test="count(//t:pb)" select="1"/>
     </x:scenario>
 
     <x:scenario label="Regression against issue 4: $start and $end on matt.xml; pages">
@@ -85,6 +96,7 @@
         <x:context href="../test/matt.xml"/>
         <x:expect label="contains pb of page 1" test="exists(/t:TEI/dts:wrapper//t:pb[@n eq 1])"/>
         <x:expect label="contains pb of page 2" test="exists(/t:TEI/dts:wrapper//t:pb[@n eq 2])"/>
+        <x:expect label="contains 2 pb elements" test="count(//t:pb)" select="1"/>
     </x:scenario>
 
 
