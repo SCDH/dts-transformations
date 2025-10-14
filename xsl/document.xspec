@@ -70,6 +70,22 @@
             select="7"/>
     </x:scenario>
 
+    <x:scenario label="Regression against issue 4: $start and $end on john.xml; page-hateoas">
+        <x:param name="start" select="'p.2.start'"/>
+        <x:param name="end" select="'p.2.end'"/>
+        <x:param name="tree" select="'page-hateoas'"/>
+        <x:context href="../test/john.xml"/>
+        <x:expect label="contains pb of page 1" test="exists(/t:TEI/dts:wrapper//t:pb[@n eq 2])"/>
+    </x:scenario>
+
+    <x:scenario label="Regression against issue 4: $start and $end on matt.xml; pages">
+        <x:param name="start" select="'p. 1'"/>
+        <x:param name="end" select="'p. 2'"/>
+        <x:param name="tree" select="'pages'"/>
+        <x:context href="../test/matt.xml"/>
+        <x:expect label="contains pb of page 1" test="exists(/t:TEI/dts:wrapper//t:pb[@n eq 1])"/>
+        <x:expect label="contains pb of page 2" test="exists(/t:TEI/dts:wrapper//t:pb[@n eq 2])"/>
+    </x:scenario>
 
 
     <x:scenario label="error: $ref and $start + $end given" catch="yes">
