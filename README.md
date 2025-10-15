@@ -122,7 +122,7 @@ $SAXON_CMD -config:saxon.he.xml -xsl:xsl/document.xsl -s:test/john.xml tree=page
 The output is well-formed and contains the nodes (trees) from the node
 identified by the `start` throughout the node identified by the `end`
 parameter. More about cutting out text based on milestone-like markup
-in written in the [project's
+is written in the [project's
 Wiki](https://github.com/SCDH/dts-transformations/wiki).
 
 
