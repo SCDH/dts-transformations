@@ -110,6 +110,18 @@
         <x:expect label="contains 2 pb elements" test="count(//t:pb)" select="2"/>
     </x:scenario>
 
+    <x:scenario
+        label="Regression against issue 5: no duplicate text nodes on $start and $end on john.xml">
+        <x:param name="start" select="'p.2.start'"/>
+        <x:param name="end" select="'p.2.end'"/>
+        <x:param name="tree" select="'page-hateoas'"/>
+        <x:context href="../test/john.xml"/>
+        <x:expect label="contains only one text node with 'darkness' in it"
+            test="//text()[matches(., 'darkness')] => count()" select="1"/>
+        <x:expect label="contains only one text node with 'darkness' in it"
+            test="//text()[matches(., 'sent')] => count()" select="1"/>
+    </x:scenario>
+
 
     <x:scenario label="error: $ref and $start + $end given" catch="yes">
         <x:param name="down" select="()"/>
