@@ -1,5 +1,9 @@
 # Changes
 
+## 0.4.1
+
+- fixes issue #4
+
 ## 0.4.0
 
 - allows customization of the relation of `resource` and the document
