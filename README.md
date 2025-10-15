@@ -106,7 +106,7 @@ $SAXON_CMD -config:saxon.he.xml -xsl:xsl/document.xsl -s:test/john.xml tree=page
 ```
 
 This selects the content of the first page of
-[`test/john.xml`](test/john.xml), i.e. the nodes from `<pb n="1">` to
+[`test/john.xml`](test/john.xml), i.e. the nodes from `<pb n="1"/>` to
 the last node before `<pb n="2"/>`:
 
 ```xml
