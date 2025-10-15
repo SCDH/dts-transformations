@@ -26,7 +26,9 @@
   </xsl:function>
 
   <!-- for given a sequence of nodes, filter away (drop) those nodes,
-        that are descendants of other nodes in the sequence -->
+        that are descendants of other nodes in the sequence
+
+        This is the same as outermost(). So, use outermost()! -->
   <xsl:function name="cut:drop-descendants" as="node()*" visibility="final">
     <xsl:param name="nodes" as="node()*"/>
     <xsl:variable name="ids" as="xs:string*" select="
