@@ -105,6 +105,10 @@ $SAXON_CMD -xsl:saxon-local.xml -xsl:xsl/document.xsl -it resource=test/matt.xml
 $SAXON_CMD -config:saxon.he.xml -xsl:xsl/document.xsl -s:test/john.xml tree=page-hateoas start=p.1 end=p.1.end
 ```
 
+This selects the content of the first page of
+[`test/john.xml`](test/john.xml), i.e. the nodes from `<pb n="1">` to
+the last node before `<pb n="2"/>`:
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?><TEI xmlns="http://www.tei-c.org/ns/1.0"><dts:wrapper xmlns:dts="https://w3id.org/api/dts#"><pb n="1"/>
          
