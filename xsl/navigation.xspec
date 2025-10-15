@@ -659,7 +659,7 @@
             select="'p.1.start'"/>
     </x:scenario>
 
-    <x:scenario label="Regression 8: self-axis milestone at $end in in john.xml" pending="issue #8">
+    <x:scenario label="Regression 8: self-axis milestone at $end in in john.xml">
         <x:param name="tree" select="'page-hateoas'"/>
         <x:param name="start" select="'p.1'"/>
         <x:param name="end" select="'p.2.start'"/>
