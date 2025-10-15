@@ -214,12 +214,38 @@
         <xsl:value-of select="$last-was-requested-end"/>
       </xsl:message>
       <xsl:variable name="children" as="element(dts:member)*">
-        <xsl:apply-templates mode="members" select="$citeStructureContext/node()">
-          <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="$identifier"/>
-          <xsl:with-param name="parentContext" as="node()" tunnel="true" select="$memberContext"/>
-          <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true" select="$include"/>
-          <xsl:with-param name="level" as="xs:integer" tunnel="true" select="$level + 1"/>
-        </xsl:apply-templates>
+        <!-- we have to iterate over the children an pass through the state -->
+        <xsl:iterate select="$citeStructureContext/*">
+          <xsl:param name="last-in-requested-range" as="xs:boolean" select="$include"/>
+          <xsl:variable name="last-member" as="element(dts:member)*">
+            <xsl:apply-templates mode="members" select=".">
+              <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="$identifier"/>
+              <xsl:with-param name="parentContext" as="node()" tunnel="true" select="$memberContext"/>
+              <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
+                select="$last-in-requested-range"/>
+              <xsl:with-param name="level" as="xs:integer" tunnel="true" select="$level + 1"/>
+            </xsl:apply-templates>
+          </xsl:variable>
+          <!-- output last member -->
+          <xsl:sequence select="$last-member"/>
+          <xsl:next-iteration>
+            <xsl:with-param name="last-in-requested-range">
+              <xsl:choose>
+                <xsl:when test="$last-member/dts:start">
+                  <xsl:sequence select="true()"/>
+                </xsl:when>
+                <xsl:when test="$last-member/dts:end">
+                  <xsl:choose>
+                    <xsl:when test="false()"/>
+                  </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:sequence select="$include"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:with-param>
+          </xsl:next-iteration>
+        </xsl:iterate>
       </xsl:variable>
       <!-- output member -->
       <dts:member>
