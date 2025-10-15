@@ -170,7 +170,7 @@ See the section at the end of the package.
                 <xsl:when test="$start and $end">
                     <xsl:try>
                         <xsl:map-entry key="'start'"
-                            select="$members[1][string(dts:identifier) eq $start] => $to-jsonld()"/>
+                            select="$members[dts:start][string(dts:identifier) eq $start] => $to-jsonld()"/>
                         <xsl:catch>
                             <xsl:message terminate="yes"
                                 error-code="{$dts:http404 => dts:error-to-eqname()}">
@@ -180,7 +180,7 @@ See the section at the end of the package.
                     </xsl:try>
                     <xsl:try>
                         <xsl:map-entry key="'end'"
-                            select="$members[last()][string(dts:identifier) eq $end] => $to-jsonld()"/>
+                            select="$members[dts:end][string(dts:identifier) eq $end] => $to-jsonld()"/>
                         <xsl:catch>
                             <xsl:message terminate="yes"
                                 error-code="{$dts:http404 => dts:error-to-eqname()}">
