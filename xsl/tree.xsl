@@ -205,14 +205,49 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
+      <xsl:message use-when="system-property('debug') eq 'true'">
+        <xsl:text>member state </xsl:text>
+        <xsl:value-of select="$identifier"/>
+        <xsl:text> in-requested-range-before=</xsl:text>
+        <xsl:value-of select="$in-requested-range-before"/>
+        <xsl:text>   last-end=</xsl:text>
+        <xsl:value-of select="$last-was-requested-end"/>
+      </xsl:message>
       <xsl:variable name="children" as="element(dts:member)*">
-        <xsl:apply-templates mode="members" select="$citeStructureContext/node()">
-          <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="$identifier"/>
-          <xsl:with-param name="parentContext" as="node()" tunnel="true" select="$memberContext"/>
-          <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true" select="$include"/>
-          <xsl:with-param name="level" as="xs:integer" tunnel="true" select="$level + 1"/>
-        </xsl:apply-templates>
+        <!-- we have to iterate over the children an pass through the state -->
+        <xsl:iterate select="$citeStructureContext/*">
+          <xsl:param name="last-in-requested-range" as="xs:boolean" select="$include"/>
+          <xsl:variable name="last-member" as="element(dts:member)*">
+            <xsl:apply-templates mode="members" select=".">
+              <xsl:with-param name="parentId" as="xs:string?" tunnel="true" select="$identifier"/>
+              <xsl:with-param name="parentContext" as="node()" tunnel="true" select="$memberContext"/>
+              <xsl:with-param name="in-requested-range" as="xs:boolean" tunnel="true"
+                select="$last-in-requested-range"/>
+              <xsl:with-param name="level" as="xs:integer" tunnel="true" select="$level + 1"/>
+            </xsl:apply-templates>
+          </xsl:variable>
+          <!-- output last member -->
+          <xsl:sequence select="$last-member"/>
+          <xsl:next-iteration>
+            <xsl:with-param name="last-in-requested-range">
+              <xsl:choose>
+                <xsl:when test="$last-member/dts:start">
+                  <xsl:sequence select="true()"/>
+                </xsl:when>
+                <xsl:when test="$last-member/dts:end">
+                  <xsl:choose>
+                    <xsl:when test="false()"/>
+                  </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:sequence select="$include"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:with-param>
+          </xsl:next-iteration>
+        </xsl:iterate>
       </xsl:variable>
+      <!-- output member -->
       <dts:member>
         <!-- <dts:in-requested-range> keeps the state -->
         <dts:in-requested-range>
@@ -220,8 +255,28 @@
             select="$include and (every $child in $children satisfies dts:is-in-requested-range($child))"
           />
         </dts:in-requested-range>
+        <!-- <dts:start/> keeps track of state by demarking the $start member -->
+        <xsl:if test="$start and $identifier eq $start">
+          <xsl:message use-when="system-property('debug') eq 'true'">
+            <xsl:text>this is requrested START </xsl:text>
+            <xsl:value-of select="$identifier"/>
+            <xsl:text> Is it in the requested range? </xsl:text>
+            <xsl:value-of
+              select="$include and (every $child in $children satisfies dts:is-in-requested-range($child))"
+            />
+          </xsl:message>
+          <dts:start/>
+        </xsl:if>
         <!-- <dts:end> keeps the state by demarking the $end member -->
         <xsl:if test="$end and $identifier eq $end">
+          <xsl:message use-when="system-property('debug') eq 'true'">
+            <xsl:text>this is requrested END </xsl:text>
+            <xsl:value-of select="$identifier"/>
+            <xsl:text> Is it in the requested range? </xsl:text>
+            <xsl:value-of
+              select="$include and (every $child in $children satisfies dts:is-in-requested-range($child))"
+            />
+          </xsl:message>
           <dts:end/>
         </xsl:if>
         <dts:identifier>
@@ -256,7 +311,8 @@
           <dts:wrapper>
             <xsl:copy-of select="$memberContext"/>
           </dts:wrapper>
-          <!--
+        </xsl:if>
+        <!--
             Elements copied to dts:member/dts:wrapper loose their document
             context. In order to regain them in document context, we do
             roundtripping with path expressions. Which method would be more
@@ -266,32 +322,25 @@
             regaining them all is required! For $start and $end, only the
             edges are required; however, since $start and $end may equal,
             we have to use different elements to store them!
-          -->
-          <xsl:if test="$ref and $identifier eq $ref">
-            <xsl:for-each select="$memberContext">
-              <dts:ref-xpath>
-                <xsl:value-of select="path(.)"/>
-              </dts:ref-xpath>
-            </xsl:for-each>
-          </xsl:if>
-          <xsl:if test="$start and $identifier eq $start">
-            <dts:start-xpath>
-              <xsl:value-of select="$memberContext[1] => path()"/>
-            </dts:start-xpath>
-          </xsl:if>
-          <xsl:if test="$end and $identifier eq $end">
-            <dts:end-xpath>
-              <xsl:value-of select="$memberContext[last()] => path()"/>
-            </dts:end-xpath>
-          </xsl:if>
-        </xsl:if>
+        -->
+        <dts:xpath>
+          <xsl:value-of select="path($memberContext)"/>
+        </dts:xpath>
         <!-- hook for additional custom data -->
         <xsl:apply-templates mode="member-metadata" select="$memberContext"/>
       </dts:member>
+      <!-- output children members -->
       <xsl:sequence select="$children"/>
+      <!-- pass state to the next iteration -->
       <xsl:next-iteration>
         <xsl:with-param name="in-requested-range-before" as="xs:boolean">
           <xsl:choose>
+            <xsl:when test="$start and $identifier eq $start">
+              <xsl:message use-when="system-property('debug') eq 'true'">
+                <xsl:text>START setting next</xsl:text>
+              </xsl:message>
+              <xsl:sequence select="true()"/>
+            </xsl:when>
             <!-- currently in $ref, so $next not in $ref -->
             <xsl:when test="$ref and $identifier eq $ref">
               <xsl:sequence select="false()"/>
