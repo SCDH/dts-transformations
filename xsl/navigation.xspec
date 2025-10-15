@@ -619,6 +619,24 @@
             select="'p.1.start'"/>
     </x:scenario>
 
+    <x:scenario label="Regression: ordinary page milestones in john.xml">
+        <x:param name="tree" select="'page-hateoas'"/>
+        <x:param name="start" select="'p.1'"/>
+        <x:param name="end" select="'p.2'"/>
+        <x:context href="../test/john.xml"/>
+        <x:expect label="firt member: p.1"
+            test="map:get(., 'member') => array:get(1) => map:get('identifier') => string()"
+            select="'p.1'"/>
+    </x:scenario>
 
+    <x:scenario label="Regression: self::pb milestone at end in in john.xml">
+        <x:param name="tree" select="'page-hateoas'"/>
+        <x:param name="start" select="'p.1'"/>
+        <x:param name="end" select="'p.2.start'"/>
+        <x:context href="../test/john.xml"/>
+        <x:expect label="firt member: p.1"
+            test="map:get(., 'member') => array:get(1) => map:get('identifier') => string()"
+            select="'p.1'"/>
+    </x:scenario>
 
 </x:description>
