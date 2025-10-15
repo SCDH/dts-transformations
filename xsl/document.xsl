@@ -252,7 +252,7 @@ no matter what the $mediaType parameter is set to.
         <xsl:evaluate context-item="$doc" as="node()?"
           xpath="$members[dts:end]/dts:xpath => string()"/>
       </xsl:variable>
-      <xsl:sequence select="cut:horizontal($first, $last) => cut:drop-descendants()"/>
+      <xsl:sequence select="cut:horizontal($first, $last) => outermost()"/>
       <xsl:catch errors="err:XTDE3160">
         <xsl:message terminate="yes" error-code="{$dts:http404 => dts:error-to-eqname()}">
           <xsl:value-of xml:space="preserve">ERROR: $start or $end member not found</xsl:value-of>
