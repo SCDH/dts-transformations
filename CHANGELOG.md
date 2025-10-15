@@ -1,5 +1,9 @@
 # Changes
 
+## 0.4.4
+
+- fixes issue #7
+
 ## 0.4.3
 
 - fixes issue #6
