@@ -229,10 +229,14 @@
         <xsl:message use-when="system-property('debug') eq 'true'">
           <xsl:text>member state </xsl:text>
           <xsl:value-of select="$identifier"/>
-          <xsl:text> in-requested-range-before=</xsl:text>
+          <xsl:text> is head of </xsl:text>
+          <xsl:value-of select="count($members)"/>
+          <xsl:text> members; in-requested-range-before=</xsl:text>
           <xsl:value-of select="$in-requested-range-before"/>
           <xsl:text>   last-end=</xsl:text>
           <xsl:value-of select="$last-was-requested-end"/>
+          <xsl:text>   include=</xsl:text>
+          <xsl:value-of select="$include"/>
         </xsl:message>
         <xsl:variable name="children" as="element(dts:member)*">
           <xsl:apply-templates mode="members" select="$citeStructureContext/node()">
@@ -356,6 +360,10 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
+        <xsl:message use-when="system-property('debug') eq 'true'">
+          <xsl:text>next member gets $in-requested-range-before=</xsl:text>
+          <xsl:value-of select="$next-in-requested-range-before"/>
+        </xsl:message>
         <!-- 
           <xsl:param name="members" as="node()*"/>
           <xsl:param name="in-requested-range-before" as="xs:boolean"/>
