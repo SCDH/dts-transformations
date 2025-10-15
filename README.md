@@ -99,6 +99,29 @@ $SAXON_CMD -xsl:saxon-local.xml -xsl:xsl/document.xsl -s:test/matt.xml
 $SAXON_CMD -xsl:saxon-local.xml -xsl:xsl/document.xsl -it resource=test/matt.xml
 ```
 
+#### Example output:
+
+```shell
+$SAXON_CMD -config:saxon.he.xml -xsl:xsl/document.xsl -s:test/john.xml tree=page-hateoas start=p.2 end=p.2.end
+```
+
+The output is well-formed and contains the nodes (trees) from the node
+identified by the `start` throughout the node identified by the `end`
+parameter. More about cutting out text based on milestone-like markup
+in written in the [project's
+Wiki](https://github.com/SCDH/dts-transformations/wiki).
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?><TEI xmlns="http://www.tei-c.org/ns/1.0"><dts:wrapper xmlns:dts="https://w3id.org/api/dts#"><pb n="2"/> of all mankind.
+               <l n="5">The light shines in the darkness, and the darkness has not overcome it.</l>
+               <milestone unit="theme" xml:id="creation-end"/>
+               <milestone unit="theme" xml:id="john-start"/>
+               <l n="6">6 There was a man sent from God whose name was John.</l>
+               <milestone unit="theme" xml:id="john-end"/>
+             </dts:wrapper></TEI>
+```
+
+
 
 ## Getting started
 
