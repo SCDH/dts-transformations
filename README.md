@@ -354,8 +354,17 @@ of documents using
 [xtriples-micro](https://github.com/scdh/xtriples-micro) and to then
 use SPARQL and JSON-LD Framing for generating the collection objects
 from it. We have documented this approach in the [xtriples-micro's
-Wiki](https://github.com/SCDH/xtriples-micro/wiki). The **entry**
-endpoint is more a task for a text editor.
+Wiki](https://github.com/SCDH/xtriples-micro/wiki).
+
+The **entry** endpoint and the use of URI templates is really the
+killer feature of DTS. Do not underestimate it! It even allows you to
+have different base URLs for the different endpoints and it can serve
+as an extensible service registry for your edition. Imagine to serve
+**collection** from a static web server like github pages and to have
+a generic single service for **navigation** and **document** with a
+different base URL that serves these endpoints for multiple editions
+or even a whole community.––There's no generic solution for the entry
+endpoint.
 
 ## Contributing
 
