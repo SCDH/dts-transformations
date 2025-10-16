@@ -7,7 +7,8 @@
 This project provides XSLT stylesheets for those endpoints of
 [Distributed Text Services
 (DTS)](https://distributed-text-services.github.io/specifications/),
-that can be implemented generically.
+that can be implemented generically based on evaluating
+`<citeStructure>`.
 
 - **navigation** endpoint
 - **document** endpoint
