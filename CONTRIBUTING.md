@@ -79,3 +79,37 @@ numbers and release triggers. There is no version information in the
 pom file. A default version number is contained in
 `.mvn/maven.config`, which should be kept up to date. However, it is
 overridden in the CI/CD pipelines by the release tag.
+
+
+## XSLT in this Project
+
+### Debug Messages
+
+When adding debugging output with `<xsl:message>`, we use the
+`use-when` compile-time switch to turn on/off debugging:
+
+```xml
+<xsl:message use-when="system-property('debug') eq 'true'">
+  ...
+</xsl:message>
+```
+
+The Saxon [wrapper script](scripts/xslt.sh) available in
+`target/bin/xslt.sh` is aware of this.
+
+To turn on debugging, say:
+
+```shell
+export DEBUG=true
+```
+
+To turn off debugging, say:
+
+```shell
+unset DEBUG
+```
+
+### Naming of Variables
+
+We do not pre- or suffix variable and parameter names by type or
+tunnel-kind. The compiler helps with all this.
