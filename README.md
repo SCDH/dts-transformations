@@ -208,8 +208,14 @@ target/bin/xslt.sh -config:saxon.he.xml -xsl:xsl/navigation.xsl -s:test/matt.xml
 
 To make DTS endpoints, the XSL transformations from this package need
 to be deployed on a web service. There are several options and we will
-publish a PoC for a deployment in a micro service architecture very
-soon.
+publish a PoC for a deployment very soon.
+
+You can use the initial templates of `xsl/navigation.xsl` and
+`xsl/document.xsl` for getting the document by the `resource`
+parameter. You can go along with URIs for `resources`; or you can
+overwrite `dts:resource-uri#0` from
+[`xsl/resource.xsl`](xsl/resource.xsl) for mapping arbitrary resource
+identifiers to document locations.
 
 ## Customization
 
