@@ -3,7 +3,7 @@ name: Bug report
 about: Create a report to help us improve
 title: ''
 labels: ''
-assignees: ''
+assignees: lueck
 
 ---
 
@@ -14,25 +14,17 @@ A clear and concise description of what the bug is.
 Steps to reproduce the behavior:
 1. Input XML source document (as minimal as possible)  '...'
 2. Used XSLT stylesheet/package '....'
-3. Scroll down to '....'
-4. See error
+3. Supplied stylesheet parameters '....'
+4. How was the stylesheet/package called: by calling the initial template or by providing a source document?
+5. See error
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**Versions:**
+ - DTS Transformations: [e.g. 0.4.4 or commit ref]
+ - Saxon [e.g. 12.5 or *10.6 on Oxygen 24.1* ]
 
 **Additional context**
 Add any other context about the problem here.
