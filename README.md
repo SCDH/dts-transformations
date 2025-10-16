@@ -168,6 +168,10 @@ https://scdh.github.io/dts-transformations/descriptor.xml
 There is a detailed installation guide in the
 [Wiki](https://github.com/SCDH/dts-transformations/wiki).
 
+Errors may occur on older versions of Oxygen, see [Issue
+10](https://github.com/SCDH/dts-transformations/issues/10). Consider
+installing a plugin with a newer version of Saxon.
+
 ### Cloning
 
 You can also clone this repo and set up and use its conveniant
