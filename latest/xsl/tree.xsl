@@ -152,6 +152,9 @@
     <xsl:param name="context" as="node()"/>
     <xsl:param name="name" as="xs:string?"/>
     <xsl:choose>
+      <xsl:when test="not($name) and count($context/*/teiHeader/encodingDesc/refsDecl) eq 1">
+        <xsl:sequence select="$context/*/teiHeader/encodingDesc/refsDecl"/>
+      </xsl:when>
       <xsl:when test="not($name)">
         <xsl:sequence select="$context/*/teiHeader/encodingDesc/refsDecl[@default eq 'true']"/>
       </xsl:when>

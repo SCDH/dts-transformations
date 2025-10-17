@@ -3,8 +3,8 @@
    xsi:schemaLocation="http://www.oxygenxml.com/ns/extension http://www.oxygenxml.com/ns/extension/extensions.xsd">
    <xt:extension xmlns:xt="http://www.oxygenxml.com/ns/extension" id="TEI DTS">
       <xt:location
-         href="https://github.com/SCDH/dts-transformations/releases/download/0.4.4/dts-transformations-0.4.4-oxygen-framework.zip"/>
-      <xt:version>0.4.4</xt:version>
+         href="https://github.com/SCDH/dts-transformations/releases/download/0.4.5/dts-transformations-0.4.5-oxygen-framework.zip"/>
+      <xt:version>0.4.5</xt:version>
       <xt:oxy_version>23.1+</xt:oxy_version>
       <xt:type>framework</xt:type>
       <xt:author>Christian Lück
@@ -28,7 +28,7 @@
       <xt:license><![CDATA[
 MIT License
 
-Copyright (c) 2025 SCDH, Westfälische Wilhelms-Universität Münster
+Copyright (c) 2025 SCDH, University of Münster
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
