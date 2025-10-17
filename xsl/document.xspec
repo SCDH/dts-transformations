@@ -236,4 +236,13 @@
         <x:expect label="error message is" test="matches($x:result?err?value, 'not supported')"/>
     </x:scenario>
 
+    <x:scenario label="Regression against issue #11: single citation tree; not declared default">
+        <x:param name="ref" select="'4 Ezra 1'"/>
+        <x:context href="../test/single-tree-nondeclared.xml"/>
+        <x:expect label="is document part, so has dts:wrapper" test="exists(//dts:wrapper)"/>
+        <x:expect label="has 1 chapter div" test="count(//dts:wrapper/t:div[t:div])" select="1"/>
+        <x:expect label="chapter has verses 1 .. 4"
+            test="//dts:wrapper/t:div[@n eq '1']/t:div/@n ! string()" select="'1', '2', '3', '4'"/>
+    </x:scenario>
+
 </x:description>
