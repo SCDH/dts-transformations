@@ -9,6 +9,7 @@
 /.settings
 xspec
 /dist
+/test.tgz
 
 # output of transformation scenarios
 *.dts-document.xml
