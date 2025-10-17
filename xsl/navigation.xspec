@@ -669,4 +669,14 @@
             select="'p.1'"/>
     </x:scenario>
 
+    <x:scenario label="Regression against issue #11: single citation tree; not declared default">
+        <x:context href="../test/single-tree-nondeclared.xml"/>
+        <x:expect label="has 1 citation tree"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:size()" select="1"/>
+        <x:expect label="the citation tree cannot have an identifier"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:get(1) => map:contains('identifier') => not()"/>
+        <x:expect label="has members because the single present citation is choosen"
+            test="map:get(., 'member') => array:size() gt 0"/>
+    </x:scenario>
+
 </x:description>
