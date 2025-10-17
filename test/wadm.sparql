@@ -1,0 +1,35 @@
+PREFIX dts: <https://w3id.org/dts/api#>
+PREFIX oa:  <https://w3id.org/dts/api#>
+
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+
+CONSTRUCT {
+  ?URI rdf:type oa:SpecificResource .
+  ?URI oa:hasSource ?resource .
+  ?URI oa:hasSelector ?xps .
+  ?xps rdf:type oa:XPathSelector .
+  ?xps rdf:value ?xpath .
+  ?URI oa:hasSelector ?fgs .
+  ?fgs rdf:type oa:FragmentSelector .
+  ?fgs dcterms:conformsTo dts: .
+  ?fgs rdf:value ?REFEQ .
+}
+
+WHERE {
+  # ?REFEQ and ?URI must be passed in as parameters
+  BIND("ref=John:1:3" as ?REFEQ) .
+  BIND("https://soso" as ?URI) .
+  
+  BIND(REPLACE(STR(?REFEQ),"ref=","") as ?mid) .
+
+  ?resource rdf:type dts:Resource .
+  ?member rdf:type dts:CitableUnit .
+  ?member dts:identifier ?mid .
+  ?member dts:xpath ?xpath .
+
+}
