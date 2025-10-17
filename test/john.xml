@@ -23,6 +23,19 @@
                </citeStructure>
             </citeStructure>
          </refsDecl>
+         <refsDecl n="wadm" default="false">
+            <!-- see comments in WIKI article about alignment with WADM -->
+            <citeStructure unit="book" match="//body/lg" use="@n">
+               <citeData use="path(.)" property="https://w3id.org/dts/api#xpath"/>
+               <citeStructure unit="chapter" match="lg" use="@n" delim=":">
+                  <citeData use="path(.)" property="https://w3id.org/dts/api#xpath"/>
+                  <citeStructure unit="verse" match="l" use="@n" delim=":">
+                     <citeData use="path(.)" property="https://w3id.org/dts/api#xpath"/>
+                  </citeStructure>
+               </citeStructure>
+            </citeStructure>
+         </refsDecl>
+         <!-- see comments in WIKI article about <pb/> -->
          <refsDecl n="page-milestones">
             <citeStructure unit="page" match="//body//pb" use="@n" delim="p."/>
          </refsDecl>
