@@ -1,5 +1,12 @@
 # Changes
 
+## 0.4.5
+
+- fixes issue #11
+- output of community test cases stored in `test/community-cases.txt`
+  is stored as a release asset for simple comparison with other
+  implementations
+
 ## 0.4.4
 
 - fixes issue #7
