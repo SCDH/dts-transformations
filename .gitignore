@@ -1,5 +1,7 @@
 *~
 
+*.n3
+
 # build targets
 /target
 /saxon.*.xml
