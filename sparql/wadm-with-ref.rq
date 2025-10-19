@@ -1,3 +1,14 @@
+# SPARQL for constructing a WADM selector for the output of the
+# document endpoint queried with a ref parameter. The input graph must
+# be the output of a navigation endpoint for the same citation tree of
+# the same resource.
+#
+# Parameters to be set:
+#
+# ?PARAMTREE - the label of the citation tree, empty string for default
+# ?PARAMREF - the identifier member passed to the document enpoint as ref parameter
+# ?PARAMURI - the document query URL 
+
 PREFIX dts: <https://w3id.org/dts/api#>
 PREFIX oa:  <http://www.w3.org/ns/oa#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
