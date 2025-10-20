@@ -45,7 +45,10 @@ Evaluated TEI elements:
 **Notes**
 
 1. see section about [mediaType](#mediatype)
-2. supported, but `dcterms` do not yet come out as a map as shown in the specification's examples
+2. Supported, but `dcterms` do not yet come out as a map as shown in
+   the specification's examples. A compaction function is applied to
+   the property name and the property value. The function gets the
+   actual JSON-LD `@context` and compacts URIs accordingly.
 3. for mapping of the values of `resource` to document URIs see the
    [`resource`](#resource) section
 
