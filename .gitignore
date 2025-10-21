@@ -20,3 +20,4 @@ xspec
 # wiki repo if stored in project directory
 /wiki
 /dts-transformations.wiki
+/cases

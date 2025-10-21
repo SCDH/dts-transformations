@@ -49,11 +49,17 @@ jobs:
           path: target/dts-transformations-${{ github.ref_name }}-package.zip
           retention-days: 1
 
-      - name: install GNU Make
-        run: sudo apt install -y make
+      - name: install requirements for community tests
+        run: sudo apt install -y git python3
+
+      - name: clone community tests
+        run: git clone https://gist.github.com/d1476d00e07969685df5856518cdd053.git cases
 
       - name: transform community cases
-        run: make test.tgz
+        run: cd cases && python3 run.py -i cases.tsv -d '../test/document.sh' -n '../test/navigation.sh' -p equals && cd $OLDPWD
+
+      - name: create tarball with output for test cases 
+        run: tar -czf test.tgz cases/output/*
 
       - name: Create release
         env:
