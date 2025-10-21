@@ -113,3 +113,22 @@ unset DEBUG
 
 We do not pre- or suffix variable and parameter names by type or
 tunnel-kind. The compiler helps with all this.
+
+
+## Community tests
+
+Check out the repo to `cases`:
+
+```shell
+git clone https://gist.github.com/d1476d00e07969685df5856518cdd053.git cases
+```
+
+```shell
+cd cases
+```
+
+Make output for test cases:
+
+```shell
+python3 run.py -i cases.tsv -d '../test/document.sh' -n '../test/navigation.sh' -p equals
+```
