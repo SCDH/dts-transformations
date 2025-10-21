@@ -1,5 +1,10 @@
 # Changes
 
+## 0.4.6
+
+- make output for test suite with gist
+  [`https://gist.github.com/lueck/d1476d00e07969685df5856518cdd053`](https://gist.github.com/lueck/d1476d00e07969685df5856518cdd053)
+
 ## 0.4.5
 
 - fixes issue #11
