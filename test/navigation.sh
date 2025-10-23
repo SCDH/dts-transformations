@@ -3,4 +3,4 @@
 SCRIPT=$(realpath "$0")
 PROJECTPATH=$(dirname "$SCRIPT")/..
 
-$PROJECTPATH/target/bin/xslt.sh -config:$PROJECTPATH/test/saxon.xml -xsl:$PROJECTPATH/xsl/navigation.xsl -it -ea:on $@
+$PROJECTPATH/target/bin/xslt.sh -config:$PROJECTPATH/test/saxon-no-local.xml -xsl:$PROJECTPATH/xsl/navigation.xsl -it -ea:on $@

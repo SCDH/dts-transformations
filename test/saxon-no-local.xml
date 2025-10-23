@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Saxon configuration used for for testing with the community test suite.
+
+These tests fetch XML from remote. Thus, reading from the file system is disallowed
+in order to prevent attacks with malicous XPath expressions.
+
+This configuration
+
+- registeres the example packages for processing mediaType, which are located in this directory
+- enables assertions
+-->
+<configuration edition="HE" xmlns="http://saxon.sf.net/ns/configuration">
+
+    <global allowedProtocols="http,https"/>
+
+    <!-- assertions are enabled for the tests -->
+    <xslt enableAssertions="true"/>
+
+    <serialization escape-solidus="false"/>
+
+    <xsltPackages>
+        <package name="https://scdh.github.io/dts-transformations/xsl/dts.xsl" version="1.0.0"
+            sourceLocation="../xsl/dts.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/errors.xsl" version="1.0.0"
+            sourceLocation="../xsl/errors.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/cut.xsl" version="1.0.0"
+            sourceLocation="../xsl/cut.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/tree.xsl" version="1.0.0"
+            sourceLocation="../xsl/tree.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/tree-hook.xsl" version="1.0.0"
+            sourceLocation="../xsl/tree-hook.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/resource.xsl" version="1.0.0"
+            sourceLocation="../xsl/resource.xsl"/>
+
+        <package name="https://scdh.github.io/dts-transformations/xsl/uri-templates/base.xsl"
+            version="1.0.0" sourceLocation="../xsl/uri-templates/base.xsl"/>
+        <package
+            name="https://scdh.github.io/dts-transformations/xsl/uri-templates/query-parameters.xsl"
+            version="1.0.0" sourceLocation="../xsl/uri-templates/query-parameters.xsl"/>
+
+        <!-- the following packages are not required by downstream -->
+        <package name="https://scdh.github.io/dts-transformations/xsl/post-proc-apply.xsl"
+            version="1.0.0" sourceLocation="post-proc-apply.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/post-proc-call.xsl"
+            version="1.0.0" sourceLocation="post-proc-call.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/post-proc-fun.xsl"
+            version="1.0.0" sourceLocation="post-proc-fun.xsl"/>
+    </xsltPackages>
+
+</configuration>
