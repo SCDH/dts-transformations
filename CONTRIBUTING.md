@@ -132,3 +132,9 @@ Make output for test cases:
 ```shell
 python3 run.py -i cases.tsv -d '../test/document.sh' -n '../test/navigation.sh' -p equals
 ```
+
+Note, that the scripts use the Saxon configuration in
+`test/saxon-no-local.xml` which allows only HTTP, and HTTPS
+protocols. This makes running the tests secure. Without this hardened
+config, they may be a risk, because they contain untrusted XPath
+expressions.
