@@ -1,0 +1,149 @@
+{
+    "@context": [
+	"dublincore.json",
+	{
+	    "dts": "https://w3id.org/dts/api#",
+	    "CitableUnit": {
+		"@id": "dts:CitableUnit",
+		"@protected": false
+	    },
+	    "CitationTree": {
+		"@id": "dts:CitationTree",
+		"@protected": true
+	    },
+	    "CiteStructure": {
+		"@id": "dts:CiteStructure",
+		"@protected": true
+	    },
+	    "Collection": {
+		"@id": "dts:Collection",
+		"@protected": false
+	    },
+	    "EntryPoint": {
+		"@id": "dts:EntryPoint",
+		"@protected": true
+	    },
+	    "Navigation": {
+		"@id": "dts:Navigation",
+		"@protected": true
+	    },
+	    "Pagination": {
+		"@id": "dts:Pagination",
+		"@protected": true
+	    },
+	    "Resource": {
+		"@id": "dts:Resource",
+		"@protected": false
+	    },
+	    "citationTrees": {
+		"@id": "dts:citationTrees",
+		"@protected": true
+	    },
+	    "citeStructure": {
+		"@id": "dts:citeStructure",
+		"@protected": true
+	    },
+	    "description": {
+		"@id": "dts:description",
+		"@protected": false
+	    },
+	    "end": {
+		"@id": "dts:end",
+		"@protected": true
+	    },
+	    "extensions": {
+		"@id": "@nest",
+		"@protected": false
+	    },
+	    "first": {
+		"@id": "dts:first",
+		"@protected": true
+	    },
+	    "last": {
+		"@id": "dts:last",
+		"@protected": true
+	    },
+	    "member": {
+		"@id": "dts:member",
+		"@protected": true
+	    },
+	    "next": {
+		"@id": "dts:next",
+		"@protected": true
+	    },
+	    "previous": {
+		"@id": "dts:previous",
+		"@protected": true
+	    },
+	    "ref": {
+		"@id": "dts:ref",
+		"@protected": true
+	    },
+	    "resource": {
+		"@id": "dts:resource",
+		"@protected": false,
+		"@type": "@id"
+	    },
+	    "start": {
+		"@id": "dts:start",
+		"@protected": true
+	    },
+	    "label": {
+		"@id": "rdfs:label",
+		"@protected": false
+	    },
+	    "view": {
+		"@id": "dts:view",
+		"@protected": false
+	    },
+	    "citeType": {
+		"@id": "dts:citeType",
+		"@protected": true
+	    },
+	    "collection": {
+		"@id": "dts:collection",
+		"@protected": true
+	    },
+	    "document": {
+		"@id": "dts:document",
+		"@protected": true
+	    },
+	    "download": {
+		"@id": "dts:download",
+		"@protected": true
+	    },
+	    "dtsVersion": {
+		"@id": "dts:dtsVersion",
+		"@protected": true
+	    },
+	    "identifier": {
+		"@id": "dts:identifier",
+		"@protected": true
+	    },
+	    "level": {
+		"@id": "dts:level",
+		"@protected": true
+	    },
+	    "mediaTypes": {
+		"@id": "dts:mediaTypes",
+		"@protected": true
+	    },
+	    "navigation": {
+		"@id": "dts:navigation",
+		"@protected": true
+	    },
+	    "parent": {
+		"@id": "dts:parent",
+		"@protected": true
+	    },
+	    "totalChildren": {
+		"@id": "dts:totalChildren",
+		"@protected": true
+	    },
+	    "totalParents": {
+		"@id": "dts:totalParents",
+		"@protected": true
+	    }
+	}
+    ]
+}
