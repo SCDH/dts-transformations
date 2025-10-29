@@ -3,6 +3,7 @@
 	"dublincore.json",
 	{
 	    "dts": "https://w3id.org/dts/api#",
+	    "@protected": true,
 	    "CitableUnit": {
 		"@id": "dts:CitableUnit",
 		"@protected": false
