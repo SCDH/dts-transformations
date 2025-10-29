@@ -1,6 +1,5 @@
 {
     "@context": [
-	"dublincore.json",
 	{
 	    "dts": "https://w3id.org/dts/api#",
 	    "xsd":     "http://www.w3.org/2001/XMLSchema#",
