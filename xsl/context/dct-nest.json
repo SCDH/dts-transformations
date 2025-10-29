@@ -20,7 +20,7 @@
 	"dateAccepted": { "@id": "dct:dateAccepted", "@nest": "dublinCore" },
 	"dateCopyrighted": { "@id": "dct:dateCopyrighted", "@nest": "dublinCore" },
 	"dateSubmitted": { "@id": "dct:dateSubmitted", "@nest": "dublinCore" },
-	"description": { "@id": "dct:description", "@nest": "dublinCore" },
+	"description": { "@id": "dct:description", "@nest": "dublinCore", "@container": "@language" },
 	"educationLevel": { "@id": "dct:educationLevel", "@nest": "dublinCore" },
 	"extent": { "@id": "dct:extent", "@nest": "dublinCore" },
 	"format": { "@id": "dct:format", "@nest": "dublinCore" },

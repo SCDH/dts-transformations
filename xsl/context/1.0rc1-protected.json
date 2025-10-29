@@ -46,9 +46,10 @@
 		"@id": "dts:citeStructure",
 		"@protected": true
 	    },
-	    "description": {
+	    "desc": {
 		"@id": "dts:description",
-		"@protected": false
+		"@protected": false,
+		"@container": "@language"
 	    },
 	    "end": {
 		"@id": "dts:end",
