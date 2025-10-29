@@ -2,8 +2,7 @@
     "@context": {
 	"dublinCore": {
 	    "@id": "https://w3id.org/dts/api#dublinCore",
-	    "@context": "https://w3id.org/dts/api#dublinCore",
-	    "@vocab": "https://w3id.org/dts/api#"
+	    "@vocab": "http://purl.org/dc/terms/"
 	}
     }
 }

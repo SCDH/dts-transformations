@@ -1,6 +1,6 @@
 {
     "@context": {
-	"dct": "https://w3id.org/dts/api#",
+	"dct": "http://purl.org/dc/terms/",
 	"dublinCore": "@nest",
 	"abstract": { "@id": "dct:abstract", "@nest": "dublinCore" },
 	"accessRights": { "@id": "dct:accessRights", "@nest": "dublinCore" },
@@ -54,7 +54,7 @@
 	"subject": { "@id": "dct:subject", "@nest": "dublinCore" },
 	"tableOfContents": { "@id": "dct:tableOfContents", "@nest": "dublinCore" },
 	"temporal": { "@id": "dct:temporal", "@nest": "dublinCore" },
-	"title": { "@id": "dct:title", "@nest": "dublinCore", "@context": { "value": "@value", "lang": "@language" } },
+	"title": { "@id": "dct:title", "@nest": "dublinCore" },
 	"dctype": { "@id": "dct:type", "@nest": "dublinCore" },
 	"valid": { "@id": "dct:valid", "@nest": "dublinCore" }
     }
