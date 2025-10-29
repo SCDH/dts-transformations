@@ -10,11 +10,11 @@
 	    },
 	    "CitationTree": {
 		"@id": "dts:CitationTree",
-		"@protected": false
+		"@protected": true
 	    },
 	    "CiteStructure": {
 		"@id": "dts:CiteStructure",
-		"@protected": false
+		"@protected": true
 	    },
 	    "Collection": {
 		"@id": "dts:Collection",
@@ -22,15 +22,15 @@
 	    },
 	    "EntryPoint": {
 		"@id": "dts:EntryPoint",
-		"@protected": false
+		"@protected": true
 	    },
 	    "Navigation": {
 		"@id": "dts:Navigation",
-		"@protected": false
+		"@protected": true
 	    },
 	    "Pagination": {
 		"@id": "dts:Pagination",
-		"@protected": false
+		"@protected": true
 	    },
 	    "Resource": {
 		"@id": "dts:Resource",
@@ -38,11 +38,11 @@
 	    },
 	    "citationTrees": {
 		"@id": "dts:citationTrees",
-		"@protected": false
+		"@protected": true
 	    },
 	    "citeStructure": {
 		"@id": "dts:citeStructure",
-		"@protected": false
+		"@protected": true
 	    },
 	    "description": {
 		"@id": "dts:description",
@@ -50,7 +50,7 @@
 	    },
 	    "end": {
 		"@id": "dts:end",
-		"@protected": false
+		"@protected": true
 	    },
 	    "extensions": {
 		"@id": "@nest",
@@ -58,11 +58,11 @@
 	    },
 	    "first": {
 		"@id": "dts:first",
-		"@protected": false
+		"@protected": true
 	    },
 	    "last": {
 		"@id": "dts:last",
-		"@protected": false
+		"@protected": true
 	    },
 	    "member": {
 		"@id": "dts:member",
@@ -70,15 +70,15 @@
 	    },
 	    "next": {
 		"@id": "dts:next",
-		"@protected": false
+		"@protected": true
 	    },
 	    "previous": {
 		"@id": "dts:previous",
-		"@protected": false
+		"@protected": true
 	    },
 	    "ref": {
 		"@id": "dts:ref",
-		"@protected": false
+		"@protected": true
 	    },
 	    "resource": {
 		"@id": "dts:resource",
@@ -87,7 +87,7 @@
 	    },
 	    "start": {
 		"@id": "dts:start",
-		"@protected": false
+		"@protected": true
 	    },
 	    "label": {
 		"@id": "rdfs:label",
@@ -99,51 +99,51 @@
 	    },
 	    "citeType": {
 		"@id": "dts:citeType",
-		"@protected": false
+		"@protected": true
 	    },
 	    "collection": {
 		"@id": "dts:collection",
-		"@protected": false
+		"@protected": true
 	    },
 	    "document": {
 		"@id": "dts:document",
-		"@protected": false
+		"@protected": true
 	    },
 	    "download": {
 		"@id": "dts:download",
-		"@protected": false
+		"@protected": true
 	    },
 	    "dtsVersion": {
 		"@id": "dts:dtsVersion",
-		"@protected": false
+		"@protected": true
 	    },
 	    "identifier": {
 		"@id": "dts:identifier",
-		"@protected": false
+		"@protected": true
 	    },
 	    "level": {
 		"@id": "dts:level",
-		"@protected": false
+		"@protected": true
 	    },
 	    "mediaTypes": {
 		"@id": "dts:mediaTypes",
-		"@protected": false
+		"@protected": true
 	    },
 	    "navigation": {
 		"@id": "dts:navigation",
-		"@protected": false
+		"@protected": true
 	    },
 	    "parent": {
 		"@id": "dts:parent",
-		"@protected": false
+		"@protected": true
 	    },
 	    "totalChildren": {
 		"@id": "dts:totalChildren",
-		"@protected": false
+		"@protected": true
 	    },
 	    "totalParents": {
 		"@id": "dts:totalParents",
-		"@protected": false
+		"@protected": true
 	    }
 	}
     ]
