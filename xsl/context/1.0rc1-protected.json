@@ -65,7 +65,7 @@
 	    },
 	    "member": {
 		"@id": "dts:member",
-		"@protected": true
+		"@protected": false
 	    },
 	    "next": {
 		"@id": "dts:next",
