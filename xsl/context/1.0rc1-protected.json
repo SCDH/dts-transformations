@@ -3,6 +3,7 @@
 	"dublincore.json",
 	{
 	    "dts": "https://w3id.org/dts/api#",
+	    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
 	    "@protected": true,
 	    "CitableUnit": {
 		"@id": "dts:CitableUnit",
