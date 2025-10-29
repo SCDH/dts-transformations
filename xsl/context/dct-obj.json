@@ -1,0 +1,14 @@
+{
+    "@context": {
+	"dublinCore": {
+	    "@id": "https://w3id.org/dts/api#dublinCore",
+	    "@vocab": "https://w3id.org/dts/api#",
+	    "title": {
+		"@context": {
+		    "value": "@value",
+		    "lang": "@language"
+		}
+	    }
+	}
+    }
+}
