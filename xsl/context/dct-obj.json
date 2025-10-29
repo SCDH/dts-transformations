@@ -2,7 +2,15 @@
     "@context": {
 	"dublinCore": {
 	    "@id": "https://w3id.org/dts/api#dublinCore",
-	    "@vocab": "http://purl.org/dc/terms/"
+	    "@context": {
+		"@vocab": "http://purl.org/dc/terms/",
+		"default": "@none",
+		"title": {
+		    "@id": "http://purl.org/dc/terms/title",
+		    "@container": "@language",
+		    "@value": "Default Title"
+		}
+	    }
 	}
     }
 }
