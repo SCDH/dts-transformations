@@ -54,7 +54,7 @@
 	"subject": { "@id": "dct:subject", "@nest": "dublinCore" },
 	"tableOfContents": { "@id": "dct:tableOfContents", "@nest": "dublinCore" },
 	"temporal": { "@id": "dct:temporal", "@nest": "dublinCore" },
-	"title": { "@id": "dct:title", "@nest": "dublinCore" },
+	"title": { "@id": "dct:title", "@nest": "dublinCore", "value": "@value", "lang": "@language" },
 	"dctype": { "@id": "dct:type", "@nest": "dublinCore" },
 	"valid": { "@id": "dct:valid", "@nest": "dublinCore" }
     }
