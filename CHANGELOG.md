@@ -1,5 +1,9 @@
 # Changes
 
+## 0.4.7
+
+- adds modular context in `xsl/context/modules`
+
 ## 0.4.6
 
 - make output for test suite with gist
