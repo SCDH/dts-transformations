@@ -9,6 +9,8 @@
   <xsl:param name="context-url" as="xs:string"
     select="'https://distributed-text-services.github.io/specifications/context/' || $dts-version ||'.json'"/>
 
+  <xsl:param name="uses-local-context" as="xs:boolean" select="false()"/>
+
   <xsl:variable name="context" visibility="final">
     <xsl:map-entry key="'@context'" select="$context-url"/>
     <xsl:map-entry key="'dtsVersion'" select="$dts-version"/>
@@ -17,7 +19,7 @@
   <xsl:variable name="context-json" as="map(xs:string, item()*)" visibility="public">
     <xsl:choose>
       <xsl:when
-        test="$context-url eq 'https://distributed-text-services.github.io/specifications/context/1.0rc1.json'">
+        test="$uses-local-context and $context-url eq 'https://distributed-text-services.github.io/specifications/context/1.0rc1.json'">
         <xsl:sequence
           select="'./context/1.0rc1.json' => resolve-uri(static-base-uri()) => unparsed-text() => parse-json()"
         />
