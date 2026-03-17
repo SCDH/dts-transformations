@@ -1,5 +1,9 @@
 # Changes
 
+## 0.4.8
+
+- fixes packaging for SEED
+
 ## 0.4.7
 
 - adds modular context in `xsl/context/modules`

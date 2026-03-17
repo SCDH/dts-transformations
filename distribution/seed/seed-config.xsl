@@ -158,37 +158,39 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
                 <xsl:sort select="@priority"/>
             </xsl:perform-sort>
         </xsl:variable>
-        <xsl:variable name="pkg" as="element()" select="$pkgs[last()]"/>
-        <xsl:variable name="pkg-uri" select="resolve-uri($pkg/@sourceLocation, base-uri($pkg))"/>
-        <xsl:message use-when="system-property('debug') eq 'true'">
-            <xsl:text>searching for package </xsl:text>
-            <xsl:value-of select="@name"/>
-            <xsl:text> in configuration </xsl:text>
-            <xsl:value-of select="base-uri($saxon-config)"/>
-        </xsl:message>
-        <xsl:if test="not($pkg)">
-            <xsl:message terminate="yes">
-                <xsl:text>ERROR: package not found in config: </xsl:text>
-                <xsl:value-of select="$name"/>
-                <xsl:text> version </xsl:text>
-                <xsl:value-of select="$version"/>
+        <xsl:if test="$pkgs">
+            <xsl:variable name="pkg" as="element()?" select="$pkgs[last()]"/>
+            <xsl:variable name="pkg-uri" select="resolve-uri($pkg/@sourceLocation, base-uri($pkg))"/>
+            <xsl:message use-when="system-property('debug') eq 'true'">
+                <xsl:text>searching for package </xsl:text>
+                <xsl:value-of select="@name"/>
+                <xsl:text> in configuration </xsl:text>
+                <xsl:value-of select="base-uri($saxon-config)"/>
             </xsl:message>
+            <xsl:if test="not($pkg)">
+                <xsl:message terminate="yes">
+                    <xsl:text>ERROR: package not found in config: </xsl:text>
+                    <xsl:value-of select="$name"/>
+                    <xsl:text> version </xsl:text>
+                    <xsl:value-of select="$version"/>
+                </xsl:message>
+            </xsl:if>
+            <xsl:if test="not(doc-available($pkg-uri))">
+                <xsl:message terminate="yes">
+                    <xsl:text>ERROR: package URI not available: </xsl:text>
+                    <xsl:value-of select="$pkg-uri"/>
+                </xsl:message>
+            </xsl:if>
+            <xsl:variable name="package" select="doc($pkg-uri)" as="document-node()"/>
+            <!-- make entry for this package -->
+            <xsl:apply-templates mode="#current" select="$pkg">
+                <xsl:with-param name="name" select="$pkg/@name" tunnel="true"/>
+                <xsl:with-param name="version" select="$pkg/@version" tunnel="true"/>
+                <xsl:with-param name="package" select="$package" tunnel="true"/>
+            </xsl:apply-templates>
+            <!-- recurse into packages used by the package -->
+            <xsl:apply-templates mode="#current" select="$package"/>
         </xsl:if>
-        <xsl:if test="not(doc-available($pkg-uri))">
-            <xsl:message terminate="yes">
-                <xsl:text>ERROR: package URI not available: </xsl:text>
-                <xsl:value-of select="$pkg-uri"/>
-            </xsl:message>
-        </xsl:if>
-        <xsl:variable name="package" select="doc($pkg-uri)" as="document-node()"/>
-        <!-- make entry for this package -->
-        <xsl:apply-templates mode="#current" select="$pkg">
-            <xsl:with-param name="name" select="$pkg/@name" tunnel="true"/>
-            <xsl:with-param name="version" select="$pkg/@version" tunnel="true"/>
-            <xsl:with-param name="package" select="$package" tunnel="true"/>
-        </xsl:apply-templates>
-        <!-- recurse into packages used by the package -->
-        <xsl:apply-templates mode="#current" select="$package"/>
     </xsl:template>
 
     <xsl:template mode="libraries" match="cfg:package">
