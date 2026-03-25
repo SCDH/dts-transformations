@@ -1,5 +1,9 @@
 # Changes
 
+## 0.4.9
+
+- fixes transformation type in SEED config (see issue #16)
+
 ## 0.4.8
 
 - do not fail for documents without citation tree declaration in `<refsDecl>` (fixes issue #13)
