@@ -17,6 +17,11 @@
          <includes>
             <include>**/*.xsl</include>
             <include>**/*.xq*</include>
+            <include>**/*.json</include>
+            <include>**/*.js</include>
+            <include>**/*.css</include>
+            <include>**/*.sty</include>
+            <include>**/*.tex</include>
          </includes>
          <excludes>
             <exclude>**/xspec/**.xsl</exclude>
@@ -27,6 +32,9 @@
             <exclude>utils/**</exclude>
             <exclude>target/**</exclude>
             <exclude>frameworks/**</exclude>
+            <exclude>cases/**</exclude>
+            <exclude>dist/**</exclude>
+            <exclude>wiki/**</exclude>
          </excludes>
       </fileSet>
       <fileSet>
