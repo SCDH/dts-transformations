@@ -679,4 +679,11 @@
             test="map:get(., 'member') => array:size() gt 0"/>
     </x:scenario>
 
+    <x:scenario label="Regression against issue #13: document without refsDecl">
+        <x:context href="../test/no-tree.xml"/>
+        <x:expect label="has no member" test="map:get(., 'member') => array:size()" select="0"/>
+        <x:expect label="has no citation tree"
+            test="map:get(., 'resource') => map:get('citationTrees') => array:size()" select="0"/>
+    </x:scenario>
+
 </x:description>

@@ -245,4 +245,9 @@
             test="//dts:wrapper/t:div[@n eq '1']/t:div/@n ! string()" select="'1', '2', '3', '4'"/>
     </x:scenario>
 
+    <x:scenario label="Regression agains issue #13: document without refsDecl">
+        <x:context href="../test/no-tree.xml"/>
+        <x:expect label="identity" href="../test/no-tree.xml"/>
+    </x:scenario>
+
 </x:description>
