@@ -32,6 +32,9 @@
 				<exclude>utils/**</exclude>
 				<exclude>target/**</exclude>
 				<exclude>frameworks/**</exclude>
+				<exclude>cases/**</exclude>
+				<exclude>dist/**</exclude>
+				<exclude>wiki/**</exclude>
 			</excludes>
 		</fileSet>
 		<fileSet>
