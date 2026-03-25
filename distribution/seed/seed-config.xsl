@@ -261,6 +261,16 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
                             <xsl:value-of select="@select"/>
                         </xsl:map-entry>
                     </xsl:if>
+                    <xsl:map-entry key="'static'">
+                        <xsl:choose>
+                            <xsl:when test="@static eq 'true'">
+                                <xsl:sequence select="true()"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:sequence select="false()"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:map-entry>
                 </xsl:map>
             </xsl:map-entry>
         </xsl:map>
