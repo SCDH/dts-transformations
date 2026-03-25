@@ -2,7 +2,11 @@
 
 ## 0.4.8
 
-- fixes packaging for SEED
+- do not fail for documents without citation tree declaration in `<refsDecl>` (fixes issue #13)
+- improved project infrastructure:
+  - unit tests independend of volatile upstream specs (fixes issue #15)
+  - improves package building
+  - adds missing yaml config file to SEED package (fixes issue #14)
 
 ## 0.4.7
 
