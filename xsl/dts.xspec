@@ -12,7 +12,8 @@
         <x:call function="dts:parse-context"/>
         <x:expect label="size 1" test="map:size(.)" select="1"/>
         <x:expect label="has @context" test="map:contains(., '@context')"/>
-        <x:expect label="size of @context" test="map:get(., '@context') => map:size()" select="39"/>
+        <x:expect label="size of @context" test="map:get(., '@context') => map:size()" select="41"
+            pending="depends on upstream specs which are volatile, see #15"/>
         <x:expect label="@context defines dts prefix"
             test="map:get(., '@context') => map:contains('dts')"/>
     </x:scenario>
