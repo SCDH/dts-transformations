@@ -1,5 +1,6 @@
 {
     "@context": {
+	"title": { "@id": "https://w3id.org/dts/api#title" },
 	"dublinCore": {
 	    "@id": "https://w3id.org/dts/api#dublinCore",
 	    "@context": {
