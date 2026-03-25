@@ -85,8 +85,12 @@
       </xsl:choose>
     </xsl:variable>
     <!-- generate the sequence of members by applying 'members' transformation -->
-    <xsl:assert test="count(dts:get-citation-tree($context, $tree)) eq 1"
+    <xsl:assert test="not(exists($tree)) or count(dts:get-citation-tree($context, $tree)) eq 1"
       error-code="{$dts:http404 => dts:error-to-eqname()}">
+      <!--
+        not(exists($tree)) also makes this assertion pass for
+        resources without citation tree and unspecified tree parameter
+      -->
       <xsl:value-of xml:space="preserve">ERROR: citetation tree '<xsl:value-of select="$tree"/>' not found</xsl:value-of>
     </xsl:assert>
     <xsl:variable name="members" as="element(dts:member)*">

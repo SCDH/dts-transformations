@@ -212,31 +212,29 @@ See the section at the end of the package.
     <xsl:template name="citationTrees" as="array(map(xs:string, item()))" visibility="final">
         <xsl:context-item as="document-node()" use="required"/>
         <!--
-            Specs: "If a Resource has multiple CitationTrees,
-            then the first listed in citationTrees is the default
-            CitationTree and cannot have an identifier."
-            How about a Resource with a single CitationTree? Can
-            it have a an identifier? Would the absence of
-            an unnamed (unidenfiable) CitationTree mean, that
-            there's no default CitationTree?
-
-            Interpretation: This is a statement about the order
-            of the citation trees in the json ld output of the
-            navigation endpoint, not about the order or naming
-            of refsDecl elements in the resource.
+            Specs: "If a Resource has a single CitationTree, that
+            CitationTree object cannot have an identifier.
+            If a Resource has multiple CitationTrees, then the
+            first listed in citationTrees is the default
+            CitationTree and cannot have an identifier.
+            If a Resource is a document without a citation tree,
+            the citationTrees property is an empty array."
+            This is about the number and IDs of citation trees
+            and about their order.
         -->
         <xsl:assert
-            test="count(/*/teiHeader/encodingDesc/refsDecl) eq 1 or count(/*/teiHeader/encodingDesc/refsDecl[@default eq 'true']) eq 1"
+            test="count(/*/teiHeader/encodingDesc/refsDecl) le 1 or count(/*/teiHeader/encodingDesc/refsDecl[@default eq 'true']) eq 1"
             error-code="{$dts:http404 => dts:error-to-eqname()}">
-            <xsl:value-of xml:space="preserve">ERROR: there must be exactly 1 citation tree or 1 default citation tree by declaration, but found <xsl:value-of select="count(/*/teiHeader/encodingDesc/refsDecl[@default eq 'true'])"/></xsl:value-of>
+            <xsl:value-of xml:space="preserve">ERROR: there must be no citation tree, exactly 1 citation tree or 1 default citation tree by declaration, but found <xsl:value-of select="count(/*/teiHeader/encodingDesc/refsDecl[@default eq 'true'])"/></xsl:value-of>
         </xsl:assert>
         <xsl:assert
-            test="count(/*/teiHeader/encodingDesc/refsDecl) eq 1 or (/*/teiHeader/encodingDesc/refsDecl[empty(@default) or @default eq 'false'][empty(@n)] => exists() => not())"
+            test="count(/*/teiHeader/encodingDesc/refsDecl) le 1 or (/*/teiHeader/encodingDesc/refsDecl[empty(@default) or @default eq 'false'][empty(@n)] => exists() => not())"
             error-code="{$dts:http404 => dts:error-to-eqname()}">
             <xsl:value-of xml:space="preserve">ERROR: there are unlabelled refsDecl which are not the default citation tree</xsl:value-of>
         </xsl:assert>
         <xsl:variable name="citeStructures" as="map(xs:string, item())*">
             <xsl:choose>
+                <xsl:when test="count(/*/teiHeader/encodingDesc/refsDecl) eq 0"/>
                 <xsl:when test="count(/*/teiHeader/encodingDesc/refsDecl) eq 1">
                     <!-- single citation tree: the one is the default,
                         no matter if it is declare by @default or if it has an @n label -->
