@@ -38,4 +38,6 @@ http://www.saxonica.com/documentation/index/configuration-file.html
             version="1.0.0" sourceLocation="xsl/uri-templates/path-parameters.xsl"/>
     </xsltPackages>
 
+    <xslt enableAssertions="false"/>
+
 </configuration>

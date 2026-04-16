@@ -7,10 +7,17 @@
     <!-- the Saxon edition for which the config is made -->
     <xsl:param name="edition" as="xs:string" select="string()"/>
 
+    <!-- whether or not to enable assertions -->
+    <xsl:param name="assertions" as="xs:boolean" select="false()"/>
+
     <xsl:mode on-no-match="shallow-copy"/>
 
     <xsl:template match="@edition[$edition ne string()]">
         <xsl:attribute name="edition" select="$edition"/>
+    </xsl:template>
+
+    <xsl:template match="@enableAssertions">
+        <xsl:attribute name="enableAssertions" select="$assertions"/>
     </xsl:template>
 
 </xsl:stylesheet>

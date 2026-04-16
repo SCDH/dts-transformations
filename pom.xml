@@ -379,6 +379,30 @@
                                         </fileMapper>
                                     </fileMappers>
                                 </transformationSet>
+                                <transformationSet>
+                                    <dir>${project.basedir}</dir>
+                                    <includes>
+                                        <include>saxon.xml</include>
+                                    </includes>
+                                    <stylesheet>utils/saxon-config-edition.xsl</stylesheet>
+                                    <parameters>
+                                        <parameter>
+                                            <name>edition</name>
+                                            <value>HE</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>assertions</name>
+                                            <value>true</value>
+                                        </parameter>
+                                    </parameters>
+                                    <fileMappers>
+                                        <fileMapper
+                                            implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                            <targetExtension>.he.seed.xml</targetExtension>
+                                        </fileMapper>
+                                    </fileMappers>
+                                </transformationSet>
+                                
                                 <!-- an example with prioritized package -->
                                 <!--
                                 <transformationSet>
