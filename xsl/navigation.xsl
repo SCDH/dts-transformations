@@ -45,11 +45,11 @@ See the section at the end of the package.
         <xsl:param name="context" as="node()"/>
         <xsl:assert test="empty(($down, $ref, $start, $end)) => not()"
             error-code="{$dts:http400 => dts:error-to-eqname()}">
-            <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: $down, $ref, $start+$end may not all be absent</xsl:value-of>
+            <xsl:value-of xml:space="preserve">400: bad parameter combination: $down, $ref, $start+$end may not all be absent</xsl:value-of>
         </xsl:assert>
         <xsl:assert test="not(exists($down) and $down eq 0 and empty($ref))"
             error-code="{$dts:http400 => dts:error-to-eqname()}">
-            <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: $down = 0 requires $ref set</xsl:value-of>
+            <xsl:value-of xml:space="preserve">400: bad parameter combination: $down = 0 requires $ref set</xsl:value-of>
         </xsl:assert>
         <xsl:variable name="navigation-specific" as="map(xs:string, item()*)">
             <xsl:map>
@@ -90,7 +90,7 @@ See the section at the end of the package.
     <!-- entry point with initial template and resource URL from stylesheet parameter -->
     <xsl:template name="xsl:initial-template" as="map(xs:string, item())" visibility="public">
         <xsl:assert test="$resource" error-code="{$dts:http400 => dts:error-to-eqname()}">
-            <xsl:value-of xml:space="preserve">ERROR: resource parameter missing</xsl:value-of>
+            <xsl:value-of xml:space="preserve">400: resource parameter missing</xsl:value-of>
         </xsl:assert>
         <xsl:apply-templates mode="navigation" select="dts:resource-uri() => doc()"/>
     </xsl:template>
@@ -149,7 +149,7 @@ See the section at the end of the package.
                         <xsl:catch>
                             <xsl:message terminate="yes"
                                 error-code="{$dts:http404 => dts:error-to-eqname()}">
-                                <xsl:value-of xml:space="preserve">ERROR: $ref '<xsl:value-of select="$ref"/>' not found</xsl:value-of>
+                                <xsl:value-of xml:space="preserve">404: $ref '<xsl:value-of select="$ref"/>' not found</xsl:value-of>
                             </xsl:message>
                         </xsl:catch>
                     </xsl:try>
@@ -162,7 +162,7 @@ See the section at the end of the package.
                         <xsl:catch>
                             <xsl:message terminate="yes"
                                 error-code="{$dts:http404 => dts:error-to-eqname()}">
-                                <xsl:value-of xml:space="preserve">ERROR: $ref '<xsl:value-of select="$ref"/>' not found</xsl:value-of>
+                                <xsl:value-of xml:space="preserve">404: $ref '<xsl:value-of select="$ref"/>' not found</xsl:value-of>
                             </xsl:message>
                         </xsl:catch>
                     </xsl:try>
@@ -174,7 +174,7 @@ See the section at the end of the package.
                         <xsl:catch>
                             <xsl:message terminate="yes"
                                 error-code="{$dts:http404 => dts:error-to-eqname()}">
-                                <xsl:value-of xml:space="preserve">ERROR: $start '<xsl:value-of select="$start"/>' not found</xsl:value-of>
+                                <xsl:value-of xml:space="preserve">404: $start '<xsl:value-of select="$start"/>' not found</xsl:value-of>
                             </xsl:message>
                         </xsl:catch>
                     </xsl:try>
@@ -184,7 +184,7 @@ See the section at the end of the package.
                         <xsl:catch>
                             <xsl:message terminate="yes"
                                 error-code="{$dts:http404 => dts:error-to-eqname()}">
-                                <xsl:value-of xml:space="preserve">ERROR: $end '<xsl:value-of select="$end"/>' not found</xsl:value-of>
+                                <xsl:value-of xml:space="preserve">404: $end '<xsl:value-of select="$end"/>' not found</xsl:value-of>
                             </xsl:message>
                         </xsl:catch>
                     </xsl:try>
