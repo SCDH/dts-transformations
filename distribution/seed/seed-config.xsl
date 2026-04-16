@@ -49,7 +49,7 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
     <xsl:param name="relative-uris" as="xs:boolean" select="true()"/>
 
     <xsl:param name="class" as="xs:string"
-        select="'de.ulbms.scdh.seed.xc.xslt.SaxonXslTransformation'"/>
+        select="'xslt'"/>
 
     <xsl:param name="transformation-id" as="xs:string" select="'name'"/>
 
