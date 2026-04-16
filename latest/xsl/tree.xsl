@@ -39,7 +39,7 @@
         <xsl:choose>
           <xsl:when test="$ref and ($start or $end)">
             <xsl:message terminate="yes" error-code="{$dts:http400 => dts:error-to-eqname()}">
-              <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: when ref is used, start and end must not</xsl:value-of>
+              <xsl:value-of xml:space="preserve">400: bad parameter combination: when ref is used, start and end must not</xsl:value-of>
             </xsl:message>
           </xsl:when>
           <xsl:when test="$ref">
@@ -52,7 +52,7 @@
           <xsl:when test="not($start or $end)"/>
           <xsl:otherwise>
             <xsl:message terminate="yes" error-code="{$dts:http400 => dts:error-to-eqname()}">
-              <xsl:value-of xml:space="preserve">ERROR: bad parameter combination: start required end and vice versa</xsl:value-of>
+              <xsl:value-of xml:space="preserve">400: bad parameter combination: start required end and vice versa</xsl:value-of>
             </xsl:message>
           </xsl:otherwise>
         </xsl:choose>
@@ -91,7 +91,7 @@
         not(exists($tree)) also makes this assertion pass for
         resources without citation tree and unspecified tree parameter
       -->
-      <xsl:value-of xml:space="preserve">ERROR: citetation tree '<xsl:value-of select="$tree"/>' not found</xsl:value-of>
+      <xsl:value-of xml:space="preserve">404: citetation tree '<xsl:value-of select="$tree"/>' not found</xsl:value-of>
     </xsl:assert>
     <xsl:variable name="members" as="element(dts:member)*">
       <xsl:apply-templates mode="members" select="dts:get-citation-tree($context, $tree)">

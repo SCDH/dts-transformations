@@ -76,7 +76,7 @@ no matter what the $mediaType parameter is set to.
 
   <xsl:template name="xsl:initial-template" visibility="public">
     <xsl:assert test="$resource" error-code="{$dts:http400 => dts:error-to-eqname()}">
-      <xsl:value-of xml:space="preserve">ERROR: resource parameter missing</xsl:value-of>
+      <xsl:value-of xml:space="preserve">400: resource parameter missing</xsl:value-of>
     </xsl:assert>
     <xsl:apply-templates mode="document" select="dts:resource-uri() => doc()"/>
   </xsl:template>
@@ -96,14 +96,14 @@ no matter what the $mediaType parameter is set to.
     use-when="not($media-type-package)">
     <xsl:assert test="empty($mediaType) or $mediaType = $default-media-types"
       error-code="{$dts:http404 => dts:error-to-eqname()}">
-      <xsl:value-of xml:space="preserve">ERROR: media type '<xsl:value-of select="$mediaType"/>' not supported</xsl:value-of>
+      <xsl:value-of xml:space="preserve">404: media type '<xsl:value-of select="$mediaType"/>' not supported</xsl:value-of>
     </xsl:assert>
     <xsl:call-template name="document"/>
   </xsl:template>
 
   <xsl:template name="document" visibility="final">
     <xsl:context-item as="document-node(element(TEI))" use="required"/>
-    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')"/>
+    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')">400</xsl:assert>
     <!-- TODO: Do we have to assert that $tree is valid if $ref, $start and $end are absent? -->
     <xsl:choose>
       <xsl:when test="not($ref or $start or $end)">
@@ -131,7 +131,7 @@ no matter what the $mediaType parameter is set to.
   <xsl:template name="transform" visibility="final"
     use-when="$media-type-package and $media-type-component eq 'mode'">
     <xsl:context-item as="document-node()" use="required"/>
-    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')"/>
+    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')">400</xsl:assert>
     <xsl:choose>
       <xsl:when test="not($ref or $start or $end)">
         <xsl:apply-templates _mode="{$media-type-processor}" select=".">
@@ -160,7 +160,7 @@ no matter what the $mediaType parameter is set to.
   <xsl:template name="transform" visibility="final"
     use-when="$media-type-package and $media-type-component eq 'template'">
     <xsl:context-item as="document-node()" use="required"/>
-    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')"/>
+    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')">400</xsl:assert>
     <xsl:choose>
       <xsl:when test="not($ref or $start or $end)">
         <xsl:call-template _name="{$media-type-processor}">
@@ -192,7 +192,7 @@ no matter what the $mediaType parameter is set to.
   <xsl:template name="transform" visibility="final"
     use-when="$media-type-package and $media-type-component eq 'function'">
     <xsl:context-item as="document-node()" use="required"/>
-    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')"/>
+    <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')">400</xsl:assert>
     <xsl:variable name="fun"
       as="function (node()*, xs:string, xs:string?, document-node()) as node()*"
       select="replace($media-type-processor, '#[0-9]+$', '') => xs:QName() => function-lookup(4)"/>
@@ -222,7 +222,7 @@ no matter what the $mediaType parameter is set to.
     <xsl:variable name="members" as="element(dts:member)*" select="dts:members($doc, -1, true())"/>
     <xsl:assert test="exists($members[1][string(dts:identifier) eq $ref])"
       error-code="{$dts:http404 => dts:error-to-eqname()}">
-      <xsl:value-of xml:space="preserve">ERROR: member '<xsl:value-of select="$ref"/>' not found</xsl:value-of>
+      <xsl:value-of xml:space="preserve">404: member '<xsl:value-of select="$ref"/>' not found</xsl:value-of>
     </xsl:assert>
     <xsl:for-each select="$members[1]/dts:xpath ! string(.)">
       <xsl:evaluate as="node()?" context-item="$doc" xpath="."/>
@@ -255,7 +255,7 @@ no matter what the $mediaType parameter is set to.
       <xsl:sequence select="cut:horizontal($first, $last) => outermost()"/>
       <xsl:catch errors="err:XTDE3160">
         <xsl:message terminate="yes" error-code="{$dts:http404 => dts:error-to-eqname()}">
-          <xsl:value-of xml:space="preserve">ERROR: $start or $end member not found</xsl:value-of>
+          <xsl:value-of xml:space="preserve">404: $start or $end member not found</xsl:value-of>
         </xsl:message>
       </xsl:catch>
     </xsl:try>

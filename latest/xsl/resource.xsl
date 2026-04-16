@@ -26,7 +26,7 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:message terminate="yes" error-code="{$dts:http400 => dts:error-to-eqname()}">
-            <xsl:value-of xml:space="preserve">ERROR: resource parameter missing</xsl:value-of>
+            <xsl:value-of xml:space="preserve">400: resource parameter missing</xsl:value-of>
           </xsl:message>
         </xsl:otherwise>
       </xsl:choose>

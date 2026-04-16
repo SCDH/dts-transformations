@@ -22,4 +22,6 @@ http://www.saxonica.com/documentation/index/configuration-file.html
     
     </xsltPackages>
 
+    <xslt enableAssertions="false"/>
+
 </configuration>
