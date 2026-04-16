@@ -1,5 +1,11 @@
 # Changes
 
+## 0.4.10
+
+- adds saxon config for SEED with assertions enabled (fixes issue #18)
+- changes transformation type in SEED config (see issue #16 again)
+- send HTTP status code in terminating message like required by SEED (see issue #19)
+
 ## 0.4.9
 
 - fixes transformation type in SEED config (see issue #16)
