@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map" stylesheet="seed-config-chain.xsl"
+    run-as="external">
+
+    <x:variable name="id-xsl-transformation-id" as="xs:string" select="'xsl-document'"/>
+
+    <x:scenario label="chained id.xsl">
+        <x:param name="saxon-config-uri" select="'../../test/media-type/saxon.xml'"/>
+        <x:context href="../../test/media-type/id.xsl"/>
+        <x:expect label="transformation ID" test="map:contains(., $id-xsl-transformation-id)"/>
+        <x:expect label="has parameter descriptions"
+            test=". => map:get($id-xsl-transformation-id) => map:contains('parameterDescriptors')"/>
+        <x:expect label="parameter descriptions from chained transformation"
+            test=". => map:get($id-xsl-transformation-id) => map:get('parameterDescriptors') => map:contains('fingers')"
+        />
+    </x:scenario>
+
+</x:description>

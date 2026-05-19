@@ -48,8 +48,7 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
         otherwise they are prefixed with $upload-uri. -->
     <xsl:param name="relative-uris" as="xs:boolean" select="true()"/>
 
-    <xsl:param name="class" as="xs:string"
-        select="'xslt'"/>
+    <xsl:param name="class" as="xs:string" select="'xslt'"/>
 
     <xsl:param name="transformation-id" as="xs:string" select="'name'"/>
 
@@ -98,8 +97,7 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
         <xsl:variable name="stylesheet" as="document-node()" select="."/>
         <xsl:map-entry key="$transformation-id">
             <xsl:map>
-                <xsl:map-entry key="'description'"
-                    select="($stylesheet//comment() => string-join('&#xa;') => tokenize('&#xa;'))[normalize-space() ne ''][1] => normalize-space()"/>
+                <xsl:call-template name="seed:description"/>
                 <xsl:map-entry key="'class'" select="$class"/>
                 <xsl:choose>
                     <xsl:when test="$relative-uris and $id-prefix eq ''">
@@ -114,30 +112,53 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
                         />
                     </xsl:otherwise>
                 </xsl:choose>
-                <xsl:map-entry key="'mediaType'" select="seed:media-type($stylesheet)"/>
-                <xsl:map-entry key="'requiresSource'"
-                    select="exists($stylesheet/global-context-item)"/>
-
+                <xsl:call-template name="seed:media-type"/>
+                <xsl:call-template name="seed:requires-source"/>
                 <!-- libraries (used packages) -->
-                <xsl:map-entry key="'libraries'">
-                    <xsl:variable name="libs" as="map(*)*">
-                        <xsl:apply-templates mode="libraries" select="$stylesheet"/>
-                    </xsl:variable>
-                    <xsl:sequence
-                        select="array {$libs => reverse() => seed:distinct-maps-in-order(())}"/>
-                </xsl:map-entry>
-
+                <xsl:call-template name="seed:libraries"/>
                 <!-- parameters -->
-                <xsl:map-entry key="'parameterDescriptors'">
-                    <xsl:variable name="params" as="map(*)*">
-                        <xsl:apply-templates mode="stylesheet-params" select="$stylesheet"/>
-                    </xsl:variable>
-                    <xsl:sequence select="map:merge($params, $merge-options)"/>
-                </xsl:map-entry>
-
+                <xsl:call-template name="seed:parameter-descriptors"/>
             </xsl:map>
         </xsl:map-entry>
     </xsl:template>
+
+    <xsl:template name="seed:description" as="item()">
+        <xsl:param name="stylesheet" as="document-node()" select="."/>
+        <xsl:map-entry key="'description'"
+            select="($stylesheet//comment() => string-join('&#xa;') => tokenize('&#xa;'))[normalize-space() ne ''][1] => normalize-space()"
+        />
+    </xsl:template>
+
+    <xsl:template name="seed:media-type" as="item()">
+        <xsl:param name="stylesheet" as="document-node()" select="."/>
+        <xsl:map-entry key="'mediaType'" select="seed:media-type($stylesheet)"/>
+    </xsl:template>
+
+    <xsl:template name="seed:requires-source" as="item()">
+        <xsl:param name="stylesheet" as="document-node()" select="."/>
+        <xsl:map-entry key="'requiresSource'" select="exists($stylesheet/global-context-item)"/>
+    </xsl:template>
+
+    <xsl:template name="seed:libraries" as="item()">
+        <xsl:param name="stylesheet" as="document-node()" select="."/>
+        <xsl:map-entry key="'libraries'">
+            <xsl:variable name="libs" as="map(*)*">
+                <xsl:apply-templates mode="libraries" select="$stylesheet"/>
+            </xsl:variable>
+            <xsl:sequence select="array {$libs => reverse() => seed:distinct-maps-in-order(())}"/>
+        </xsl:map-entry>
+    </xsl:template>
+
+    <xsl:template name="seed:parameter-descriptors" as="item()">
+        <xsl:param name="stylesheet" as="document-node()" select="."/>
+        <xsl:map-entry key="'parameterDescriptors'">
+            <xsl:variable name="params" as="map(*)*">
+                <xsl:apply-templates mode="stylesheet-params" select="$stylesheet"/>
+            </xsl:variable>
+            <xsl:sequence select="map:merge($params, $merge-options)"/>
+        </xsl:map-entry>
+    </xsl:template>
+
 
     <xsl:mode name="libraries" on-no-match="shallow-skip"/>
     <xsl:mode name="stylesheet-params" on-no-match="shallow-skip"/>
