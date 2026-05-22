@@ -13,7 +13,7 @@ target/bin/xslt.sh \
     -it \
     resource=test/matt.xml
 
-All the entpoints parameters are supported through stylesheet parameters.
+All the endpoints parameters are supported through stylesheet parameters.
 
 Post-processing for returning another mediaType than application/tei+xml can be customized
 by the static parameters $media-type-*. It is turned of by default. Set to $media-type-package
