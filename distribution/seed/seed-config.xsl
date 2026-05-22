@@ -120,6 +120,8 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
                 <xsl:call-template name="seed:libraries"/>
                 <!-- parameters -->
                 <xsl:call-template name="seed:parameter-descriptors"/>
+                <!-- compile time parameters -->
+                <xsl:call-template name="seed:compile-time-parameters"/>
             </xsl:map>
         </xsl:map-entry>
     </xsl:template>
@@ -161,6 +163,12 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
             <xsl:sequence select="map:merge($params, $merge-options)"/>
         </xsl:map-entry>
     </xsl:template>
+
+    <xsl:template name="seed:compile-time-parameters" as="item()?">
+        <xsl:param name="stylesheet" as="document-node()" select="."/>
+        <!--xsl:map-entry key="'compileTimeParameters'"/-->
+    </xsl:template>
+
 
 
     <xsl:mode name="libraries" on-no-match="shallow-skip"/>

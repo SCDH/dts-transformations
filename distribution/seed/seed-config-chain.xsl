@@ -37,6 +37,13 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
     <!-- version of the mediaType processor package -->
     <xsl:param name="media-type-package-version" as="xs:string" select="'1.0.0'"/>
 
+    <!-- should be 'template', 'mode', or 'function' -->
+    <xsl:param name="media-type-component" as="xs:string" select="'template'"/>
+
+    <!-- name of the template, mode or function used as an entry point for mediaType processing -->
+    <xsl:param name="media-type-processor" as="xs:string" select="'post-proc'"/>
+
+
     <!-- base URI of the dts-transformations project -->
     <xsl:param name="dts-root" as="xs:string" select="resolve-uri('../../', static-base-uri())"/>
 
@@ -131,6 +138,48 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
                 </xsl:call-template>
             </xsl:variable>
             <xsl:sequence select="map:merge($params, $merge-options)"/>
+        </xsl:map-entry>
+    </xsl:template>
+
+    <xsl:template name="seed:compile-time-parameters" as="item()">
+        <xsl:param name="stylesheet" as="document-node()" select="."/>
+        <xsl:map-entry key="'compileTimeParameters'">
+            <xsl:variable name="parameter-descriptor-maps" as="map(*)*">
+                <xsl:apply-templates mode="stylesheet-params" select="$stylesheet"/>
+            </xsl:variable>
+            <xsl:variable name="parameter-descriptors" as="map(xs:string, item()*)"
+                select="map:merge($parameter-descriptor-maps, $merge-options)"/>
+            <xsl:variable name="media-type-parameters" as="map(xs:string, item()*)*">
+                <xsl:map>
+                    <xsl:map-entry key="'name'">media-type-package</xsl:map-entry>
+                    <xsl:map-entry key="'value'" select="$media-type-package"/>
+                    <xsl:map-entry key="'type'"
+                        select="map:get($parameter-descriptors, 'media-type-package') => map:get('type')"
+                    />
+                </xsl:map>
+                <xsl:map>
+                    <xsl:map-entry key="'name'">media-type-package-version</xsl:map-entry>
+                    <xsl:map-entry key="'value'" select="$media-type-package-version"/>
+                    <xsl:map-entry key="'type'"
+                        select="map:get($parameter-descriptors, 'media-type-package-version') => map:get('type')"
+                    />
+                </xsl:map>
+                <xsl:map>
+                    <xsl:map-entry key="'name'">media-type-component</xsl:map-entry>
+                    <xsl:map-entry key="'value'" select="$media-type-component"/>
+                    <xsl:map-entry key="'type'"
+                        select="map:get($parameter-descriptors, 'media-type-component') => map:get('type')"
+                    />
+                </xsl:map>
+                <xsl:map>
+                    <xsl:map-entry key="'name'">media-type-processor</xsl:map-entry>
+                    <xsl:map-entry key="'value'" select="$media-type-processor"/>
+                    <xsl:map-entry key="'type'"
+                        select="map:get($parameter-descriptors, 'media-type-processor') => map:get('type')"
+                    />
+                </xsl:map>
+            </xsl:variable>
+            <xsl:sequence select="array {$media-type-parameters}"/>
         </xsl:map-entry>
     </xsl:template>
 

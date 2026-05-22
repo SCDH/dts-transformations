@@ -29,7 +29,15 @@
         <x:expect label="has parameter descriptors"
             test=". => map:get($id-xsl-transformation-id) => map:contains('parameterDescriptors')"/>
         <x:expect label="parameter descriptions from chained transformation"
-            test=". => map:get($id-xsl-transformation-id) => map:get('parameterDescriptors') => map:contains('fingers')"
+            test=". => map:get($id-xsl-transformation-id) => map:get('parameterDescriptors') => map:contains('fingers')"/>
+        <x:expect label="has compile time parameters"
+            test=". => map:get($id-xsl-transformation-id) => map:contains('compileTimeParameters')"/>
+        <x:expect label="has 4 compile time parameters"
+            test=". => map:get($id-xsl-transformation-id) => map:get('compileTimeParameters') => array:size()"
+            as="xs:integer" select="4"/>
+        <x:expect label="has the 4 media-type related compile time parameters"
+            test=". => map:get($id-xsl-transformation-id) => map:get('compileTimeParameters') => array:for-each(function ($x) as xs:string { map:get($x, 'name') })"
+            select="array {'media-type-package','media-type-package-version','media-type-component','media-type-processor'}"
         />
     </x:scenario>
 
