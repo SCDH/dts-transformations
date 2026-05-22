@@ -31,9 +31,16 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
 
     <xsl:import _href="{$seed-config-xsl}"/>
 
+    <!-- set this to the empty string or () if you do not want pass on to a mediaType processor -->
+    <xsl:param name="media-type-package" as="xs:string" required="true"/>
+
+    <!-- version of the mediaType processor package -->
+    <xsl:param name="media-type-package-version" as="xs:string" select="'1.0.0'"/>
+
+    <!-- base URI of the dts-transformations project -->
     <xsl:param name="dts-root" as="xs:string" select="resolve-uri('../../', static-base-uri())"/>
 
-    <!-- document.xsl stylesheet -->
+    <!-- stylesheet for document endpoint -->
     <xsl:param name="document-xsl" as="xs:string"
         select="resolve-uri('xsl/document.xsl', $dts-root)"/>
 
@@ -53,20 +60,6 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
 
     <xsl:template name="xsl:initial-template">
         <xsl:map>
-            <xsl:for-each select="$transformations">
-                <xsl:variable name="location" select="resolve-uri(., $base-uri)"/>
-                <xsl:variable name="stylesheet" as="document-node()" select="doc($location)"/>
-                <xsl:apply-templates select="$stylesheet" mode="transformation">
-                    <xsl:with-param name="transformation-id" tunnel="true"
-                        select="seed:get-transformation-id(., $stylesheet)"/>
-                    <xsl:with-param name="location" tunnel="true" select="."/>
-                </xsl:apply-templates>
-            </xsl:for-each>
-        </xsl:map>
-    </xsl:template>
-
-    <xsl:template match="document-node()">
-        <xsl:map>
             <!-- start with document.xsl -->
             <xsl:variable name="document-relative-path"
                 select="substring($document-xsl, string-length(resolve-uri('.', base-uri($dts-saxon-config))) + 1)"/>
@@ -80,14 +73,47 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
                 select="substring(base-uri(), string-length(resolve-uri('.', $base-uri)) + 1)"/>
             <xsl:apply-templates mode="libraries" select="."/>
         </xsl:map>
+
+        <!--xsl:map>
+            <xsl:for-each select="$transformations">
+                <xsl:variable name="location" select="resolve-uri(., $base-uri)"/>
+                <xsl:variable name="stylesheet" as="document-node()" select="doc($location)"/>
+                <xsl:apply-templates select="$stylesheet" mode="transformation">
+                    <xsl:with-param name="transformation-id" tunnel="true"
+                        select="seed:get-transformation-id(., $stylesheet)"/>
+                    <xsl:with-param name="location" tunnel="true" select="."/>
+                </xsl:apply-templates>
+            </xsl:for-each>
+        </xsl:map-->
+    </xsl:template>
+
+    <xsl:template match="document-node()">
+        <xsl:message>document-node in default mode</xsl:message>
+        <xsl:map>
+            <xsl:variable name="relative-path"
+                select="seed:configured-package($media-type-package, $media-type-package-version, $saxon-config)/@sourceLocation"/>
+            <!-- start with document.xsl -->
+            <xsl:variable name="document-relative-path"
+                select="substring($document-xsl, string-length(resolve-uri('.', base-uri($dts-saxon-config))) + 1)"/>
+            <xsl:apply-templates mode="transformation" select="$document-transformation">
+                <xsl:with-param name="transformation-id"
+                    select="seed:get-transformation-id($relative-path, .)" tunnel="true"/>
+                <xsl:with-param name="location" select="$document-relative-path" tunnel="true"/>
+            </xsl:apply-templates>
+        </xsl:map>
     </xsl:template>
 
     <xsl:template name="seed:libraries" as="item()">
         <xsl:param name="stylesheet" as="document-node()" select="."/>
+        <xsl:message>NT seed:libraries overwrite</xsl:message>
         <xsl:map-entry key="'libraries'">
             <xsl:variable name="libs" as="map(*)*">
                 <xsl:apply-templates mode="libraries" select="$stylesheet"/>
-                <xsl:apply-templates mode="libraries" select="$chained-transformation"/>
+                <xsl:call-template name="seed:package-with-mode">
+                    <xsl:with-param name="name" select="$media-type-package"/>
+                    <xsl:with-param name="version" select="$media-type-package-version"/>
+                    <xsl:with-param name="mode" select="'libraries'"/>
+                </xsl:call-template>
             </xsl:variable>
             <xsl:sequence select="array {$libs => reverse() => seed:distinct-maps-in-order(())}"/>
         </xsl:map-entry>
@@ -98,7 +124,11 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
         <xsl:map-entry key="'parameterDescriptors'">
             <xsl:variable name="params" as="map(*)*">
                 <xsl:apply-templates mode="stylesheet-params" select="$stylesheet"/>
-                <xsl:apply-templates mode="stylesheet-params" select="$chained-transformation"/>
+                <xsl:call-template name="seed:package-with-mode">
+                    <xsl:with-param name="name" select="$media-type-package"/>
+                    <xsl:with-param name="version" select="$media-type-package-version"/>
+                    <xsl:with-param name="mode" select="'stylesheet-params'"/>
+                </xsl:call-template>
             </xsl:variable>
             <xsl:sequence select="map:merge($params, $merge-options)"/>
         </xsl:map-entry>

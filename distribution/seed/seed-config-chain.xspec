@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:map="http://www.w3.org/2005/xpath-functions/map" stylesheet="seed-config-chain.xsl"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    xmlns:array="http://www.w3.org/2005/xpath-functions/array" stylesheet="seed-config-chain.xsl"
     run-as="external">
 
-    <x:variable name="id-xsl-transformation-id" as="xs:string" select="'xsl-document'"/>
+    <x:variable name="id-xsl-transformation-id" as="xs:string" select="'id'"/>
 
     <x:scenario label="chained id.xsl">
         <x:param name="saxon-config-uri" select="'../../test/media-type/saxon.xml'"/>
+        <x:param name="media-type-package" select="'http://example.com/xsl/identity'"/>
         <x:context href="../../test/media-type/id.xsl"/>
         <x:expect label="transformation ID" test="map:contains(., $id-xsl-transformation-id)"/>
-        <x:expect label="has parameter descriptions"
+        <x:expect label="document.xsl as stylesheet location (start with)"
+            test=". => map:get($id-xsl-transformation-id) => map:get('location') => starts-with('xsl')"/>
+        <x:expect label="document.xsl as stylesheet location (ends with)"
+            test=". => map:get($id-xsl-transformation-id) => map:get('location') => ends-with('document.xsl')"/>
+        <x:expect label="has libraries"
+            test=". => map:get($id-xsl-transformation-id) => map:contains('libraries')"/>
+        <x:expect label="1 library"
+            test=". => map:get($id-xsl-transformation-id) => map:get('libraries') => array:size()"
+            as="xs:integer" select="1"/>
+        <x:expect label="library has location"
+            test=". => map:get($id-xsl-transformation-id) => map:get('libraries') => array:get(1) => map:contains('location')"/>
+        <x:expect label="library has location"
+            test=". => map:get($id-xsl-transformation-id) => map:get('libraries') => array:get(1) => map:get('location')"
+            as="xs:string" select="'id.xsl'"/>
+        <x:expect label="has parameter descriptors"
             test=". => map:get($id-xsl-transformation-id) => map:contains('parameterDescriptors')"/>
         <x:expect label="parameter descriptions from chained transformation"
             test=". => map:get($id-xsl-transformation-id) => map:get('parameterDescriptors') => map:contains('fingers')"
