@@ -23,9 +23,9 @@
             as="xs:integer" select="1"/>
         <x:expect label="library has location"
             test=". => map:get($id-xsl-transformation-id) => map:get('libraries') => array:get(1) => map:contains('location')"/>
-        <x:expect label="library has location"
-            test=". => map:get($id-xsl-transformation-id) => map:get('libraries') => array:get(1) => map:get('location')"
-            as="xs:string" select="'id.xsl'"/>
+        <x:expect label="compiles the media-type package as a library"
+            test=". => map:get($id-xsl-transformation-id) => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') => ends-with('id.xsl') }) => array:size()"
+            as="xs:integer" select="1"/>
         <x:expect label="has parameter descriptors"
             test=". => map:get($id-xsl-transformation-id) => map:contains('parameterDescriptors')"/>
         <x:expect label="parameter descriptions from chained transformation"
