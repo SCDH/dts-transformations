@@ -95,7 +95,6 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
     </xsl:template>
 
     <xsl:template match="document-node()">
-        <xsl:message>document-node in default mode</xsl:message>
         <xsl:map>
             <xsl:variable name="relative-path"
                 select="seed:configured-package($media-type-package, $media-type-package-version, $saxon-config)/@sourceLocation"/>
@@ -112,7 +111,6 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
 
     <xsl:template name="seed:libraries" as="item()">
         <xsl:param name="stylesheet" as="document-node()" select="."/>
-        <xsl:message>NT seed:libraries overwrite</xsl:message>
         <xsl:map-entry key="'libraries'">
             <xsl:variable name="libs" as="map(*)*">
                 <xsl:apply-templates mode="libraries" select="$stylesheet"/>

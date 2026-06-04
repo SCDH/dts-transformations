@@ -80,7 +80,6 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
     </xsl:template>
 
     <xsl:template match="document-node()">
-        <xsl:message>document-node in default mode</xsl:message>
         <xsl:map>
             <xsl:variable name="relative-path"
                 select="substring(base-uri(), string-length(resolve-uri('.', $base-uri)) + 1)"/>
@@ -97,7 +96,6 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
     <xsl:template match="document-node()" mode="transformation">
         <xsl:param name="transformation-id" as="xs:string" tunnel="true"/>
         <xsl:param name="location" as="xs:string" tunnel="true"/>
-        <xsl:message>document-node in mode transformation</xsl:message>
         <xsl:variable name="stylesheet" as="document-node()" select="."/>
         <xsl:map-entry key="$transformation-id">
             <xsl:map>
@@ -147,7 +145,6 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
 
     <xsl:template name="seed:libraries" as="item()">
         <xsl:param name="stylesheet" as="document-node()" select="."/>
-        <xsl:message>NT seed:libraries</xsl:message>
         <xsl:map-entry key="'libraries'">
             <xsl:variable name="libs" as="map(*)*">
                 <xsl:apply-templates mode="libraries" select="$stylesheet"/>
