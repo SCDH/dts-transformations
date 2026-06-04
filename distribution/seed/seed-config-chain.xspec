@@ -7,6 +7,10 @@
 
     <x:variable name="id-xsl-transformation-id" as="xs:string" select="'media-type-id'"/>
 
+    <!--
+        command line equivalent:
+        target/bin/xslt.sh -xsl:distribution/seed/seed-config-chain.xsl -s:test/media-type/id.xsl saxon-config-uri=$(realpath test/saxon.xml ) media-type-package='http://example.com/xsl/identity'
+    -->
     <x:scenario label="chained id.xsl">
         <x:param name="saxon-config-uri" select="'../../test/saxon.xml'"/>
         <x:param name="media-type-package" select="'http://example.com/xsl/identity'"/>
