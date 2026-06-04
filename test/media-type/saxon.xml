@@ -6,6 +6,8 @@
 
      <xsltPackages>
           <package name="http://example.com/xsl/identity" version="1.0.0" sourceLocation="id.xsl"/>
+          <package name="http://example.com/xsl/tei2txt" version="1.0.0"
+               sourceLocation="tei2txt.xsl"/>
      </xsltPackages>
 
 </configuration>

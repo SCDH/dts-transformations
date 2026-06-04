@@ -41,4 +41,31 @@
         />
     </x:scenario>
 
+
+    <x:variable name="txt-xsl-transformation-id" as="xs:string" select="'tei2txt'"/>
+
+    <x:scenario label="chained tei2txt.xsl">
+        <x:param name="saxon-config-uri" select="'../../test/media-type/saxon.xml'"/>
+        <x:param name="media-type-package" select="'http://example.com/xsl/tei2txt'"/>
+        <x:param name="media-type-component" select="'mode'"/>
+        <x:param name="media-type-processor" select="'tei'"/>
+        <x:context href="../../test/media-type/tei2txt.xsl"/>
+        <x:expect label="transformation ID" test="map:contains(., $txt-xsl-transformation-id)"/>
+        <x:expect label="compiles the media-type package as a library"
+            test=". => map:get($txt-xsl-transformation-id) => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') => ends-with('tei2txt.xsl') }) => array:size()"
+            as="xs:integer" select="1"/>
+        <x:expect label="has the 4 media-type related compile time parameters"
+            test=". => map:get($txt-xsl-transformation-id) => map:get('compileTimeParameters') => array:for-each(function ($x) as xs:string { map:get($x, 'name') })"
+            select="array {'media-type-package','media-type-package-version','media-type-component','media-type-processor'}"/>
+        <x:expect label="media-type package"
+            test=". => map:get($txt-xsl-transformation-id) => map:get('compileTimeParameters') => array:filter(function ($x) as xs:boolean { map:get($x, 'name') eq 'media-type-package' }) => array:head() => map:get('value')"
+            select="'http://example.com/xsl/tei2txt'"/>
+        <x:expect label="media-type component"
+            test=". => map:get($txt-xsl-transformation-id) => map:get('compileTimeParameters') => array:filter(function ($x) as xs:boolean { map:get($x, 'name') eq 'media-type-component' }) => array:head() => map:get('value')"
+            select="'mode'"/>
+        <x:expect label="media-type processor"
+            test=". => map:get($txt-xsl-transformation-id) => map:get('compileTimeParameters') => array:filter(function ($x) as xs:boolean { map:get($x, 'name') eq 'media-type-processor' }) => array:head() => map:get('value')"
+            select="'tei'"/>
+    </x:scenario>
+
 </x:description>
