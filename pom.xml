@@ -28,6 +28,7 @@
 
         <!-- XSLT resources for generating the configuration for the SEED distribution -->
         <seed-config-xsl.url>${project.basedir}/distribution/seed/seed-config.xsl</seed-config-xsl.url>
+        <seed-merge-xsl.url>${project.basedir}/distribution/seed/merge.xsl</seed-merge-xsl.url>
         <sef-config-xsl.url>${project.basedir}/distribution/seed/sef-config.xsl</sef-config-xsl.url>
 
         <!-- SEF package -->
@@ -402,7 +403,7 @@
                                         </fileMapper>
                                     </fileMappers>
                                 </transformationSet>
-                                
+
                                 <!-- an example with prioritized package -->
                                 <!--
                                 <transformationSet>
@@ -465,6 +466,26 @@
                                     <fileMappers>
                                         <fileMapper
                                             implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                            <targetExtension>.seed.json</targetExtension>
+                                        </fileMapper>
+                                    </fileMappers>
+                                </transformationSet>
+                                <transformationSet>
+                                    <!-- merge SEED configurations -->
+                                    <dir>${project.basedir}</dir>
+                                    <includes>
+                                        <include>pom.xml</include>
+                                    </includes>
+                                    <parameters>
+                                        <parameter>
+                                            <name>json-collection</name>
+                                            <value>file:${project.build.directory}/generated-resources?select=*.seed.json;recurse=yes</value>
+                                        </parameter>
+                                    </parameters>
+                                    <stylesheet>${seed-merge-xsl.url}</stylesheet>
+                                    <fileMappers>
+                                        <fileMapper
+                                            implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
                                             <targetExtension>.json</targetExtension>
                                         </fileMapper>
                                     </fileMappers>
@@ -500,7 +521,7 @@
                                     <directory>${project.build.directory}/generated-resources/xml/xslt</directory>
                                     <filtering>false</filtering>
                                     <includes>
-                                        <include>**/*.json</include>
+                                        <include>**/*.seed.json</include>
                                     </includes>
                                 </resource>
                             </resources>
@@ -520,7 +541,7 @@
                                     <directory>${project.build.directory}/generated-resources/xml/xslt</directory>
                                     <filtering>false</filtering>
                                     <includes>
-                                        <include>**/*.json</include>
+                                        <include>**/*.seed.json</include>
                                     </includes>
                                 </resource>
                             </resources>

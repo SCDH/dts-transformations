@@ -38,6 +38,13 @@
          </excludes>
       </fileSet>
       <fileSet>
+         <directory>${project.build.directory}/generated-resources/xml/xslt</directory>
+         <outputDirectory>/${project.artifactId}</outputDirectory>
+         <includes>
+            <include>**/*.seed.json</include>
+         </includes>
+      </fileSet>
+      <fileSet>
          <!-- include all dependencies unpacked in target/dependencies -->
          <directory>target/dependencies</directory>
          <outputDirectory>/${project.artifactId}/target/dependencies</outputDirectory>
@@ -84,5 +91,12 @@
          </includes>
       </fileSet>
    </fileSets>
+
+   <files>
+      <file>
+         <source>${project.build.directory}/generated-resources/xml/xslt/pom.json</source>
+         <destName>${project.artifactId}.json</destName>
+      </file>
+   </files>
 
 </assembly>
