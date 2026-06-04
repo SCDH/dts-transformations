@@ -5,10 +5,10 @@
     xmlns:array="http://www.w3.org/2005/xpath-functions/array" stylesheet="seed-config-chain.xsl"
     run-as="external">
 
-    <x:variable name="id-xsl-transformation-id" as="xs:string" select="'id'"/>
+    <x:variable name="id-xsl-transformation-id" as="xs:string" select="'media-type-id'"/>
 
     <x:scenario label="chained id.xsl">
-        <x:param name="saxon-config-uri" select="'../../test/media-type/saxon.xml'"/>
+        <x:param name="saxon-config-uri" select="'../../test/saxon.xml'"/>
         <x:param name="media-type-package" select="'http://example.com/xsl/identity'"/>
         <x:context href="../../test/media-type/id.xsl"/>
         <x:expect label="transformation ID" test="map:contains(., $id-xsl-transformation-id)"/>
@@ -42,10 +42,10 @@
     </x:scenario>
 
 
-    <x:variable name="txt-xsl-transformation-id" as="xs:string" select="'tei2txt'"/>
+    <x:variable name="txt-xsl-transformation-id" as="xs:string" select="'media-type-tei2txt'"/>
 
     <x:scenario label="chained tei2txt.xsl">
-        <x:param name="saxon-config-uri" select="'../../test/media-type/saxon.xml'"/>
+        <x:param name="saxon-config-uri" select="'../../test/saxon.xml'"/>
         <x:param name="media-type-package" select="'http://example.com/xsl/tei2txt'"/>
         <x:param name="media-type-component" select="'mode'"/>
         <x:param name="media-type-processor" select="'tei'"/>
