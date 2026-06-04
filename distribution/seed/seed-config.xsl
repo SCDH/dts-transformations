@@ -59,6 +59,8 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
                 }
             }"/>
 
+    <xsl:param name="fail-on-package-not-found" as="xs:boolean" select="true()" static="true"/>
+
     <xsl:variable name="saxon-config" select="doc($saxon-config-uri)"/>
 
 
@@ -179,20 +181,29 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
         <xsl:apply-templates mode="#current" select="doc(resolve-uri(@href, base-uri(.)))"/>
     </xsl:template>
 
-    <xsl:template mode="libraries stylesheet-params" match="use-package">
+    <!-- just match use-package with name and version, but not with compile-time name and version -->
+    <xsl:template mode="libraries stylesheet-params" match="use-package[@name and @package-version]">
         <xsl:variable name="pkg" as="element(cfg:package)?"
-            select="seed:configured-package(@name, @version, $saxon-config)"/>
-        <xsl:if test="$pkg">
-            <xsl:variable name="package" as="document-node()" select="seed:read-package($pkg)"/>
-            <!-- make entry for this package -->
-            <xsl:apply-templates mode="#current" select="$pkg">
-                <xsl:with-param name="name" select="$pkg/@name" tunnel="true"/>
-                <xsl:with-param name="version" select="$pkg/@version" tunnel="true"/>
-                <xsl:with-param name="package" select="$package" tunnel="true"/>
-            </xsl:apply-templates>
-            <!-- recurse into packages used by the package -->
-            <xsl:apply-templates mode="#current" select="$package"/>
-        </xsl:if>
+            select="seed:configured-package(@name, @package-version, $saxon-config)"/>
+        <xsl:choose>
+            <xsl:when test="$pkg">
+                <xsl:variable name="package" as="document-node()" select="seed:read-package($pkg)"/>
+                <!-- make entry for this package -->
+                <xsl:apply-templates mode="#current" select="$pkg">
+                    <xsl:with-param name="name" select="$pkg/@name" tunnel="true"/>
+                    <xsl:with-param name="version" select="$pkg/@version" tunnel="true"/>
+                    <xsl:with-param name="package" select="$package" tunnel="true"/>
+                </xsl:apply-templates>
+                <!-- recurse into packages used by the package -->
+                <xsl:apply-templates mode="#current" select="$package"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:message _terminate="{$fail-on-package-not-found}">
+                    <xsl:text>package not found: </xsl:text>
+                    <xsl:value-of select="concat(@name, ' (', @package-version, ')')"/>
+                </xsl:message>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template name="seed:package-with-mode" visibility="final">
