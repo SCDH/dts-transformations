@@ -45,6 +45,8 @@ This configuration
             sourceLocation="media-type/id.xsl"/>
         <package name="http://example.com/xsl/tei2txt" version="1.0.0"
             sourceLocation="media-type/tei2txt.xsl"/>
+        <package name="http://example.com/xsl/a" version="1.0.0" sourceLocation="media-type/a.xsl"/>
+        <package name="http://example.com/xsl/b" version="1.0.0" sourceLocation="media-type/b.xsl"/>
     </xsltPackages>
 
 </configuration>
