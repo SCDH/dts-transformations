@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generate a configuration file for the SEED XML Transformer
+<!-- Generate a configuration file for the SEED XC DTS REST API
 
-The transformations given as the "transformation" parameter is
-resolved relative to the URI given in the transformation-saxon-config-uri. The
-saxon-config-uri is resolved relative to the stylesheet URI, aka
-as static-base-uri().
-
-The parameter upload-uri can be used to set a base URL for all
-relevant locations.
+This transformations makes configuration for transformations chained (internally)
+to document.xsl. The chained package must be given as source and as the
+'media-type-package' parameter. The other `media-type-*' parameters in document.xsl
+are used to set the chained process.
 
 USAGE EXAMPLES:
 
-target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl -s:xsl/projects/alea/prose-page saxon-config-uri=../../saxon.xml
-
-target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl -it saxon-config-uri=../../saxon.xml transformations=xsl/projects/alea/prose-page.xsl
-
-target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https://scdh.zivgitlabpages.uni-muenster.de/tei-processing/seed-tei-transformations/saxon.xml transformations=xsl/projects/alea/prose-page.xsl -it
+target/bin/xslt.sh \
+    -xsl:distribution/seed/seed-config-chain.xsl \
+    -s:test/media-type/id.xsl \
+    saxon-config-uri=$(realpath test/saxon.xml ) \
+    media-type-package='http://example.com/xsl/identity'
 
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
