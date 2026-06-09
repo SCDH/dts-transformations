@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    xmlns:array="http://www.w3.org/2005/xpath-functions/array"
+    xmlns:seed="http://scdh.wwu.de/transform/seed#" stylesheet="chain.xsl" run-as="external">
+
+    <x:helper stylesheet="seed-config.xsl"/>
+
+    <x:param name="saxon-config-uri" select="'../../saxon.xml'"/>
+    <x:param name="transformations" select="'xsl/document.xsl'"/>
+    <x:variable name="document.json" select="seed:mk-config()"/>
+
+
+    <x:scenario label="seed:as-library">
+        <x:param name="document-config" as="xs:string" select="''"/>
+        <x:param name="chained-config" as="xs:string" select="''"/>
+        <x:param name="media-type-package" as="xs:string" select="'http://th.is'"/>
+        <x:call function="seed:as-library">
+            <x:param as="map(*)" select="$document.json"/>
+        </x:call>
+        <x:expect label="keeps transformation id" test="map:contains(., 'libraries')"/>
+        <x:expect label="document.xsl entry package in libraries"
+            test="map:get(., 'libraries') => array:filter(function ($x) {map:get($x, 'location') => ends-with('document.xsl')}) => array:size()"
+            select="1"/>
+        <x:expect label="one more libraries than before"
+            test="map:get(., 'libraries') => array:size()"
+            select="map:get($document.json, 'xsl-document') => map:get('libraries') => array:size() + 1"/>
+        <x:expect label="document.xsl is first library"
+            test="map:get(., 'libraries') => array:get(1) => map:get('location')"
+            select="'xsl/document.xsl'"/>
+        <x:expect label="library as name"
+            test="map:get(., 'libraries') => array:get(1) => map:get('asName')"
+            select="'http://th.is'"/>
+        <x:expect label="library as version"
+            test="map:get(., 'libraries') => array:get(1) => map:get('asVersion')" select="'1.0.0'"/>
+        <x:expect label="has parameter descriptors property"
+            test="map:contains(., 'parameterDescriptors')"/>
+        <x:expect label="same number of parameter descriptors"
+            test="map:get(., 'parameterDescriptors') => map:size()"
+            select="map:get($document.json, 'xsl-document') => map:get('parameterDescriptors') => map:size()"
+        />
+    </x:scenario>
+
+
+
+
+</x:description>
