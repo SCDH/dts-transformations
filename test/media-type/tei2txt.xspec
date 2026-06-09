@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    xmlns:array="http://www.w3.org/2005/xpath-functions/array"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dts="https://w3id.org/api/dts#"
+    xmlns:t="http://www.tei-c.org/ns/1.0" stylesheet="../../xsl/document.xsl" run-as="external">
+
+    <x:variable name="x:saxon-config" href="../saxon.xml"/>
+
+    <x:param name="media-type-package" select="'http://example.com/xsl/tei2txt'" static="true"/>
+
+    <x:param name="media-type-component" select="'mode'" static="true"/>
+
+    <x:param name="media-type-processor" select="'tei'" static="true"/>
+
+    <x:scenario label="whole doc of john as txt">
+        <x:context href="../john.xml"/>
+        <x:expect label="result"/>
+    </x:scenario>
+
+
+</x:description>

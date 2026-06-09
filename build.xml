@@ -82,6 +82,12 @@
         </antcall>
     </target>
 
+    <target name="test-test-media-type-tei2txt.xsl">
+        <antcall target="xspec.xspec" inheritall="false">
+            <param name="xspec.xml" location="${basedir}/test/media-type/tei2txt.xspec"/>
+        </antcall>
+    </target>
+
     <!-- tests for utils -->
 
     <target name="test-distribution-seed-seed-config.xsl">

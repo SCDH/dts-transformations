@@ -5,26 +5,27 @@
 
   <xsl:output method="text"/>
 
-  <xsl:mode name="tei" on-no-match="shallow-skip"/>
+  <xsl:mode name="tei" on-no-match="shallow-skip" visibility="public"/>
 
-  <xsl:mode name="prose" on-no-match="shallow-skip"/>
+  <xsl:mode name="prose" on-no-match="shallow-skip" visibility="public"/>
 
-  <xsl:mode name="verse" on-no-match="shallow-skip"/>
+  <xsl:mode name="verse" on-no-match="shallow-skip" visibility="public"/>
 
-  <xsl:template mode="#all" match="TEI">
+  <xsl:template mode="tei prose verse" match="TEI">
+    <xsl:message>CHAINED PROC</xsl:message>
     <xsl:apply-templates mode="#current" select="text"/>
   </xsl:template>
 
-  <xsl:template mode="#all" match="p | ab | head">
+  <xsl:template mode="tei prose verse" match="p | ab | head">
     <xsl:apply-templates mode="prose"/>
     <xsl:text>&#xa;&#xa;</xsl:text>
   </xsl:template>
 
-  <xsl:template mode="#all" match="div | div1 | div2 | div3 | div4 | div5 | div6 | div7">
+  <xsl:template mode="tei prose verse" match="div | div1 | div2 | div3 | div4 | div5 | div6 | div7">
     <xsl:apply-templates mode="#current" select="*"/>
   </xsl:template>
 
-  <xsl:template mode="#all" match="l">
+  <xsl:template mode="tei prose verse" match="l">
     <xsl:text>&#xa;</xsl:text>
     <xsl:apply-templates mode="verse"/>
   </xsl:template>
@@ -33,21 +34,23 @@
     <xsl:text>&#x9;</xsl:text>
   </xsl:template>
 
-  <xsl:template mode="#all" match="lg">
+  <xsl:template mode="tei prose verse" match="lg">
     <xsl:text>&#xa;</xsl:text>
     <xsl:apply-templates mode="#current" select="*"/>
   </xsl:template>
 
 
-  <xsl:template mode="#all" match="app[//variantEncoding/@method eq 'parallel-segmenation']">
+  <xsl:template mode="tei prose verse"
+    match="app[//variantEncoding/@method eq 'parallel-segmenation']">
     <xsl:apply-templates mode="#current" select="lem"/>
   </xsl:template>
 
-  <xsl:template mode="#all" match="app[//variantEncoding/@method ne 'parallel-segmenation']"/>
+  <xsl:template mode="tei prose verse"
+    match="app[//variantEncoding/@method ne 'parallel-segmenation']"/>
 
-  <xsl:template mode="#all" match="note[@type eq 'editorial']"/>
+  <xsl:template mode="tei prose verse" match="note[@type eq 'editorial']"/>
 
-  <xsl:template mode="#all" match="span | interp"/>
+  <xsl:template mode="tei prose verse" match="span | interp"/>
 
 
   <!-- handling of text leafs -->
