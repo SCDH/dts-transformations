@@ -736,6 +736,21 @@
                             </descriptors>
                         </configuration>
                     </execution>
+                    <execution>
+                        <!-- paketize resources for the SEED XML transformer or SEED DTS -->
+                        <id>seed-test</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>${project.artifactId}-${project.version}</finalName>
+                            <archiveBaseDirectory>${project.basedir}</archiveBaseDirectory>
+                            <descriptors>
+                                <descriptor>distribution/seed/test-assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
