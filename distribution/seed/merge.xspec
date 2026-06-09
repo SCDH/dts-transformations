@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    xmlns:array="http://www.w3.org/2005/xpath-functions/array"
+    xmlns:seed="http://scdh.wwu.de/transform/seed#" stylesheet="merge.xsl" run-as="external">
+
+    <x:scenario label="merge json collection">
+        <x:param name="json-collection"
+            select="xs:anyURI('../../target/generated-resources/xml/xslt/xsl?select=*.seed.json')"/>
+        <x:call template="xsl:initial-template"/>
+        <x:expect label="result is a map with two entries" test="map:size(.)" select="2"/>
+        <x:expect label="the map's property names are the transformations IDs" test="map:keys(.)"
+            select="('dts-transformations-xsl-document', 'dts-transformations-xsl-navigation')"/>
+    </x:scenario>
+
+</x:description>
