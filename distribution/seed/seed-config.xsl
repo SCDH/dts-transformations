@@ -64,8 +64,8 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
     <xsl:variable name="saxon-config" select="doc($saxon-config-uri)"/>
 
 
-
-    <xsl:template name="xsl:initial-template">
+    <!-- entry point for running the processor with an initial template -->
+    <xsl:template name="xsl:initial-template" visibility="final">
         <xsl:map>
             <xsl:for-each select="$transformations">
                 <xsl:variable name="location" select="resolve-uri(., $base-uri)"/>
@@ -79,6 +79,23 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
         </xsl:map>
     </xsl:template>
 
+
+    <!-- entry point for running the processor with an initial function -->
+    <xsl:function name="seed:mk-config" visibility="final">
+        <xsl:map>
+            <xsl:for-each select="$transformations">
+                <xsl:variable name="location" select="resolve-uri(., $base-uri)"/>
+                <xsl:variable name="stylesheet" as="document-node()" select="doc($location)"/>
+                <xsl:apply-templates select="$stylesheet" mode="transformation">
+                    <xsl:with-param name="transformation-id" tunnel="true"
+                        select="seed:get-transformation-id(., $stylesheet)"/>
+                    <xsl:with-param name="location" tunnel="true" select="."/>
+                </xsl:apply-templates>
+            </xsl:for-each>
+        </xsl:map>
+    </xsl:function>
+
+    <!-- entry point for generating a config for the transformation given as source -->
     <xsl:template match="document-node()">
         <xsl:map>
             <xsl:variable name="relative-path"
@@ -91,6 +108,8 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
         </xsl:map>
     </xsl:template>
 
+
+    <!-- the mode 'transformation' run on a package or stylesheet acually does the job -->
     <xsl:mode name="transformation" on-no-match="shallow-skip"/>
 
     <xsl:template match="document-node()" mode="transformation">
