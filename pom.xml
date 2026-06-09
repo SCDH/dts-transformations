@@ -479,7 +479,7 @@
                                     <parameters>
                                         <parameter>
                                             <name>json-collection</name>
-                                            <value>file:${project.build.directory}/generated-resources?select=*.seed.json;recurse=yes</value>
+                                            <value>file:${project.build.directory}/generated-resources/xml/xslt/xsl?select=*.seed.json;recurse=yes</value>
                                         </parameter>
                                     </parameters>
                                     <stylesheet>${seed-merge-xsl.url}</stylesheet>
@@ -487,6 +487,32 @@
                                         <fileMapper
                                             implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
                                             <targetExtension>.json</targetExtension>
+                                        </fileMapper>
+                                    </fileMappers>
+                                </transformationSet>
+                                <transformationSet>
+                                    <!-- generate configuration for SEED XML Transformer for chained transformations in test package -->
+                                    <dir>${project.basedir}</dir>
+                                    <!-- Include every transformation resource for the SEED XML Transformer
+                                                in an <include>path</include> element! -->
+                                    <includes>
+                                        <include>test/media-type/tei2txt.xsl</include>
+                                    </includes>
+                                    <parameters>
+                                        <parameter>
+                                            <name>saxon-config-uri</name>
+                                            <value>${project.basedir}/test/saxon.xml</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>id-prefix</name>
+                                            <value>chained</value>
+                                        </parameter>
+                                    </parameters>
+                                    <stylesheet>${seed-config-xsl.url}</stylesheet>
+                                    <fileMappers>
+                                        <fileMapper
+                                            implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                            <targetExtension>.seed.json</targetExtension>
                                         </fileMapper>
                                     </fileMappers>
                                 </transformationSet>
@@ -518,7 +544,7 @@
                         <configuration>
                             <resources>
                                 <resource>
-                                    <directory>${project.build.directory}/generated-resources/xml/xslt</directory>
+                                    <directory>${project.build.directory}/generated-resources/xml/xslt/xsl</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>**/*.seed.json</include>
@@ -538,7 +564,7 @@
                         <configuration>
                             <resources>
                                 <resource>
-                                    <directory>${project.build.directory}/generated-resources/xml/xslt</directory>
+                                    <directory>${project.build.directory}/generated-resources/xml/xslt/xsl</directory>
                                     <filtering>false</filtering>
                                     <includes>
                                         <include>**/*.seed.json</include>
