@@ -30,6 +30,7 @@
         <!-- testing utils -->
         <antcall target="test-distribution-seed-seed-config.xsl"/>
         <antcall target="test-distribution-seed-seed-config-chain.xsl"/>
+        <antcall target="test-distribution-seed-chain.xsl"/>
     </target>
 
     <target name="test-xsl-dts.xsl">
@@ -85,6 +86,12 @@
     <target name="test-distribution-seed-seed-config.xsl">
         <antcall target="xspec.xspec" inheritall="false">
             <param name="xspec.xml" location="${basedir}/distribution/seed/seed-config.xspec"/>
+        </antcall>
+    </target>
+
+    <target name="test-distribution-seed-chain.xsl">
+        <antcall target="xspec.xspec" inheritall="false">
+            <param name="xspec.xml" location="${basedir}/distribution/seed/chain.xspec"/>
         </antcall>
     </target>
 

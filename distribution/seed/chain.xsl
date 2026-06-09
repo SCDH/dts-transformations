@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Merges SEED configuration files in JSON format
+<!-- Makes a SEED configuration from the document config and a config of a transformation to be chained to it
 
 USAGE:
 target/bin/xslt.sh \
-    -xsl:distribution/seed/merge.xsl \
-    -s:pom.xml \
-    json-collection="file:$(realpath target/generated-resources/)?select=*.seed.json;recurse=yes"
+    -xsl:distribution/seed/chain.xsl \
+    -it \
+    document-config-uri=PATH_TO_DOCUMENT.json \
+    chained-config-uri=PATH_TO_CHAINED.json \
+    media-type-package=CHAINED_PACKAGE_NAME
 
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -16,9 +18,24 @@ target/bin/xslt.sh \
 
     <xsl:output method="json" indent="true"/>
 
-    <xsl:param name="document-config" as="xs:string" required="true"/>
+    <!-- PATH to JSON config file for XSLT for document endpoint -->
+    <xsl:param name="document-config-uri" as="xs:string" required="true"/>
 
-    <xsl:param name="chained-config" as="xs:string" required="true"/>
+    <xsl:param name="document-config" as="map(*)"
+        select="$document-config-uri => unparsed-text() => parse-json()"/>
+
+    <!-- PATH to JSON config file fof XSLT to be chained to document endpoint XSLT -->
+    <xsl:param name="chained-config-uri" as="xs:string" required="true"/>
+
+    <xsl:param name="chained-config" as="map(*)"
+        select="$chained-config-uri => unparsed-text() => parse-json()"/>
+
+    <!-- name (ID) of the resulting transformation -->
+    <xsl:param name="name" as="xs:string">
+        <xsl:value-of
+            select="seed:transformation-id($document-config) || '+' || seed:transformation-id($chained-config)"
+        />
+    </xsl:param>
 
     <!-- set this to the empty string or () if you do not want pass on to a mediaType processor -->
     <xsl:param name="media-type-package" as="xs:string" required="true"/>
@@ -41,19 +58,31 @@ target/bin/xslt.sh \
         <xsl:sequence select="seed:merge()"/>
     </xsl:template>
 
+
+
     <xsl:function name="seed:merge" as="map(xs:string, item()*)">
-        <xsl:sequence select="
-                (
-                $document-config => unparsed-text() => parse-json(),
-                $chained-config => unparsed-text() => parse-json() => seed:as-library()
-                ) => map:merge()"/>
+        <xsl:map>
+            <xsl:map-entry key="$name">
+                <xsl:sequence select="
+                        ($document-config => seed:bare-config(), $chained-config => seed:as-library()) => map:merge()"
+                />
+            </xsl:map-entry>
+        </xsl:map>
+    </xsl:function>
+
+    <xsl:function name="seed:transformation-id" as="xs:string">
+        <xsl:param name="named-config" as="map(xs:string, map(xs:string, item()*))"/>
+        <xsl:value-of select="map:keys($named-config)[1]"/>
+    </xsl:function>
+
+    <xsl:function name="seed:bare-config" as="map(xs:string, item()*)">
+        <xsl:param name="named-config" as="map(xs:string, map(xs:string, item()*))"/>
+        <xsl:sequence select="map:get($named-config, seed:transformation-id($named-config))"/>
     </xsl:function>
 
     <xsl:function name="seed:as-library" as="map(xs:string, item()*)" visibility="final">
         <xsl:param name="config" as="map(xs:string, item()*)"/>
-        <xsl:variable name="transformation-id" as="xs:string" select="map:keys($config)[1]"/>
-        <xsl:variable name="transformation" as="map(*)"
-            select="map:get($config, $transformation-id)"/>
+        <xsl:variable name="transformation" as="map(*)" select="seed:bare-config($config)"/>
         <xsl:variable name="stylesheet" as="map(*)" select="
                 (
                 map:entry('location', map:get($transformation, 'location')),

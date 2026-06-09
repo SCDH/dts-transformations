@@ -13,8 +13,8 @@
 
 
     <x:scenario label="seed:as-library">
-        <x:param name="document-config" as="xs:string" select="''"/>
-        <x:param name="chained-config" as="xs:string" select="''"/>
+        <x:param name="document-config-uri" as="xs:string" select="''"/>
+        <x:param name="chained-config-uri" as="xs:string" select="''"/>
         <x:param name="media-type-package" as="xs:string" select="'http://th.is'"/>
         <x:call function="seed:as-library">
             <x:param as="map(*)" select="$document.json"/>
