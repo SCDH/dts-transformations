@@ -88,20 +88,16 @@
             <include>${project.artifactId}.yaml</include>
          </includes>
       </fileSet>
-      <fileSet>
-         <!-- the user-provided yaml config file overwrites the generated one -->
-         <directory>${project.basedir}</directory>
-         <outputDirectory>/</outputDirectory>
-         <includes>
-            <include>${project.artifactId}.yaml</include>
-         </includes>
-      </fileSet>
    </fileSets>
 
    <files>
       <file>
          <source>${project.build.directory}/generated-resources/xml/xslt/pom.json</source>
          <destName>${project.artifactId}.json</destName>
+      </file>
+      <file>
+         <source>${project.build.directory}/generated-resources/yml/pom.yml</source>
+         <destName>${project.artifactId}.yaml</destName>
       </file>
    </files>
 

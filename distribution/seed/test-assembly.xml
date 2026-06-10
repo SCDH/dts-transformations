@@ -56,6 +56,10 @@
          <source>${project.build.directory}/generated-resources/xml/xslt/build.json</source>
          <destName>${project.artifactId}-testing.json</destName>
       </file>
+      <file>
+         <source>${project.build.directory}/generated-resources/yml/build.yml</source>
+         <destName>${project.artifactId}-testing.yaml</destName>
+      </file>
    </files>
 
 </assembly>

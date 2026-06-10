@@ -606,30 +606,11 @@
                         <configuration>
                             <resources>
                                 <resource>
-                                    <directory>${project.build.directory}/generated-resources/xml/xslt/xsl</directory>
+                                    <directory>${project.build.directory}/generated-resources/xml/xslt</directory>
                                     <filtering>false</filtering>
                                     <includes>
-                                        <include>**/*.seed.json</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                            <outputExtension>yml</outputExtension>
-                            <outputDirectory>${project.build.directory}/generated-resources/yml</outputDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>seed-config-yaml-2-yaml</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>json-2-yaml</goal>
-                        </goals>
-                        <configuration>
-                            <resources>
-                                <resource>
-                                    <directory>${project.build.directory}/generated-resources/xml/xslt/xsl</directory>
-                                    <filtering>false</filtering>
-                                    <includes>
-                                        <include>**/*.seed.json</include>
+                                        <include>pom.json</include>
+                                        <include>build.json</include>
                                     </includes>
                                 </resource>
                             </resources>
@@ -717,32 +698,6 @@
                                         <include name="saxon.*.xml"/>
                                     </fileset>
                                 </copy>
-                            </target>
-                        </configuration>
-                    </execution>
-                    <!-- concat SEED XML Transformer configurations to seed-config.yaml -->
-                    <execution>
-                        <id>concat-seed-xml-transformer-configurations</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <concat
-                                    destfile="${project.build.directory}/${project.artifactId}.yaml"
-                                    force="yes">
-                                    <fileset
-                                        dir="${project.build.directory}/generated-resources/yml">
-                                        <include name="**/*.yml"/>
-                                    </fileset>
-                                    <filterchain>
-                                        <!-- remove structure from yaml files -->
-                                        <linecontainsregexp negate="true">
-                                            <regexp pattern="^---$"/>
-                                        </linecontainsregexp>
-                                    </filterchain>
-                                </concat>
                             </target>
                         </configuration>
                     </execution>
