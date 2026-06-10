@@ -17,7 +17,7 @@
     <x:variable name="document-cfg-uri" as="xs:string"
         select="resolve-uri('xsl/document.seed.json', $config-base-uri)"/>
     <x:variable name="tei2txt-config-uri" as="xs:string"
-        select="resolve-uri('test/media-type/tei2txt.seed.json', $config-base-uri)"/>
+        select="resolve-uri('test/media-type/tei2txt.chain.json', $config-base-uri)"/>
 
     <x:variable name="document-cfg" as="map(*)"
         select="$document-cfg-uri => unparsed-text() => parse-json()"/>
