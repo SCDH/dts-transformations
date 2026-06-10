@@ -11,6 +11,8 @@
 
   <xsl:mode name="verse" on-no-match="shallow-skip" visibility="public"/>
 
+  <xsl:param name="something" as="xs:string" select="'something'"/>
+
   <xsl:template mode="tei prose verse" match="TEI">
     <xsl:message>CHAINED PROC</xsl:message>
     <xsl:apply-templates mode="#current" select="text"/>
