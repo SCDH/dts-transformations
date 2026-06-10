@@ -28,7 +28,10 @@
 
         <!-- XSLT resources for generating the configuration for the SEED distribution -->
         <seed-config-xsl.url>${project.basedir}/distribution/seed/seed-config.xsl</seed-config-xsl.url>
+        <seed-merge-xsl.url>${project.basedir}/distribution/seed/merge.xsl</seed-merge-xsl.url>
+        <seed-chain-xsl.url>${project.basedir}/distribution/seed/chain.xsl</seed-chain-xsl.url>
         <sef-config-xsl.url>${project.basedir}/distribution/seed/sef-config.xsl</sef-config-xsl.url>
+        <seed-json-config.dir>${project.build.directory}/generated-resources/xml/xslt</seed-json-config.dir>
 
         <!-- SEF package -->
         <!-- whether to generate the package with sef compilations -->
@@ -402,7 +405,7 @@
                                         </fileMapper>
                                     </fileMappers>
                                 </transformationSet>
-                                
+
                                 <!-- an example with prioritized package -->
                                 <!--
                                 <transformationSet>
@@ -465,6 +468,112 @@
                                     <fileMappers>
                                         <fileMapper
                                             implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                            <targetExtension>.seed.json</targetExtension>
+                                        </fileMapper>
+                                    </fileMappers>
+                                </transformationSet>
+                                <transformationSet>
+                                    <!-- merge SEED configurations -->
+                                    <dir>${project.basedir}</dir>
+                                    <includes>
+                                        <include>pom.xml</include>
+                                    </includes>
+                                    <parameters>
+                                        <parameter>
+                                            <name>json-collection</name>
+                                            <value>file:${project.build.directory}/generated-resources/xml/xslt/xsl?select=*.seed.json;recurse=yes</value>
+                                        </parameter>
+                                    </parameters>
+                                    <stylesheet>${seed-merge-xsl.url}</stylesheet>
+                                    <fileMappers>
+                                        <fileMapper
+                                            implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                            <targetExtension>.json</targetExtension>
+                                        </fileMapper>
+                                    </fileMappers>
+                                </transformationSet>
+                                <transformationSet>
+                                    <!-- generate configuration for SEED XML Transformer for chained transformations in test package -->
+                                    <dir>${project.basedir}</dir>
+                                    <!-- Include every transformation resource for the SEED XML Transformer
+                                                in an <include>path</include> element! -->
+                                    <includes>
+                                        <include>test/media-type/tei2txt.xsl</include>
+                                    </includes>
+                                    <parameters>
+                                        <parameter>
+                                            <name>saxon-config-uri</name>
+                                            <value>${project.basedir}/test/saxon.xml</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>id-prefix</name>
+                                            <value>${project.artifactId}-testing</value>
+                                        </parameter>
+                                    </parameters>
+                                    <stylesheet>${seed-config-xsl.url}</stylesheet>
+                                    <fileMappers>
+                                        <fileMapper
+                                            implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                            <targetExtension>.chain.json</targetExtension>
+                                        </fileMapper>
+                                    </fileMappers>
+                                </transformationSet>
+                                <transformationSet>
+                                    <!-- generate chained configuration for tei2txt -->
+                                    <dir>${project.basedir}</dir>
+                                    <includes>
+                                        <include>test/media-type/tei2txt.xsl</include>
+                                    </includes>
+                                    <parameters>
+                                        <parameter>
+                                            <name>document-config-uri</name>
+                                            <value>${seed-json-config.dir}/xsl/document.seed.json</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>chained-config-uri</name>
+                                            <value>${seed-json-config.dir}/test/media-type/tei2txt.chain.json</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>media-type-package</name>
+                                            <value>http://example.com/xsl/tei2txt</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>media-type-package-version</name>
+                                            <value>1.0.0</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>media-type-component</name>
+                                            <value>mode</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>media-type-processor</name>
+                                            <value>tei</value>
+                                        </parameter>
+                                    </parameters>
+                                    <stylesheet>${seed-chain-xsl.url}</stylesheet>
+                                    <fileMappers>
+                                        <fileMapper
+                                            implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                            <targetExtension>.seed.json</targetExtension>
+                                        </fileMapper>
+                                    </fileMappers>
+                                </transformationSet>
+                                <transformationSet>
+                                    <!-- merge SEED configurations for testing package -->
+                                    <dir>${project.basedir}</dir>
+                                    <includes>
+                                        <include>build.xml</include>
+                                    </includes>
+                                    <parameters>
+                                        <parameter>
+                                            <name>json-collection</name>
+                                            <value>file:${project.build.directory}/generated-resources/xml/xslt?select=*.seed.json;recurse=yes</value>
+                                        </parameter>
+                                    </parameters>
+                                    <stylesheet>${seed-merge-xsl.url}</stylesheet>
+                                    <fileMappers>
+                                        <fileMapper
+                                            implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
                                             <targetExtension>.json</targetExtension>
                                         </fileMapper>
                                     </fileMappers>
@@ -500,27 +609,8 @@
                                     <directory>${project.build.directory}/generated-resources/xml/xslt</directory>
                                     <filtering>false</filtering>
                                     <includes>
-                                        <include>**/*.json</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                            <outputExtension>yml</outputExtension>
-                            <outputDirectory>${project.build.directory}/generated-resources/yml</outputDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>seed-config-yaml-2-yaml</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>json-2-yaml</goal>
-                        </goals>
-                        <configuration>
-                            <resources>
-                                <resource>
-                                    <directory>${project.build.directory}/generated-resources/xml/xslt</directory>
-                                    <filtering>false</filtering>
-                                    <includes>
-                                        <include>**/*.json</include>
+                                        <include>pom.json</include>
+                                        <include>build.json</include>
                                     </includes>
                                 </resource>
                             </resources>
@@ -611,32 +701,6 @@
                             </target>
                         </configuration>
                     </execution>
-                    <!-- concat SEED XML Transformer configurations to seed-config.yaml -->
-                    <execution>
-                        <id>concat-seed-xml-transformer-configurations</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <concat
-                                    destfile="${project.build.directory}/${project.artifactId}.yaml"
-                                    force="yes">
-                                    <fileset
-                                        dir="${project.build.directory}/generated-resources/yml">
-                                        <include name="**/*.yml"/>
-                                    </fileset>
-                                    <filterchain>
-                                        <!-- remove structure from yaml files -->
-                                        <linecontainsregexp negate="true">
-                                            <regexp pattern="^---$"/>
-                                        </linecontainsregexp>
-                                    </filterchain>
-                                </concat>
-                            </target>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
 
@@ -686,6 +750,21 @@
                             <archiveBaseDirectory>${project.basedir}</archiveBaseDirectory>
                             <descriptors>
                                 <descriptor>distribution/seed/assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <!-- paketize resources for the SEED XML transformer or SEED DTS -->
+                        <id>seed-test</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>${project.artifactId}-${project.version}</finalName>
+                            <archiveBaseDirectory>${project.basedir}</archiveBaseDirectory>
+                            <descriptors>
+                                <descriptor>distribution/seed/test-assembly.xml</descriptor>
                             </descriptors>
                         </configuration>
                     </execution>

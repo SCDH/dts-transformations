@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    xmlns:array="http://www.w3.org/2005/xpath-functions/array" stylesheet="seed-config-chain.xsl"
+    run-as="external">
+
+    <x:variable name="id-xsl-transformation-id" as="xs:string" select="'media-type-id'"/>
+
+    <!--
+        command line equivalent:
+        target/bin/xslt.sh -xsl:distribution/seed/seed-config-chain.xsl -s:test/media-type/id.xsl saxon-config-uri=$(realpath test/saxon.xml ) media-type-package='http://example.com/xsl/identity'
+    -->
+    <x:scenario label="chained id.xsl">
+        <x:param name="saxon-config-uri" select="'../../test/saxon.xml'"/>
+        <x:param name="media-type-package" select="'http://example.com/xsl/identity'"/>
+        <x:context href="../../test/media-type/id.xsl"/>
+        <x:expect label="transformation ID" test="map:contains(., $id-xsl-transformation-id)"/>
+        <x:expect label="document.xsl as stylesheet location (start with)"
+            test=". => map:get($id-xsl-transformation-id) => map:get('location') => starts-with('xsl')"/>
+        <x:expect label="document.xsl as stylesheet location (ends with)"
+            test=". => map:get($id-xsl-transformation-id) => map:get('location') => ends-with('document.xsl')"/>
+        <x:expect label="has libraries"
+            test=". => map:get($id-xsl-transformation-id) => map:contains('libraries')"/>
+        <x:expect label="library has location"
+            test=". => map:get($id-xsl-transformation-id) => map:get('libraries') => array:get(1) => map:contains('location')"/>
+        <x:expect label="uses tree.xsl as library"
+            test=". => map:get($id-xsl-transformation-id) => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') eq '../xsl/tree.xsl' }) => array:size()"
+            select="1"/>
+        <x:expect label="compiles the media-type package as a library"
+            test=". => map:get($id-xsl-transformation-id) => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') => ends-with('id.xsl') }) => array:size()"
+            as="xs:integer" select="1"/>
+        <x:expect label="has parameter descriptors"
+            test=". => map:get($id-xsl-transformation-id) => map:contains('parameterDescriptors')"/>
+        <x:expect label="parameter descriptions from chained transformation"
+            test=". => map:get($id-xsl-transformation-id) => map:get('parameterDescriptors') => map:contains('fingers')"/>
+        <x:expect label="has compile time parameters"
+            test=". => map:get($id-xsl-transformation-id) => map:contains('compileTimeParameters')"/>
+        <x:expect label="has 4 compile time parameters"
+            test=". => map:get($id-xsl-transformation-id) => map:get('compileTimeParameters') => array:size()"
+            as="xs:integer" select="4"/>
+        <x:expect label="has the 4 media-type related compile time parameters"
+            test=". => map:get($id-xsl-transformation-id) => map:get('compileTimeParameters') => array:for-each(function ($x) as xs:string { map:get($x, 'name') })"
+            select="array {'media-type-package','media-type-package-version','media-type-component','media-type-processor'}"
+        />
+    </x:scenario>
+
+
+    <x:variable name="a-xsl-transformation-id" as="xs:string" select="'media-type-a'"/>
+
+    <x:scenario label="chained a.xsl">
+        <x:param name="saxon-config-uri" select="'../../test/saxon.xml'"/>
+        <x:param name="media-type-package" select="'http://example.com/xsl/a'"/>
+        <x:context href="../../test/media-type/a.xsl"/>
+        <x:expect label="transformation ID" test="map:contains(., $a-xsl-transformation-id)"/>
+        <x:expect label="document.xsl as stylesheet location (start with)"
+            test=". => map:get($a-xsl-transformation-id) => map:get('location') => starts-with('xsl')"/>
+        <x:expect label="document.xsl as stylesheet location (ends with)"
+            test=". => map:get($a-xsl-transformation-id) => map:get('location') => ends-with('document.xsl')"/>
+        <x:expect label="has libraries"
+            test=". => map:get($a-xsl-transformation-id) => map:contains('libraries')"/>
+        <x:expect label="library has location"
+            test=". => map:get($a-xsl-transformation-id) => map:get('libraries') => array:get(1) => map:contains('location')"/>
+        <x:expect label="uses tree.xsl as library"
+            test=". => map:get($a-xsl-transformation-id) => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') eq '../xsl/tree.xsl' }) => array:size()"
+            select="1"/>
+        <x:expect label="compiles the media-type package as a library"
+            test=". => map:get($a-xsl-transformation-id) => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') => ends-with('a.xsl') }) => array:size()"
+            as="xs:integer" select="1"/>
+        <x:expect label="compiles the media-type package's dependency b.xsl as a library"
+            test=". => map:get($a-xsl-transformation-id) => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') => ends-with('b.xsl') }) => array:size()"
+            as="xs:integer" select="1"/>
+        <x:expect label="has parameter descriptors"
+            test=". => map:get($a-xsl-transformation-id) => map:contains('parameterDescriptors')"/>
+        <x:expect label="parameter descriptions from chained transformation: fingers"
+            test=". => map:get($a-xsl-transformation-id) => map:get('parameterDescriptors') => map:contains('fingers')"/>
+        <x:expect label="parameter descriptions from b.xsl: toes"
+            test=". => map:get($a-xsl-transformation-id) => map:get('parameterDescriptors') => map:contains('toes')"
+        />
+    </x:scenario>
+
+
+    <x:variable name="txt-xsl-transformation-id" as="xs:string" select="'media-type-tei2txt'"/>
+
+    <x:scenario label="chained tei2txt.xsl">
+        <x:param name="saxon-config-uri" select="'../../test/saxon.xml'"/>
+        <x:param name="media-type-package" select="'http://example.com/xsl/tei2txt'"/>
+        <x:param name="media-type-component" select="'mode'"/>
+        <x:param name="media-type-processor" select="'tei'"/>
+        <x:context href="../../test/media-type/tei2txt.xsl"/>
+        <x:expect label="transformation ID" test="map:contains(., $txt-xsl-transformation-id)"/>
+        <x:expect label="uses tree.xsl as library"
+            test=". => map:get($txt-xsl-transformation-id) => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') eq '../xsl/tree.xsl' }) => array:size()"
+            select="1"/>
+        <x:expect label="compiles the media-type package as a library"
+            test=". => map:get($txt-xsl-transformation-id) => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') => ends-with('tei2txt.xsl') }) => array:size()"
+            as="xs:integer" select="1"/>
+        <x:expect label="has the 4 media-type related compile time parameters"
+            test=". => map:get($txt-xsl-transformation-id) => map:get('compileTimeParameters') => array:for-each(function ($x) as xs:string { map:get($x, 'name') })"
+            select="array {'media-type-package','media-type-package-version','media-type-component','media-type-processor'}"/>
+        <x:expect label="media-type package"
+            test=". => map:get($txt-xsl-transformation-id) => map:get('compileTimeParameters') => array:filter(function ($x) as xs:boolean { map:get($x, 'name') eq 'media-type-package' }) => array:head() => map:get('value')"
+            select="'http://example.com/xsl/tei2txt'"/>
+        <x:expect label="media-type component"
+            test=". => map:get($txt-xsl-transformation-id) => map:get('compileTimeParameters') => array:filter(function ($x) as xs:boolean { map:get($x, 'name') eq 'media-type-component' }) => array:head() => map:get('value')"
+            select="'mode'"/>
+        <x:expect label="media-type processor"
+            test=". => map:get($txt-xsl-transformation-id) => map:get('compileTimeParameters') => array:filter(function ($x) as xs:boolean { map:get($x, 'name') eq 'media-type-processor' }) => array:head() => map:get('value')"
+            select="'tei'"/>
+    </x:scenario>
+
+</x:description>

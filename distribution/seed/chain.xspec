@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    xmlns:array="http://www.w3.org/2005/xpath-functions/array"
+    xmlns:seed="http://scdh.wwu.de/transform/seed#" stylesheet="chain.xsl" run-as="external">
+
+    <x:helper stylesheet="seed-config.xsl"/>
+
+    <x:param name="saxon-config-uri" select="'../../saxon.xml'"/>
+    <x:param name="transformations" select="'xsl/document.xsl'"/>
+    <x:variable name="document.json" select="seed:mk-config()"/>
+
+    <x:variable name="config-base-uri"
+        select="resolve-uri('../../../target/generated-resources/xml/xslt/', static-base-uri())"/>
+
+    <x:variable name="document-cfg-uri" as="xs:string"
+        select="resolve-uri('xsl/document.seed.json', $config-base-uri)"/>
+    <x:variable name="tei2txt-config-uri" as="xs:string"
+        select="resolve-uri('test/media-type/tei2txt.chain.json', $config-base-uri)"/>
+
+    <x:variable name="document-cfg" as="map(*)"
+        select="$document-cfg-uri => unparsed-text() => parse-json()"/>
+    <x:variable name="tei2txt-config" as="map(*)"
+        select="$tei2txt-config-uri => unparsed-text() => parse-json()"/>
+
+    <x:variable name="document-id" as="xs:string" select="map:keys($document-cfg)"/>
+    <x:variable name="tei2txt-id" as="xs:string" select="map:keys($tei2txt-config)"/>
+
+    <x:variable name="document-tei2txt-id" as="xs:string"
+        select="($document-id, $tei2txt-id) => string-join('+')"/>
+
+    <x:variable name="media-type-parameters" as="xs:string*"
+        select="'media-type-package','media-type-package-version','media-type-component','media-type-processor'"/>
+
+    <x:scenario label="seed:as-library">
+        <x:param name="document-config-uri" as="xs:string" select="''"/>
+        <x:param name="chained-config-uri" as="xs:string" select="''"/>
+        <x:param name="media-type-package" as="xs:string" select="'http://th.is'"/>
+        <x:call function="seed:as-library">
+            <x:param as="map(*)" select="$document.json"/>
+        </x:call>
+        <x:expect label="keeps transformation id" test="map:contains(., 'libraries')"/>
+        <x:expect label="document.xsl entry package in libraries"
+            test="map:get(., 'libraries') => array:filter(function ($x) {map:get($x, 'location') => ends-with('document.xsl')}) => array:size()"
+            select="1"/>
+        <x:expect label="one more libraries than before"
+            test="map:get(., 'libraries') => array:size()"
+            select="map:get($document.json, 'xsl-document') => map:get('libraries') => array:size() + 1"/>
+        <x:expect label="document.xsl is first library"
+            test="map:get(., 'libraries') => array:get(1) => map:get('location')"
+            select="'xsl/document.xsl'"/>
+        <x:expect label="library as name"
+            test="map:get(., 'libraries') => array:get(1) => map:get('asName')"
+            select="'http://th.is'"/>
+        <x:expect label="library as version"
+            test="map:get(., 'libraries') => array:get(1) => map:get('asVersion')" select="'1.0.0'"/>
+        <x:expect label="has parameter descriptors property"
+            test="map:contains(., 'parameterDescriptors')"/>
+        <x:expect label="same number of parameter descriptors"
+            test="map:get(., 'parameterDescriptors') => map:size()"
+            select="map:get($document.json, 'xsl-document') => map:get('parameterDescriptors') => map:size()"
+        />
+    </x:scenario>
+
+    <x:scenario label="chain tei2txt.xsl to document.xsl">
+        <x:param name="document-config-uri" as="xs:string" select="''"/>
+        <x:param name="chained-config-uri" as="xs:string" select="''"/>
+        <x:param name="document-config" as="map(*)" select="$document-cfg"/>
+        <x:param name="chained-config" as="map(*)" select="$tei2txt-config"/>
+        <x:param name="media-type-package" as="xs:string" select="'http://example.com/xsl/tei2txt'"/>
+        <x:call function="seed:chain"/>
+        <x:expect label="results in 1 transformation config" test="map:size(.)" select="1"/>
+        <x:expect label="result transformation ID" test="map:keys(.)" select="$document-tei2txt-id"/>
+
+        <x:expect label="has hint about chaining in description"
+            test="map:get(., $document-tei2txt-id) => map:get('description') => matches('tei2txt.+chained\s+to.+document')"/>
+        <x:expect label="uses description from chained"
+            test="map:get(., $document-tei2txt-id) => map:get('description') => ends-with(map:get($tei2txt-config, $tei2txt-id) => map:get('description'))"/>
+
+        <x:expect label="content type determined by chained transformation"
+            test="map:get(., $document-tei2txt-id) => map:get('mediaType')"
+            select="map:get($tei2txt-config, $tei2txt-id) => map:get('mediaType')"/>
+
+        <x:expect label="location of document.xsl"
+            test="map:get(., $document-tei2txt-id) => map:get('location')"
+            select="map:get($document-cfg, $document-id) => map:get('location')"/>
+
+        <x:expect label="transformation to have the document libraries and tei2txt"
+            test="map:get(., $document-tei2txt-id) => map:get('libraries') => array:size()"
+            select="map:get($document-cfg, $document-id) => map:get('libraries') => array:size() + 1"/>
+        <x:expect label="chained stylesheet (tei2txt.xsl) is a library"
+            test=". => map:get($document-tei2txt-id) => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') => matches('tei2txt\.xsl') }) => array:size()"
+            select="1"/>
+        <x:expect label="chained stylesheet (tei2txt.xsl) has location"
+            test=". => map:get($document-tei2txt-id) => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') => matches('tei2txt\.xsl') }) => array:get(1) => map:get('location')"
+            select="map:get($tei2txt-config, $tei2txt-id) => map:get('location')"/>
+        <x:expect label="chained stylesheet (tei2txt.xsl) has asName"
+            test=". => map:get($document-tei2txt-id) => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') => matches('tei2txt\.xsl') }) => array:get(1) => map:get('asName')"
+            select="'http://example.com/xsl/tei2txt'"/>
+        <x:expect label="chained stylesheet (tei2txt.xsl) has asVersion"
+            test=". => map:get($document-tei2txt-id) => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') => matches('tei2txt\.xsl') }) => array:get(1) => map:get('asVersion')"
+            select="'1.0.0'"/>
+
+        <x:expect label="transformation to have parameters of document and of tei2txt"
+            test="map:get(., $document-tei2txt-id) => map:get('parameterDescriptors') => map:size()"
+            select="map:get($document-cfg, $document-id) => map:get('parameterDescriptors') => map:size() + map:get($tei2txt-config, $tei2txt-id) => map:get('parameterDescriptors') => map:size()"/>
+
+        <x:expect label="has the media-type related compile time parameters"
+            test=". => map:get($document-tei2txt-id) => map:get('compileTimeParameters') => array:for-each(function ($x) as xs:string { map:get($x, 'name') })"
+            select="array {$media-type-parameters}"/>
+    </x:scenario>
+
+
+    <x:scenario label="chain tei2txt.xsl to document.xsl when called with a source document">
+        <x:param name="document-config-uri" as="xs:string" select="''"/>
+        <x:param name="chained-config-uri" as="xs:string" select="''"/>
+        <x:param name="document-config" as="map(*)" select="$document-cfg"/>
+        <x:param name="chained-config" as="map(*)" select="$tei2txt-config"/>
+        <x:param name="media-type-package" as="xs:string" select="'http://example.com/xsl/tei2txt'"/>
+        <x:context href="test-assembly.xml"/>
+        <x:expect label="results in 1 transformation config" test="map:size(.)" select="1"/>
+        <x:expect label="result transformation ID" test="map:keys(.)" select="$document-tei2txt-id"
+        />
+    </x:scenario>
+
+</x:description>

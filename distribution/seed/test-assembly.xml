@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+   <id>seed-testing</id>
+   <includeBaseDirectory>true</includeBaseDirectory>
+   <baseDirectory/>
+
+   <formats>
+      <format>tar.gz</format>
+   </formats>
+
+   <fileSets>
+      <fileSet>
+         <directory>${project.basedir}/test</directory>
+         <outputDirectory>/${project.artifactId}-testing</outputDirectory>
+         <includes>
+            <include>**/tei2txt.xsl</include>
+         </includes>
+         <excludes>
+            <exclude>post-proc-*</exclude>
+            <exclude>specs/**</exclude>
+            <exclude>**/xspec/**.xsl</exclude>
+            <exclude>distribution/**</exclude>
+            <exclude>scripts/**</exclude>
+            <exclude>doc/**</exclude>
+            <exclude>test/**</exclude>
+            <exclude>utils/**</exclude>
+            <exclude>target/**</exclude>
+            <exclude>frameworks/**</exclude>
+            <exclude>cases/**</exclude>
+            <exclude>dist/**</exclude>
+            <exclude>wiki/**</exclude>
+         </excludes>
+      </fileSet>
+      <fileSet>
+         <directory>${project.build.directory}/generated-resources/xml/xslt/test</directory>
+         <outputDirectory>/${project.artifactId}-testing</outputDirectory>
+         <includes>
+            <include>**/*.seed.json</include>
+            <include>**/*.chain.json</include>
+         </includes>
+      </fileSet>
+      <fileSet>
+         <directory>${project.basedir}/testing</directory>
+         <outputDirectory>/${project.artifactId}-test</outputDirectory>
+         <includes>
+            <include>saxon.xml</include>
+            <include>saxon-no-local.xml</include>
+         </includes>
+      </fileSet>
+   </fileSets>
+
+   <files>
+      <file>
+         <source>${project.build.directory}/generated-resources/xml/xslt/build.json</source>
+         <destName>${project.artifactId}-testing.json</destName>
+      </file>
+      <file>
+         <source>${project.build.directory}/generated-resources/yml/build.yml</source>
+         <destName>${project.artifactId}-testing.yaml</destName>
+      </file>
+   </files>
+
+</assembly>

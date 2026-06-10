@@ -41,6 +41,12 @@ This configuration
             version="1.0.0" sourceLocation="post-proc-call.xsl"/>
         <package name="https://scdh.github.io/dts-transformations/xsl/post-proc-fun.xsl"
             version="1.0.0" sourceLocation="post-proc-fun.xsl"/>
+        <package name="http://example.com/xsl/identity" version="1.0.0"
+            sourceLocation="media-type/id.xsl"/>
+        <package name="http://example.com/xsl/tei2txt" version="1.0.0"
+            sourceLocation="media-type/tei2txt.xsl"/>
+        <package name="http://example.com/xsl/a" version="1.0.0" sourceLocation="media-type/a.xsl"/>
+        <package name="http://example.com/xsl/b" version="1.0.0" sourceLocation="media-type/b.xsl"/>
     </xsltPackages>
 
 </configuration>

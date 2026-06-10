@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    xmlns:array="http://www.w3.org/2005/xpath-functions/array" stylesheet="seed-config.xsl"
+    xmlns:seed="http://scdh.wwu.de/transform/seed#" run-as="external">
+
+    <x:param name="id-prefix">dts</x:param>
+
+    <x:scenario label="config for document.xsl">
+        <x:param name="saxon-config-uri" select="'../../saxon.xml'"/>
+        <x:context href="../../xsl/document.xsl"/>
+        <x:expect label="config has dts-xsl-document transformation"
+            test="map:contains(., 'dts-xsl-document')"/>
+        <x:expect label="has stylesheet location"
+            test="map:get(., 'dts-xsl-document') => map:get('location')"
+            select="'dts/xsl/document.xsl'"/>
+        <x:expect label="transforms to text/xml"
+            test="map:get(., 'dts-xsl-document') => map:get('mediaType')" select="'text/xml'"/>
+        <x:expect label="transformation class is xslt"
+            test="map:get(., 'dts-xsl-document') => map:get('class')" select="'xslt'"/>
+        <x:expect label="requires source"
+            test="map:get(., 'dts-xsl-document') => map:get('requiresSource') => xs:string()"
+            select="'false'"/>
+        <x:expect label="has description"
+            test="map:get(., 'dts-xsl-document') => map:contains('description')"/>
+        <x:expect label="uses multiple libraries"
+            test="map:get(., 'dts-xsl-document') => map:get('libraries') => array:size() gt 0"/>
+        <x:expect label="uses tree.xsl as library"
+            test=". => map:get('dts-xsl-document') => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') eq 'dts/xsl/tree.xsl' }) => array:size()"
+            select="1"/>
+        <x:expect label="has more than the 6 stylesheet parameters with are in document.xsl"
+            test="map:get(., 'dts-xsl-document') => map:get('parameterDescriptors') => map:size() gt 6"
+        />
+    </x:scenario>
+
+    <x:scenario label="config for document.xsl by seed:mk-config#0">
+        <x:param name="saxon-config-uri" select="'../../saxon.xml'"/>
+        <x:param name="transformations" select="'xsl/document.xsl'"/>
+        <x:call function="seed:mk-config"/>
+        <x:expect label="config has dts-xsl-document transformation"
+            test="map:contains(., 'dts-xsl-document')"/>
+        <x:expect label="has stylesheet location"
+            test="map:get(., 'dts-xsl-document') => map:get('location')"
+            select="'dts/xsl/document.xsl'"/>
+        <x:expect label="transforms to text/xml"
+            test="map:get(., 'dts-xsl-document') => map:get('mediaType')" select="'text/xml'"/>
+    </x:scenario>
+
+    <x:scenario label="config for document.xsl by initial template">
+        <x:param name="saxon-config-uri" select="'../../saxon.xml'"/>
+        <x:param name="transformations" select="'xsl/document.xsl'"/>
+        <x:call template="xsl:initial-template"/>
+        <x:expect label="config has dts-xsl-document transformation"
+            test="map:contains(., 'dts-xsl-document')"/>
+        <x:expect label="has stylesheet location"
+            test="map:get(., 'dts-xsl-document') => map:get('location')"
+            select="'dts/xsl/document.xsl'"/>
+        <x:expect label="transforms to text/xml"
+            test="map:get(., 'dts-xsl-document') => map:get('mediaType')" select="'text/xml'"/>
+    </x:scenario>
+
+</x:description>

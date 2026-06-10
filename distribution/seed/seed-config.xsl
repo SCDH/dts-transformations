@@ -48,8 +48,7 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
         otherwise they are prefixed with $upload-uri. -->
     <xsl:param name="relative-uris" as="xs:boolean" select="true()"/>
 
-    <xsl:param name="class" as="xs:string"
-        select="'xslt'"/>
+    <xsl:param name="class" as="xs:string" select="'xslt'"/>
 
     <xsl:param name="transformation-id" as="xs:string" select="'name'"/>
 
@@ -60,11 +59,13 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
                 }
             }"/>
 
+    <xsl:param name="fail-on-package-not-found" as="xs:boolean" select="true()" static="true"/>
+
     <xsl:variable name="saxon-config" select="doc($saxon-config-uri)"/>
 
 
-
-    <xsl:template name="xsl:initial-template">
+    <!-- entry point for running the processor with an initial template -->
+    <xsl:template name="xsl:initial-template" visibility="final">
         <xsl:map>
             <xsl:for-each select="$transformations">
                 <xsl:variable name="location" select="resolve-uri(., $base-uri)"/>
@@ -78,6 +79,23 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
         </xsl:map>
     </xsl:template>
 
+
+    <!-- entry point for running the processor with an initial function -->
+    <xsl:function name="seed:mk-config" visibility="final">
+        <xsl:map>
+            <xsl:for-each select="$transformations">
+                <xsl:variable name="location" select="resolve-uri(., $base-uri)"/>
+                <xsl:variable name="stylesheet" as="document-node()" select="doc($location)"/>
+                <xsl:apply-templates select="$stylesheet" mode="transformation">
+                    <xsl:with-param name="transformation-id" tunnel="true"
+                        select="seed:get-transformation-id(., $stylesheet)"/>
+                    <xsl:with-param name="location" tunnel="true" select="."/>
+                </xsl:apply-templates>
+            </xsl:for-each>
+        </xsl:map>
+    </xsl:function>
+
+    <!-- entry point for generating a config for the transformation given as source -->
     <xsl:template match="document-node()">
         <xsl:map>
             <xsl:variable name="relative-path"
@@ -90,6 +108,8 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
         </xsl:map>
     </xsl:template>
 
+
+    <!-- the mode 'transformation' run on a package or stylesheet acually does the job -->
     <xsl:mode name="transformation" on-no-match="shallow-skip"/>
 
     <xsl:template match="document-node()" mode="transformation">
@@ -98,8 +118,7 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
         <xsl:variable name="stylesheet" as="document-node()" select="."/>
         <xsl:map-entry key="$transformation-id">
             <xsl:map>
-                <xsl:map-entry key="'description'"
-                    select="($stylesheet//comment() => string-join('&#xa;') => tokenize('&#xa;'))[normalize-space() ne ''][1] => normalize-space()"/>
+                <xsl:call-template name="seed:description"/>
                 <xsl:map-entry key="'class'" select="$class"/>
                 <xsl:choose>
                     <xsl:when test="$relative-uris and $id-prefix eq ''">
@@ -114,30 +133,61 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
                         />
                     </xsl:otherwise>
                 </xsl:choose>
-                <xsl:map-entry key="'mediaType'" select="seed:media-type($stylesheet)"/>
-                <xsl:map-entry key="'requiresSource'"
-                    select="exists($stylesheet/global-context-item)"/>
-
+                <xsl:call-template name="seed:media-type"/>
+                <xsl:call-template name="seed:requires-source"/>
                 <!-- libraries (used packages) -->
-                <xsl:map-entry key="'libraries'">
-                    <xsl:variable name="libs" as="map(*)*">
-                        <xsl:apply-templates mode="libraries" select="$stylesheet"/>
-                    </xsl:variable>
-                    <xsl:sequence
-                        select="array {$libs => reverse() => seed:distinct-maps-in-order(())}"/>
-                </xsl:map-entry>
-
+                <xsl:call-template name="seed:libraries"/>
                 <!-- parameters -->
-                <xsl:map-entry key="'parameterDescriptors'">
-                    <xsl:variable name="params" as="map(*)*">
-                        <xsl:apply-templates mode="stylesheet-params" select="$stylesheet"/>
-                    </xsl:variable>
-                    <xsl:sequence select="map:merge($params, $merge-options)"/>
-                </xsl:map-entry>
-
+                <xsl:call-template name="seed:parameter-descriptors"/>
+                <!-- compile time parameters -->
+                <xsl:call-template name="seed:compile-time-parameters"/>
             </xsl:map>
         </xsl:map-entry>
     </xsl:template>
+
+    <xsl:template name="seed:description" as="item()">
+        <xsl:param name="stylesheet" as="document-node()" select="."/>
+        <xsl:map-entry key="'description'"
+            select="($stylesheet//comment() => string-join('&#xa;') => tokenize('&#xa;'))[normalize-space() ne ''][1] => normalize-space()"
+        />
+    </xsl:template>
+
+    <xsl:template name="seed:media-type" as="item()">
+        <xsl:param name="stylesheet" as="document-node()" select="."/>
+        <xsl:map-entry key="'mediaType'" select="seed:media-type($stylesheet)"/>
+    </xsl:template>
+
+    <xsl:template name="seed:requires-source" as="item()">
+        <xsl:param name="stylesheet" as="document-node()" select="."/>
+        <xsl:map-entry key="'requiresSource'" select="exists($stylesheet/global-context-item)"/>
+    </xsl:template>
+
+    <xsl:template name="seed:libraries" as="item()">
+        <xsl:param name="stylesheet" as="document-node()" select="."/>
+        <xsl:map-entry key="'libraries'">
+            <xsl:variable name="libs" as="map(*)*">
+                <xsl:apply-templates mode="libraries" select="$stylesheet"/>
+            </xsl:variable>
+            <xsl:sequence select="array {$libs => reverse() => seed:distinct-maps-in-order(())}"/>
+        </xsl:map-entry>
+    </xsl:template>
+
+    <xsl:template name="seed:parameter-descriptors" as="item()">
+        <xsl:param name="stylesheet" as="document-node()" select="."/>
+        <xsl:map-entry key="'parameterDescriptors'">
+            <xsl:variable name="params" as="map(*)*">
+                <xsl:apply-templates mode="stylesheet-params" select="$stylesheet"/>
+            </xsl:variable>
+            <xsl:sequence select="map:merge($params, $merge-options)"/>
+        </xsl:map-entry>
+    </xsl:template>
+
+    <xsl:template name="seed:compile-time-parameters" as="item()?">
+        <xsl:param name="stylesheet" as="document-node()" select="."/>
+        <!--xsl:map-entry key="'compileTimeParameters'"/-->
+    </xsl:template>
+
+
 
     <xsl:mode name="libraries" on-no-match="shallow-skip"/>
     <xsl:mode name="stylesheet-params" on-no-match="shallow-skip"/>
@@ -147,9 +197,72 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
         <xsl:apply-templates mode="#current" select="doc(resolve-uri(@href, base-uri(.)))"/>
     </xsl:template>
 
-    <xsl:template mode="libraries stylesheet-params" match="use-package">
-        <xsl:variable name="name" select="@name"/>
-        <xsl:variable name="version" select="@package-version"/>
+    <!-- just match use-package with name and version, but not with compile-time name and version -->
+    <xsl:template mode="libraries stylesheet-params" match="use-package[@name and @package-version]">
+        <xsl:variable name="pkg" as="element(cfg:package)?"
+            select="seed:configured-package(@name, @package-version, $saxon-config)"/>
+        <xsl:choose>
+            <xsl:when test="$pkg">
+                <xsl:variable name="package" as="document-node()" select="seed:read-package($pkg)"/>
+                <!-- make entry for this package -->
+                <xsl:apply-templates mode="#current" select="$pkg">
+                    <xsl:with-param name="name" select="$pkg/@name" tunnel="true"/>
+                    <xsl:with-param name="version" select="$pkg/@version" tunnel="true"/>
+                    <xsl:with-param name="package" select="$package" tunnel="true"/>
+                </xsl:apply-templates>
+                <!-- recurse into packages used by the package -->
+                <xsl:apply-templates mode="#current" select="$package"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:message _terminate="{$fail-on-package-not-found}">
+                    <xsl:text>package not found: </xsl:text>
+                    <xsl:value-of select="concat(@name, ' (', @package-version, ')')"/>
+                </xsl:message>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template name="seed:package-with-mode" visibility="final">
+        <xsl:param name="name" as="xs:string?"/>
+        <xsl:param name="version" as="xs:string?"/>
+        <xsl:param name="mode" as="xs:string"/>
+        <xsl:variable name="pkg" as="element(cfg:package)?"
+            select="seed:configured-package($name, $version, $saxon-config)"/>
+        <xsl:variable name="package" as="document-node()?" select="$pkg ! seed:read-package(.)"/>
+        <xsl:choose>
+            <xsl:when test="empty($package)"/>
+            <xsl:when test="$mode = 'libraries'">
+                <!-- make entry for this package -->
+                <xsl:apply-templates mode="libraries" select="$pkg">
+                    <xsl:with-param name="name" select="$pkg/@name" tunnel="true"/>
+                    <xsl:with-param name="version" select="$pkg/@version" tunnel="true"/>
+                    <xsl:with-param name="package" select="$package" tunnel="true"/>
+                </xsl:apply-templates>
+                <!-- recurse into packages used by the package -->
+                <xsl:apply-templates mode="libraries" select="$package"/>
+            </xsl:when>
+            <xsl:when test="$mode = 'stylesheet-params'">
+                <!-- make entry for this package -->
+                <xsl:apply-templates mode="stylesheet-params" select="$pkg">
+                    <xsl:with-param name="name" select="$pkg/@name" tunnel="true"/>
+                    <xsl:with-param name="version" select="$pkg/@version" tunnel="true"/>
+                    <xsl:with-param name="package" select="$package" tunnel="true"/>
+                </xsl:apply-templates>
+                <!-- recurse into packages used by the package -->
+                <xsl:apply-templates mode="stylesheet-params" select="$package"/>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:function name="seed:configured-package" as="element(cfg:package)?">
+        <xsl:param name="name" as="xs:string?"/>
+        <xsl:param name="version" as="xs:string?"/>
+        <xsl:param name="saxon-config" as="document-node()"/>
+        <xsl:message use-when="system-property('debug') eq 'true'">
+            <xsl:text>selecting package </xsl:text>
+            <xsl:value-of select="$name"/>
+            <xsl:value-of select="$version"/>
+        </xsl:message>
         <!-- There may be several packages configured for the same @name and @version.
             In this case we disambiguate using @priority. -->
         <xsl:variable name="pkgs" as="element()*">
@@ -181,17 +294,14 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
                     <xsl:value-of select="$pkg-uri"/>
                 </xsl:message>
             </xsl:if>
-            <xsl:variable name="package" select="doc($pkg-uri)" as="document-node()"/>
-            <!-- make entry for this package -->
-            <xsl:apply-templates mode="#current" select="$pkg">
-                <xsl:with-param name="name" select="$pkg/@name" tunnel="true"/>
-                <xsl:with-param name="version" select="$pkg/@version" tunnel="true"/>
-                <xsl:with-param name="package" select="$package" tunnel="true"/>
-            </xsl:apply-templates>
-            <!-- recurse into packages used by the package -->
-            <xsl:apply-templates mode="#current" select="$package"/>
+            <xsl:sequence select="$pkg"/>
         </xsl:if>
-    </xsl:template>
+    </xsl:function>
+
+    <xsl:function name="seed:read-package" as="document-node(element(xsl:package))">
+        <xsl:param name="pkg" as="element(cfg:package)"/>
+        <xsl:sequence select="resolve-uri($pkg/@sourceLocation, base-uri($pkg)) => doc()"/>
+    </xsl:function>
 
     <xsl:template mode="libraries" match="cfg:package">
         <xsl:param name="name" as="xs:string" tunnel="true"/>
