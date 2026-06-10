@@ -95,6 +95,7 @@ target/bin/xslt.sh \
                         map:put('libraries', array:join((map:get($document-bare-config, 'libraries'), seed:as-library($chained-config) => map:get('libraries')))) =>
                         map:put('parameterDescriptors', map:merge((map:get($document-bare-config, 'parameterDescriptors'), seed:as-library($chained-config) => map:get('parameterDescriptors')))) =>
                         map:put('compileTimeParameters', array {$media-type-parameters}) =>
+                        map:put('type', array:join((map:get($document-bare-config, 'type'), map:get($chained-bare-config, 'type')))) =>                        
                         map:put('description', concat(seed:transformation-id($chained-config), ' chained to ', seed:transformation-id($document-config), ': ', map:get($chained-bare-config, 'description')))"
                 />
             </xsl:map-entry>

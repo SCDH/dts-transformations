@@ -440,9 +440,42 @@
                                     <!-- generate configuration for SEED XML Transformer -->
                                     <dir>${project.basedir}</dir>
                                     <!-- Include every transformation resource for the SEED XML Transformer
-                                                in an <include>path</include> element! -->
+                                        but not being a DtsDocumentProcessor
+                                        in an <include>path</include> element! -->
                                     <includes>
                                         <include>xsl/navigation.xsl</include>
+                                    </includes>
+                                    <parameters>
+                                        <parameter>
+                                            <name>saxon-config-uri</name>
+                                            <value>${project.basedir}/saxon.xml</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>id-prefix</name>
+                                            <value>${project.artifactId}</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>mk-sef</name>
+                                            <value>${sef-package.generatep}</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>sef-output-base</name>
+                                            <!-- Note the trailing slash! It's required for resolve-uri() -->
+                                            <value>file://${sef-package.dir}/transformation-api/transform/</value>
+                                        </parameter>
+                                    </parameters>
+                                    <stylesheet>${seed-config-xsl.url}</stylesheet>
+                                    <fileMappers>
+                                        <fileMapper
+                                            implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                            <targetExtension>.seed.json</targetExtension>
+                                        </fileMapper>
+                                    </fileMappers>
+                                </transformationSet>
+                                <transformationSet>
+                                    <!-- generate configuration for SEED XML Transformer for document.xsl -->
+                                    <dir>${project.basedir}</dir>
+                                    <includes>
                                         <include>xsl/document.xsl</include>
                                     </includes>
                                     <parameters>
@@ -462,6 +495,11 @@
                                             <name>sef-output-base</name>
                                             <!-- Note the trailing slash! It's required for resolve-uri() -->
                                             <value>file://${sef-package.dir}/transformation-api/transform/</value>
+                                        </parameter>
+                                        <parameter>
+                                            <!-- This is a DtsDocumentProcessor! -->
+                                            <name>type</name>
+                                            <value>DtsDocumentProcessor</value>
                                         </parameter>
                                     </parameters>
                                     <stylesheet>${seed-config-xsl.url}</stylesheet>

@@ -61,6 +61,10 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
 
     <xsl:param name="fail-on-package-not-found" as="xs:boolean" select="true()" static="true"/>
 
+    <xsl:param name="type-csv" as="xs:string" select="''"/>
+
+    <xsl:param name="type" as="xs:string*" select="tokenize($type-csv, ',') ! normalize-space()"/>
+
     <xsl:variable name="saxon-config" select="doc($saxon-config-uri)"/>
 
 
@@ -134,6 +138,7 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
                     </xsl:otherwise>
                 </xsl:choose>
                 <xsl:call-template name="seed:media-type"/>
+                <xsl:call-template name="seed:type"/>
                 <xsl:call-template name="seed:requires-source"/>
                 <!-- libraries (used packages) -->
                 <xsl:call-template name="seed:libraries"/>
@@ -155,6 +160,12 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
     <xsl:template name="seed:media-type" as="item()">
         <xsl:param name="stylesheet" as="document-node()" select="."/>
         <xsl:map-entry key="'mediaType'" select="seed:media-type($stylesheet)"/>
+    </xsl:template>
+
+    <xsl:template name="seed:type" as="item()?">
+        <xsl:if test="empty($type) => not()">
+            <xsl:map-entry key="'type'" select="array {$type}"/>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="seed:requires-source" as="item()">

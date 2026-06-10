@@ -30,8 +30,9 @@
             test=". => map:get('dts-xsl-document') => map:get('libraries') => array:filter(function ($x) as xs:boolean { map:get($x, 'location') eq 'dts/xsl/tree.xsl' }) => array:size()"
             select="1"/>
         <x:expect label="has more than the 6 stylesheet parameters with are in document.xsl"
-            test="map:get(., 'dts-xsl-document') => map:get('parameterDescriptors') => map:size() gt 6"
-        />
+            test="map:get(., 'dts-xsl-document') => map:get('parameterDescriptors') => map:size() gt 6"/>
+        <x:expect label="no type property"
+            test="map:get(., 'dts-xsl-document') => map:contains('type') => not()"/>
     </x:scenario>
 
     <x:scenario label="config for document.xsl by seed:mk-config#0">
@@ -58,6 +59,16 @@
             select="'dts/xsl/document.xsl'"/>
         <x:expect label="transforms to text/xml"
             test="map:get(., 'dts-xsl-document') => map:get('mediaType')" select="'text/xml'"/>
+    </x:scenario>
+
+    <x:scenario label="config for document.xsl">
+        <x:param name="saxon-config-uri" select="'../../saxon.xml'"/>
+        <x:param name="type-csv" select="'DtsDocumentProcessor,Hulahup'"/>
+        <x:context href="../../xsl/document.xsl"/>
+        <x:expect label="no type property"
+            test="map:get(., 'dts-xsl-document') => map:contains('type')"/>
+        <x:expect label="type array" test="map:get(., 'dts-xsl-document') => map:get('type')" as="array(*)"
+            select="array { ('DtsDocumentProcessor', 'Hulahup') }"/>
     </x:scenario>
 
 </x:description>

@@ -82,6 +82,10 @@
             test="map:get(., $document-tei2txt-id) => map:get('mediaType')"
             select="map:get($tei2txt-config, $tei2txt-id) => map:get('mediaType')"/>
 
+        <x:expect label="type is a merged array which contains 'DtsDocumentProcessor'"
+            test="map:get(., $document-tei2txt-id) => map:get('type')"
+            select="array { 'DtsDocumentProcessor' }"/>
+
         <x:expect label="location of document.xsl"
             test="map:get(., $document-tei2txt-id) => map:get('location')"
             select="map:get($document-cfg, $document-id) => map:get('location')"/>
