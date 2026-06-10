@@ -2,7 +2,7 @@
 <assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
-   <id>seed-tests</id>
+   <id>seed-testing</id>
    <includeBaseDirectory>true</includeBaseDirectory>
    <baseDirectory/>
 
@@ -13,7 +13,7 @@
    <fileSets>
       <fileSet>
          <directory>${project.basedir}/test</directory>
-         <outputDirectory>/${project.artifactId}-test</outputDirectory>
+         <outputDirectory>/${project.artifactId}-testing</outputDirectory>
          <includes>
             <include>**/tei2txt.xsl</include>
          </includes>
@@ -35,13 +35,14 @@
       </fileSet>
       <fileSet>
          <directory>${project.build.directory}/generated-resources/xml/xslt/test</directory>
-         <outputDirectory>/${project.artifactId}-test</outputDirectory>
+         <outputDirectory>/${project.artifactId}-testing</outputDirectory>
          <includes>
             <include>**/*.seed.json</include>
+            <include>**/*.chain.json</include>
          </includes>
       </fileSet>
       <fileSet>
-         <directory>${project.basedir}/test</directory>
+         <directory>${project.basedir}/testing</directory>
          <outputDirectory>/${project.artifactId}-test</outputDirectory>
          <includes>
             <include>saxon.xml</include>
@@ -52,9 +53,8 @@
 
    <files>
       <file>
-         <!-- TODO: make source be the chained config -->
-         <source>${project.build.directory}/generated-resources/xml/xslt/pom.json</source>
-         <destName>${project.artifactId}-test.json</destName>
+         <source>${project.build.directory}/generated-resources/xml/xslt/build.json</source>
+         <destName>${project.artifactId}-testing.json</destName>
       </file>
    </files>
 
