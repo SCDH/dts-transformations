@@ -1,5 +1,10 @@
 # Changes
 
+## 0.4.11
+
+- adds utilities for generating SEED config for chained transformations (fixes issue #20)
+- adds a testing package for SEED with chained transformation
+
 ## 0.4.10
 
 - adds saxon config for SEED with assertions enabled (fixes issue #18)
