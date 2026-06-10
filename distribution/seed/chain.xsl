@@ -49,22 +49,53 @@ target/bin/xslt.sh \
     <!-- name of the template, mode or function used as an entry point for mediaType processing -->
     <xsl:param name="media-type-processor" as="xs:string" select="'post-proc'"/>
 
+    <xsl:variable name="media-type-parameters" as="map(xs:string, item()*)*">
+        <xsl:map>
+            <xsl:map-entry key="'name'">media-type-package</xsl:map-entry>
+            <xsl:map-entry key="'value'" select="$media-type-package"/>
+            <xsl:map-entry key="'type'">xs:string?</xsl:map-entry>
+        </xsl:map>
+        <xsl:map>
+            <xsl:map-entry key="'name'">media-type-package-version</xsl:map-entry>
+            <xsl:map-entry key="'value'" select="$media-type-package-version"/>
+            <xsl:map-entry key="'type'">xs:string</xsl:map-entry>
+        </xsl:map>
+        <xsl:map>
+            <xsl:map-entry key="'name'">media-type-component</xsl:map-entry>
+            <xsl:map-entry key="'value'" select="$media-type-component"/>
+            <xsl:map-entry key="'type'">xs:string</xsl:map-entry>
+        </xsl:map>
+        <xsl:map>
+            <xsl:map-entry key="'name'">media-type-processor</xsl:map-entry>
+            <xsl:map-entry key="'value'" select="$media-type-processor"/>
+            <xsl:map-entry key="'type'">xs:string</xsl:map-entry>
+        </xsl:map>
+    </xsl:variable>
 
     <xsl:template match="document-node()">
-        <xsl:sequence select="seed:merge()"/>
+        <xsl:sequence select="seed:chain()"/>
     </xsl:template>
 
     <xsl:template name="xsl:initial-template">
-        <xsl:sequence select="seed:merge()"/>
+        <xsl:sequence select="seed:chain()"/>
     </xsl:template>
 
+    <xsl:variable name="document-bare-config" as="map(xs:string, item()*)"
+        select="seed:bare-config($document-config)"/>
+
+    <xsl:variable name="chained-bare-config" as="map(xs:string, item()*)"
+        select="seed:bare-config($chained-config)"/>
 
 
-    <xsl:function name="seed:merge" as="map(xs:string, item()*)">
+    <xsl:function name="seed:chain" as="map(xs:string, item()*)" visibility="final">
         <xsl:map>
             <xsl:map-entry key="$name">
                 <xsl:sequence select="
-                        ($document-config => seed:bare-config(), $chained-config => seed:as-library()) => map:merge()"
+                        map:merge((map:remove($chained-bare-config, ('location', 'requiresSource')), $document-bare-config), map {'duplicates': 'use-first'}) =>
+                        map:put('libraries', array:join((map:get($document-bare-config, 'libraries'), seed:as-library($chained-config) => map:get('libraries')))) =>
+                        map:put('parameterDescriptors', map:merge((map:get($document-bare-config, 'parameterDescriptors'), seed:as-library($chained-config) => map:get('parameterDescriptors')))) =>
+                        map:put('compileTimeParameters', array {$media-type-parameters}) =>
+                        map:put('description', concat(seed:transformation-id($chained-config), ' chained to ', seed:transformation-id($document-config), ': ', map:get($chained-bare-config, 'description')))"
                 />
             </xsl:map-entry>
         </xsl:map>
