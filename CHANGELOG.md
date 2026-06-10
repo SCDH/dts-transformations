@@ -1,5 +1,11 @@
 # Changes
 
+## 0.4.12
+
+- SEED configurations support transformation types
+- the `DtsDocumentProcessor` type is assigned to `document.xsl` and to
+  chained transformations
+
 ## 0.4.11
 
 - adds utilities for generating SEED config for chained transformations (fixes issue #20)
