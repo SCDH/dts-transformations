@@ -1,0 +1,99 @@
+{
+    "@graph":  [
+	{
+	    "@id": "general",
+	    "@type": "Collection",
+	    "collection": "/collection{?id,page,nav}",
+	    "dtsVersion": "1.0rc1",
+	    "totalParents": 0,
+	    "totalChildren": 2,
+	    "title": "Sample Collection of DTS Transformations",
+	    "dublinCore": {
+		"title": [
+		    {
+			"language": "en",
+			"value": "Sample Collection of DTS Transformations"
+		    }
+		],
+		"description": {
+		    "en": "This is a sample collection for Distributed Text Services (DTS)"
+		}
+	    },
+	    "member": [
+		{
+		    "@id": "matt.xml"
+		},
+		{
+		    "@id": "john.xml"
+		},
+		{
+		    "@id": "apocryphs"
+		}
+	    ]
+	},
+	{
+	    "@id": "apocryphs",
+	    "@type": "Collection",
+	    "collection": "/collection{?id,page,nav}",
+	    "dtsVersion": "1.0rc1",
+	    "totalParents": 1,
+	    "totalChildren": 1,
+	    "title": "Collection of Apocryphical Books",
+	    "dublinCore": {
+		"title": [
+		    {
+			"language": "en",
+			"value": "Collection of Apocryphical Books"
+		    }
+		]
+	    },
+	    "member": [
+		{
+		    "@id": "4ezr.xml"
+		}
+	    ]
+	},
+	{
+	    "@id": "matt.xml",
+	    "@type": "Resource",
+	    "dtsVersion": "1.0rc1",
+	    "collection": "/collection?id=matt.xml{&nav}",
+	    "navigation": "/navigation?resource=matt.xml{&ref,start,end,tree}",
+	    "document": "/navigation?resource=matt.xml{&ref,start,end,tree,mediaType}",
+	    "title": "The Book of matt",
+	    "@type": "Resource",
+	    "totalParents": 1,
+	    "totalChildren": 0
+	},
+	{
+	    "@id": "john.xml",
+	    "@type": "Resource",
+	    "dtsVersion": "1.0rc1",
+	    "collection": "/collection?id=john.xml{&nav}",
+	    "navigation": "/navigation?resource=john.xml{&ref,start,end,tree}",
+	    "document": "/navigation?resource=john.xml{&ref,start,end,tree,mediaType}",
+	    "title": "The Book of John",
+	    "totalParents": 1,
+	    "totalChildren": 0
+	},
+	{
+	    "@id": "4ezr.xml",
+	    "@type": "Resource",
+	    "dtsVersion": "1.0rc1",
+	    "collection": "/collection?id=4ezr.xml{&nav}",
+	    "navigation": "/navigation?resource=john.xml{&ref,start,end,tree}",
+	    "document": "/navigation?resource=john.xml{&ref,start,end,tree,mediaType}",
+	    "title": "The 4th book of Esra",
+	    "totalParents": 1,
+	    "totalChildren": 0,
+	    "download": "4ezr.xml"
+	}
+    ],
+    "@context": [
+	"https://scdh.github.io/dts-transformations/latest/xsl/context/modules/dct-nest.json",
+	"https://scdh.github.io/dts-transformations/latest/xsl/context/modules/1.0rc1.json",
+        {
+	    "extensions": "@nest"
+	}
+    ]
+}

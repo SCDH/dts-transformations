@@ -1,0 +1,25 @@
+# SPARQL for constructing the collection and resource metadata returned by the
+# DTS collection endpoint.
+
+# USAGE:
+# target/bin/riot.sh --syntax=jsonld --out=ntriples --base='http://example.com/' test/collection.json > test/collection.n3
+# target/bin/sparql.sh --data=test/collection.n3 --query=sparql/collection.rq
+
+
+PREFIX dts: <https://w3id.org/dts/api#>
+PREFIX dct: <http://purl.org/dc/terms/>
+
+CONSTRUCT {
+  ?resource ?rp ?ro .
+  ?member ?mp ?mo .
+}
+
+WHERE {
+  BIND(<http://example.com/apocryphs> as ?resource ) .
+
+  ?resource ?rp ?ro .
+  ?resource dts:member ?member . # nav=children
+  ?member ?mp ?mo .
+
+  FILTER(?mp != dts:member) .
+}
