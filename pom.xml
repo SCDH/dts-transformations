@@ -511,7 +511,7 @@
                                     </fileMappers>
                                 </transformationSet>
                                 <transformationSet>
-                                    <!-- merge SEED configurations -->
+                                    <!-- merge SEED configurations from xsl -->
                                     <dir>${project.basedir}</dir>
                                     <includes>
                                         <include>pom.xml</include>
@@ -520,6 +520,26 @@
                                         <parameter>
                                             <name>json-collection</name>
                                             <value>file:${project.build.directory}/generated-resources/xml/xslt/xsl?select=*.seed.json;recurse=yes</value>
+                                        </parameter>
+                                    </parameters>
+                                    <stylesheet>${seed-merge-xsl.url}</stylesheet>
+                                    <fileMappers>
+                                        <fileMapper
+                                            implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                            <targetExtension>.xsl.json</targetExtension>
+                                        </fileMapper>
+                                    </fileMappers>
+                                </transformationSet>
+                                <transformationSet>
+                                    <!-- merge all SEED configurations together -->
+                                    <dir>${project.basedir}</dir>
+                                    <includes>
+                                        <include>pom.xml</include>
+                                    </includes>
+                                    <parameters>
+                                        <parameter>
+                                            <name>json-files-csv</name>
+                                            <value>file:${project.build.directory}/generated-resources/xml/xslt/pom.xsl.json,${project.basedir}/sparql/collection.seed.json</value>
                                         </parameter>
                                     </parameters>
                                     <stylesheet>${seed-merge-xsl.url}</stylesheet>

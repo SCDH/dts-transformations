@@ -22,6 +22,8 @@
             <include>**/*.css</include>
             <include>**/*.sty</include>
             <include>**/*.tex</include>
+	    <include>sparql/*.rq</include>
+	    <include>sparql/*.seed.json</include>
          </includes>
          <excludes>
             <exclude>**/xspec/**.xsl</exclude>
