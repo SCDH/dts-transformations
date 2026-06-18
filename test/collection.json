@@ -34,7 +34,7 @@
 	{
 	    "@id": "apocryphs",
 	    "@type": "Collection",
-	    "collection": "/collection{?id,page,nav}",
+	    "collection": "/collection?id=apogryphs{&page,nav}",
 	    "dtsVersion": "1.0rc1",
 	    "totalParents": 1,
 	    "totalChildren": 1,
@@ -45,11 +45,21 @@
 			"language": "en",
 			"value": "Collection of Apocryphical Books"
 		    }
+		],
+		"identifier": [
+		    {
+			"language": "en",
+			"value": "APC"
+		    }
 		]
+
 	    },
 	    "member": [
 		{
 		    "@id": "4ezr.xml"
+		},
+		{
+		    "@id": "agrapha"
 		}
 	    ]
 	},
@@ -104,6 +114,39 @@
 	    "totalParents": 1,
 	    "totalChildren": 0,
 	    "download": "4ezr.xml"
+	},
+	{
+	    "@id": "agrapha",
+	    "@type": "Collection",
+	    "collection": "/collection?id=agrapha{&page,nav}",
+	    "dtsVersion": "1.0rc1",
+	    "totalParents": 1,
+	    "totalChildren": 1,
+	    "title": "Collection of Agrapha",
+	    "dublinCore": {
+		"title": [
+		    {
+			"language": "en",
+			"value": "Collection of Agrapha"
+		    }
+		]
+	    },
+	    "member": [
+		{
+		    "@id": "agraphai.xml"
+		}
+	    ]
+	},
+	{
+	    "@id": "agraphai.xml",
+	    "@type": "Resource",
+	    "dtsVersion": "1.0rc1",
+	    "collection": "/collection?id=agraphai.xml{&nav}",
+	    "navigation": "/navigation?resource=agraphai.xml{&ref,start,end,tree}",
+	    "document": "/document?resource=agraphai.xml{&ref,start,end,tree,mediaType}",
+	    "title": "Book of Non-Written Stuff I",
+	    "totalParents": 1,
+	    "totalChildren": 0
 	}
     ],
     "@context": [
