@@ -27,17 +27,19 @@ CONSTRUCT {
 }
 
 WHERE {
-  BIND(<http://example.com/apocryphs> as ?resource ) .
+  BIND(<http://example.com/general> as ?resource ) .
 
   ?resource ?rp ?ro .
-  ?resource dts:member ?member . # nav=children
   ?member ?mp ?mo .
 
-  ?resource (!dts:member)+ ?ros .
+  ?resource (!dts:member)* ?ros .
   ?ros ?rop ?roo .
 
-  ?member (!dts:member)+ ?mos .
+  ?resource dts:member ?member . # nav=children
+
+  ?member (!dts:member)* ?mos .
   ?mos ?mop ?moo .
+
 
   FILTER(?mp != dts:member) .
 
@@ -45,6 +47,11 @@ WHERE {
   FILTER(?rp != dts:totalParents) .
   FILTER(?mp != dts:totalChildren) .
   FILTER(?mp != dts:totalParents) .
+
+  FILTER(?rop != dts:totalChildren) .
+  FILTER(?rop != dts:totalParents) .
+  FILTER(?mop != dts:totalChildren) .
+  FILTER(?mop != dts:totalParents) .
 
   OPTIONAL
   {
