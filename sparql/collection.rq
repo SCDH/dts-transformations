@@ -16,13 +16,14 @@ PREFIX dct: <http://purl.org/dc/terms/>
 CONSTRUCT {
   ?resource ?rp ?ro .
   ?ros ?rop ?roo .
+
   ?member ?mp ?mo .
   ?mos ?mop ?moo .
 
-  ?resource dts:totalChildrenC ?resourceChildren .
-  ?resource dts:totalParentsC ?resourceParents .
-  ?member dts:totalChildrenC ?memberChildren .
-  ?member dts:totalParentsC ?memberParents .
+  ?resource dts:totalChildren ?resourceChildren .
+  ?resource dts:totalParents ?resourceParents .
+  ?member dts:totalChildren ?memberChildren .
+  ?member dts:totalParents ?memberParents .
 
 }
 
@@ -55,7 +56,7 @@ WHERE {
 
   OPTIONAL
   {
-    SELECT ?resource (COALESCE(COUNT(DISTINCT(?child)), 0) as ?resourceChildren)
+    SELECT ?resource (COALESCE(COUNT(DISTINCT(?child)), 0) as ?resourceChildrenCalculated)
     WHERE {
       ?resource dts:member ?child .
     }
@@ -64,12 +65,15 @@ WHERE {
 
   OPTIONAL
   {
-    SELECT ?resource (COALESCE(COUNT(DISTINCT(?parent)), 0) as ?resourceParents)
+    SELECT ?resource (COALESCE(COUNT(DISTINCT(?parent)), 0) as ?resourceParentsCalculated)
     WHERE {
       ?parent dts:member ?resource .
     }
     GROUP BY ?resource
   }
+
+  BIND(COALESCE(?resourceChildrenCalculated, 0) as ?resourceChildren) .
+  BIND(COALESCE(?resourceParentsCalculated, 0) as ?resourceParents) .
 
   OPTIONAL
   {
