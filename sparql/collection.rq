@@ -18,6 +18,12 @@ CONSTRUCT {
   ?ros ?rop ?roo .
   ?member ?mp ?mo .
   ?mos ?mop ?moo .
+
+  ?resource dts:totalChildrenC ?resourceChildren .
+  ?resource dts:totalParentsC ?resourceParents .
+  ?member dts:totalChildrenC ?memberChildren .
+  ?member dts:totalParentsC ?memberParents .
+
 }
 
 WHERE {
@@ -34,4 +40,46 @@ WHERE {
   ?mos ?mop ?moo .
 
   FILTER(?mp != dts:member) .
+
+  FILTER(?rp != dts:totalChildren) .
+  FILTER(?rp != dts:totalParents) .
+  FILTER(?mp != dts:totalChildren) .
+  FILTER(?mp != dts:totalParents) .
+
+  OPTIONAL
+  {
+    SELECT ?resource (COALESCE(COUNT(DISTINCT(?child)), 0) as ?resourceChildren)
+    WHERE {
+      ?resource dts:member ?child .
+    }
+    GROUP BY ?resource
+  }
+
+  OPTIONAL
+  {
+    SELECT ?resource (COALESCE(COUNT(DISTINCT(?parent)), 0) as ?resourceParents)
+    WHERE {
+      ?parent dts:member ?resource .
+    }
+    GROUP BY ?resource
+  }
+
+  OPTIONAL
+  {
+    SELECT ?member (COALESCE(COUNT(?parent), 0) as ?memberParents)
+    WHERE {
+      ?parent dts:member ?member .
+    }
+    GROUP BY ?member
+  }
+
+  OPTIONAL
+  {
+    SELECT ?member (COALESCE(COUNT(?child), 0) as ?memberChildren)
+    WHERE {
+      ?member dts:member ?child .
+    }
+    GROUP BY ?member
+  }
+
 }
