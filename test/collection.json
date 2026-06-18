@@ -59,7 +59,7 @@
 	    "dtsVersion": "1.0rc1",
 	    "collection": "/collection?id=matt.xml{&nav}",
 	    "navigation": "/navigation?resource=matt.xml{&ref,start,end,tree}",
-	    "document": "/navigation?resource=matt.xml{&ref,start,end,tree,mediaType}",
+	    "document": "/document?resource=matt.xml{&ref,start,end,tree,mediaType}",
 	    "title": "The Book of matt",
 	    "@type": "Resource",
 	    "totalParents": 1,
@@ -71,7 +71,7 @@
 	    "dtsVersion": "1.0rc1",
 	    "collection": "/collection?id=john.xml{&nav}",
 	    "navigation": "/navigation?resource=john.xml{&ref,start,end,tree}",
-	    "document": "/navigation?resource=john.xml{&ref,start,end,tree,mediaType}",
+	    "document": "/document?resource=john.xml{&ref,start,end,tree,mediaType}",
 	    "title": "The Book of John",
 	    "totalParents": 1,
 	    "totalChildren": 0
@@ -82,8 +82,25 @@
 	    "dtsVersion": "1.0rc1",
 	    "collection": "/collection?id=4ezr.xml{&nav}",
 	    "navigation": "/navigation?resource=john.xml{&ref,start,end,tree}",
-	    "document": "/navigation?resource=john.xml{&ref,start,end,tree,mediaType}",
-	    "title": "The 4th book of Esra",
+	    "document": "/document?resource=john.xml{&ref,start,end,tree,mediaType}",
+	    "title": "The 4th Book of Esra",
+	    "dublinCore": {
+		"title": [
+		    {
+			"@language": "en",
+			"@value": "Esra IV"
+		    }
+		],
+		"identifier": [
+		    {
+			"language": "en",
+			"value": "4Ezr"
+		    }
+		],
+		"description": {
+		    "en": "TEI-XML edition of the 4th book of Esra based on ..."
+		}
+	    },
 	    "totalParents": 1,
 	    "totalChildren": 0,
 	    "download": "4ezr.xml"
