@@ -1,5 +1,9 @@
-# SPARQL for constructing the collection and resource metadata returned by the
-# DTS collection endpoint.
+# SPARQL for constructing the collection and resource metadata
+# returned by the DTS collection endpoint.
+
+# The input graph is expected to be prepared DTS collection metadata,
+# all collections and resources joined in in graph. See
+# text/collection.json for an example.
 
 # USAGE:
 # target/bin/riot.sh --syntax=jsonld --out=ntriples --base='http://example.com/' test/collection.json > test/collection.n3
@@ -10,17 +14,24 @@ PREFIX dts: <https://w3id.org/dts/api#>
 PREFIX dct: <http://purl.org/dc/terms/>
 
 CONSTRUCT {
-  ?rs ?rp ?ro .
+  ?resource ?rp ?ro .
+  ?ros ?rop ?roo .
   ?member ?mp ?mo .
+  ?mos ?mop ?moo .
 }
 
 WHERE {
   BIND(<http://example.com/apocryphs> as ?resource ) .
 
-  ?resource (dts:|!dts:)* ?rs .  # arbitrary-length property paths
-  ?rs ?rp ?ro .
+  ?resource ?rp ?ro .
   ?resource dts:member ?member . # nav=children
   ?member ?mp ?mo .
+
+  ?resource (!dts:member)+ ?ros .
+  ?ros ?rop ?roo .
+
+  ?member (!dts:member)+ ?mos .
+  ?mos ?mop ?moo .
 
   FILTER(?mp != dts:member) .
 }
