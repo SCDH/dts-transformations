@@ -1,5 +1,4 @@
-# SPARQL for constructing the collection and resource metadata
-# returned by the DTS collection endpoint.
+# SPARQL for constructing the collection and resource metadata returned by the DTS collection endpoint with nav=children
 
 # The input graph is expected to be prepared DTS collection metadata,
 # all collections and resources joined in in graph. See
