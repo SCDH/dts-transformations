@@ -43,6 +43,7 @@ WHERE {
   }
 
   FILTER(?mp != dts:member) .
+  FILTER(?mop != dts:member) .
 
   FILTER(?rp != dts:totalChildren) .
   FILTER(?rp != dts:totalParents) .
