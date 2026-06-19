@@ -22,8 +22,7 @@
             <include>**/*.css</include>
             <include>**/*.sty</include>
             <include>**/*.tex</include>
-	    <include>sparql/*.rq</include>
-	    <include>sparql/*.seed.json</include>
+            <include>sparql/*.rq</include>
          </includes>
          <excludes>
             <exclude>**/xspec/**.xsl</exclude>
@@ -90,16 +89,26 @@
             <include>${project.artifactId}.yaml</include>
          </includes>
       </fileSet>
+      <fileSet>
+         <directory>${project.basedir}/distribution/seed</directory>
+         <outputDirectory>/${project.artifactId}</outputDirectory>
+         <filtered>true</filtered>
+         <includes>
+            <include>*.seed.json</include>
+         </includes>
+      </fileSet>
    </fileSets>
 
    <files>
       <file>
          <source>${project.build.directory}/generated-resources/xml/xslt/pom.json</source>
          <destName>${project.artifactId}.json</destName>
+         <filtered>true</filtered>
       </file>
       <file>
          <source>${project.build.directory}/generated-resources/yml/pom.yml</source>
          <destName>${project.artifactId}.yaml</destName>
+         <filtered>true</filtered>
       </file>
    </files>
 

@@ -539,7 +539,7 @@
                                     <parameters>
                                         <parameter>
                                             <name>json-files-csv</name>
-                                            <value>file:${project.build.directory}/generated-resources/xml/xslt/pom.xsl.json,${project.basedir}/sparql/collection.seed.json</value>
+                                            <value>file:${project.build.directory}/generated-resources/xml/xslt/pom.xsl.json,${project.basedir}/distribution/seed/collection.seed.json</value>
                                         </parameter>
                                     </parameters>
                                     <stylesheet>${seed-merge-xsl.url}</stylesheet>

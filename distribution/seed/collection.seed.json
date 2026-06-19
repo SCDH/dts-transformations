@@ -1,0 +1,54 @@
+{
+    "dts-transformations-rq-children": {
+	"requiresSource": false,
+	"location": "dts-transformations\/sparql\/children.rq",
+	"class": "sparql",
+	"libraries": [],
+	"type": ["DTS", "DTSCollection"],
+	"parameterDescriptors": {
+            "id": {
+		"default": "()",
+		"static": false,
+		"type": "xs:string",
+		"required": true
+            },
+            "page": {
+		"default": "()",
+		"static": false,
+		"type": "xs:integer",
+		"required": false
+            }
+	},
+	"description": "Get metadata for collection or resource given by ID and for its children from a metadata knowledge graph.",
+	"mediaType": "application/ld+json",
+	"context": {
+	    "location": "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/tags/${revision}${changelist}/xsl/context/1.0rc1+dct-nested.json"
+	}
+    },
+    "dts-transformations-rq-parents": {
+	"requiresSource": false,
+	"location": "dts-transformations\/sparql\/parents.rq",
+	"class": "sparql",
+	"libraries": [],
+	"type": ["DTS", "DTSCollection"],
+	"parameterDescriptors": {
+            "id": {
+		"default": "()",
+		"static": false,
+		"type": "xs:string",
+		"required": true
+            },
+            "page": {
+		"default": "()",
+		"static": false,
+		"type": "xs:integer",
+		"required": false
+            }
+	},
+	"description": "Get metadata for collection or resource given by ID and for its parents from a metadata knowledge graph.",
+	"mediaType": "application/ld+json",
+	"context": {
+	    "location": "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/tags/${revision}${changelist}/xsl/context/1.0rc1+dct-nested.json"
+	}
+    }
+}
