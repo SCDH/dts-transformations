@@ -1,7 +1,7 @@
 {
     "@context": [
-	"modules/dct-nest.json",
-	"modules/1.0rc1.json",
+	"https://raw.githubusercontent.com/SCDH/dts-transformations/refs/heads/main/xsl/context/modules/dct-nest.json",
+	"https://raw.githubusercontent.com/SCDH/dts-transformations/refs/heads/main/xsl/context/modules/1.0rc1.json",
         {
 	    "extensions": "@nest"
 	}
