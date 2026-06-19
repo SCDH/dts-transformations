@@ -1,5 +1,10 @@
 # Changes
 
+## 0.5.0
+
+- adds SPARQL queries for getting data for the collection endpoint
+  from a graph with all the DTS collection metadata.
+
 ## 0.4.12
 
 - SEED configurations support transformation types
