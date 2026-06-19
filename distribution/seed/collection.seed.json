@@ -2,7 +2,7 @@
     "dts-transformations-rq-children": {
 	"requiresSource": false,
 	"location": "dts-transformations\/sparql\/children.rq",
-	"class": "sparql",
+	"class": "sparql-construct",
 	"libraries": [],
 	"type": ["DTS", "DTSCollection"],
 	"parameterDescriptors": {
@@ -28,7 +28,7 @@
     "dts-transformations-rq-parents": {
 	"requiresSource": false,
 	"location": "dts-transformations\/sparql\/parents.rq",
-	"class": "sparql",
+	"class": "sparql-construct",
 	"libraries": [],
 	"type": ["DTS", "DTSCollection"],
 	"parameterDescriptors": {
