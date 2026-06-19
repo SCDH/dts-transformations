@@ -1,0 +1,106 @@
+# SPARQL for constructing the collection and resource metadata returned by the DTS collection endpoint with nav=parents
+
+# The input graph is expected to be prepared DTS collection metadata,
+# all collections and resources joined in in graph. See
+# text/collection.json for an example.
+
+# USAGE:
+# target/bin/riot.sh --syntax=jsonld --out=ntriples --base='http://example.com/' test/collection.json > test/collection.n3
+# target/bin/sparql.sh --data=test/collection.n3 --query=sparql/collection.rq
+
+
+PREFIX dts: <https://w3id.org/dts/api#>
+PREFIX dct: <http://purl.org/dc/terms/>
+
+CONSTRUCT {
+  ?resource ?rp ?ro .
+  ?ros ?rop ?roo .
+
+  ?resource dts:member ?parentDistinctFromResource .
+
+  ?parent ?pp ?po .
+  ?pos ?pop ?poo .
+
+  ?resource dts:totalChildren ?resourceChildren .
+  ?resource dts:totalParents ?resourceParents .
+  ?parent dts:totalChildren ?parentChildren .
+  ?parent dts:totalParents ?parentParents .
+
+}
+
+WHERE {
+  #BIND(<http://example.com/general> as ?resource ) .
+  #BIND(<http://example.com/agrapha> as ?resource ) .
+  BIND(<http://example.com/agraphai.xml> as ?resource ) .
+
+  ?resource ?rp ?ro .
+  ?resource (!dts:member)* ?ros . # arbitrary prop paths except into members
+  ?ros ?rop ?roo .
+
+  OPTIONAL {
+    ?parent dts:member? ?resource .
+    ?parent ?pp ?po .
+    ?parent (!dts:member)* ?pos . # arbitrary prop paths except into members
+    ?pos ?pop ?poo .
+  }
+
+  # The nested IF does the trick. No filtering needed.
+  BIND(<not:to.be.in.the.output> as ?no) .
+  BIND(IF(?parent != ?resource, ?parent, IF(?resourceParents > 0, ?no, ?no)) as ?parentDistinctFromResource) .
+  #FILTER(?parentDistinctFromResource != ?no) .
+
+  FILTER(?rp != dts:member) .
+  FILTER(?rop != dts:member) .
+  FILTER(?pp != dts:member) .
+  FILTER(?pop != dts:member) .
+
+  FILTER(?rp != dts:totalChildren) .
+  FILTER(?rp != dts:totalParents) .
+  FILTER(?pp != dts:totalChildren) .
+  FILTER(?pp != dts:totalParents) .
+
+  FILTER(?rop != dts:totalChildren) .
+  FILTER(?rop != dts:totalParents) .
+  FILTER(?pop != dts:totalChildren) .
+  FILTER(?pop != dts:totalParents) .
+
+  OPTIONAL
+  {
+    SELECT ?resource (COALESCE(COUNT(DISTINCT(?child)), 0) as ?resourceChildrenCalculated)
+    WHERE {
+      ?resource dts:member ?child .
+    }
+    GROUP BY ?resource
+  }
+
+  OPTIONAL
+  {
+    SELECT ?resource (COALESCE(COUNT(DISTINCT(?mother)), 0) as ?resourceParentsCalculated)
+    WHERE {
+      ?mother dts:member ?resource .
+    }
+    GROUP BY ?resource
+  }
+
+  BIND(COALESCE(?resourceChildrenCalculated, 0) as ?resourceChildren) .
+  BIND(COALESCE(?resourceParentsCalculated, 0) as ?resourceParents) .
+
+  OPTIONAL
+  {
+    SELECT ?parent (COALESCE(COUNT(?grand), 0) as ?parentParents)
+    WHERE {
+      ?grand dts:member ?parent .
+    }
+    GROUP BY ?parent
+  }
+
+  OPTIONAL
+  {
+    SELECT ?parent (COALESCE(COUNT(?child), 0) as ?parentChildren)
+    WHERE {
+      ?parent dts:member ?child .
+    }
+    GROUP BY ?parent
+  }
+
+}
