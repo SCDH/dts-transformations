@@ -5,6 +5,7 @@
 # text/collection.json for an example.
 
 # USAGE:
+# # uncomment one of the BINDings of ?resource
 # target/bin/riot.sh --syntax=jsonld --out=ntriples --base='http://example.com/' test/collection.json > test/collection.n3
 # target/bin/sparql.sh --data=test/collection.n3 --query=sparql/collection.rq
 
@@ -27,7 +28,7 @@ CONSTRUCT {
 }
 
 WHERE {
-  BIND(<http://example.com/general> as ?resource ) .
+  #BIND(<http://example.com/general> as ?resource ) .
   #BIND(<http://example.com/apocryphs> as ?resource ) .
   #BIND(<http://example.com/matt.xml> as ?resource ) .
 
