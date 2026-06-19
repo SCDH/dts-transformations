@@ -30,14 +30,14 @@ CONSTRUCT {
 WHERE {
   BIND(<http://example.com/general> as ?resource ) .
   #BIND(<http://example.com/apocryphs> as ?resource ) .
-  #BIND(<http://example.com/matt.xml> as ?resource ) .   # TODO: no triples in result
+  #BIND(<http://example.com/matt.xml> as ?resource ) .
 
   ?resource ?rp ?ro .
   ?resource (!dts:member)* ?ros . # arbitrary prop paths except into members
   ?ros ?rop ?roo .
 
   OPTIONAL {
-    ?resource dts:member ?member . # nav=children
+    ?resource dts:member? ?member . # nav=children # dts:member? is important!
     ?member ?mp ?mo .
     ?member (!dts:member)* ?mos . # arbitrary prop paths except into members
     ?mos ?mop ?moo .
