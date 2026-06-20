@@ -624,11 +624,11 @@
                                     </includes>
                                     <parameters>
                                         <parameter>
-                                            <name>json-collection</name>
-                                            <value>file:${project.build.directory}/generated-resources/xml/xslt?select=*.seed.json;recurse=yes</value>
+                                            <name>json-files-csv</name>
+                                            <value>file:${project.build.directory}/generated-resources/xml/xslt/pom.xsl.json,${project.basedir}/distribution/seed/collection.seed.json,file:${project.build.directory}/generated-resources/xml/xslt/test/media-type/tei2txt.seed.json</value>
                                         </parameter>
                                     </parameters>
-                                    <stylesheet>${seed-merge-xsl.url}</stylesheet>
+				    <stylesheet>${seed-merge-xsl.url}</stylesheet>
                                     <fileMappers>
                                         <fileMapper
                                             implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
