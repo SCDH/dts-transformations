@@ -1,5 +1,12 @@
 # Changes
 
+## 0.5.1
+
+- adds the SPARQL queries for the collection endpoint to the testing SEED configuration
+- fixes the modularized context list for the SEED config of the
+  collection endpoint: a remote context cannot have a list to other
+  remote contexts
+
 ## 0.5.0
 
 - adds SPARQL queries for getting data for the collection endpoint
