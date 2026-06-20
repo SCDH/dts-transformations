@@ -4,10 +4,7 @@
 # all collections and resources joined in in graph. See
 # text/collection.json for an example.
 
-# USAGE:
-# # uncomment one of the BINDings of ?resource
-# target/bin/riot.sh --syntax=jsonld --out=ntriples --base='http://example.com/' test/collection.json > test/collection.n3
-# target/bin/sparql.sh --data=test/collection.n3 --query=sparql/collection.rq
+# USAGE: see test/collection/README.md
 
 
 PREFIX dts: <https://w3id.org/dts/api#>
