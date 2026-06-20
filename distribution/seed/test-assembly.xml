@@ -55,10 +55,12 @@
       <file>
          <source>${project.build.directory}/generated-resources/xml/xslt/build.json</source>
          <destName>${project.artifactId}-testing.json</destName>
+	 <filtered>true</filtered>
       </file>
       <file>
          <source>${project.build.directory}/generated-resources/yml/build.yml</source>
          <destName>${project.artifactId}-testing.yaml</destName>
+	 <filtered>true</filtered>
       </file>
    </files>
 
