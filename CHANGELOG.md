@@ -1,5 +1,9 @@
 # Changes
 
+## 0.5.2
+
+- fixes JSON-LD frame for making the collection endpoint's JSON output
+
 ## 0.5.1
 
 - adds the SPARQL queries for the collection endpoint to the testing SEED configuration
