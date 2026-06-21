@@ -29,7 +29,8 @@
 		    {
 			"extensions": "@nest"
 		    }
-		]
+		],
+		"member": { "@embed": "@always" }
 	    }
 	}
     },
@@ -63,7 +64,8 @@
 		    {
 			"extensions": "@nest"
 		    }
-		]
+		],
+		"member": { "@embed": "@always" }
 	    }
 	}
     }
