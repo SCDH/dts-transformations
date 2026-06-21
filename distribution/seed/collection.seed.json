@@ -12,6 +12,12 @@
 		"type": "xs:anyURI",
 		"required": true
             },
+            "nav": {
+		"default": "children",
+		"static": false,
+		"type": "xs:string",
+		"required": false
+            },
             "page": {
 		"default": "()",
 		"static": false,
@@ -46,6 +52,12 @@
 		"static": false,
 		"type": "xs:anyURI",
 		"required": true
+            },
+            "nav": {
+		"default": "children",
+		"static": false,
+		"type": "xs:string",
+		"required": false
             },
             "page": {
 		"default": "()",
