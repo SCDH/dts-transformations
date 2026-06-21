@@ -25,7 +25,7 @@
 	    "document": {
 		"@context": [
 		    "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/tags/${revision}${changelist}/xsl/context/modules/dct-nest.json",
-		    "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/tags/${revision}${changelist}/main/xsl/context/modules/1.0rc1.json",
+		    "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/tags/${revision}${changelist}/xsl/context/modules/1.0rc1.json",
 		    {
 			"extensions": "@nest"
 		    }
@@ -59,7 +59,7 @@
 	    "document": {
 		"@context": [
 		    "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/tags/${revision}${changelist}/xsl/context/modules/dct-nest.json",
-		    "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/tags/${revision}${changelist}/main/xsl/context/modules/1.0rc1.json",
+		    "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/tags/${revision}${changelist}/xsl/context/modules/1.0rc1.json",
 		    {
 			"extensions": "@nest"
 		    }
