@@ -9,7 +9,7 @@
             "id": {
 		"default": "()",
 		"static": false,
-		"type": "xs:string",
+		"type": "xs:anyURI",
 		"required": true
             },
             "page": {
@@ -44,7 +44,7 @@
             "id": {
 		"default": "()",
 		"static": false,
-		"type": "xs:string",
+		"type": "xs:anyURI",
 		"required": true
             },
             "page": {
