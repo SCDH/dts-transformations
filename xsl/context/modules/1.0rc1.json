@@ -133,7 +133,8 @@
 	    },
 	    "mediaTypes": {
 		"@id": "dts:mediaTypes",
-		"@protected": true
+		"@protected": true,
+		"@container": "@set"
 	    },
 	    "navigation": {
 		"@id": "dts:navigation",

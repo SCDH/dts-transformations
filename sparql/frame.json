@@ -6,6 +6,6 @@
 	    "extensions": "@nest"
 	}
     ],
-
+    "dts:requested": true,
     "member": { "@embed": "@always" }
 }

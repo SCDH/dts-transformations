@@ -26,12 +26,14 @@ CONSTRUCT {
   ?resource dts:mediaTypes ?resourceContentTypes .
   ?member dts:mediaTypes ?memberContentTypes .
 
+  ?resource dts:requested true .
+
 }
 
 WHERE {
-  #BIND(<http://example.com/general> as ?id ) .
-  #BIND(<http://example.com/apocryphs> as ?id ) .
-  #BIND(<http://example.com/matt.xml> as ?id ) .
+  #BIND(<http://example.com/general> as ?resource ) .
+  #BIND(<http://example.com/apocryphs> as ?resource ) .
+  #BIND(<http://example.com/matt.xml> as ?resource ) .
 
   BIND(?id as ?resource) .     # changed in parametrized query
   BIND(?nav as ?navUnused) .   # changed in parametrized query

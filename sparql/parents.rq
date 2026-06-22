@@ -28,12 +28,13 @@ CONSTRUCT {
   ?resource dts:mediaTypes ?resourceContentTypes .
   ?parent dts:mediaTypes ?parentContentTypes .
 
+  ?resource dts:requested true .
 }
 
 WHERE {
-  #BIND(<http://example.com/general> as ?id ) .
-  #BIND(<http://example.com/agrapha> as ?id ) .
-  #BIND(<http://example.com/agraphai.xml> as ?id ) .
+  #BIND(<http://example.com/general> as ?resource ) .
+  #BIND(<http://example.com/agrapha> as ?resource ) .
+  #BIND(<http://example.com/agraphai.xml> as ?resource ) .
 
   BIND(?id as ?resource) . # changed in parametrized query
   BIND(?nav as ?navUnused) . # changed in parametrized query
