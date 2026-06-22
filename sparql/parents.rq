@@ -27,9 +27,13 @@ CONSTRUCT {
 }
 
 WHERE {
-  #BIND(<http://example.com/general> as ?resource ) .
-  #BIND(<http://example.com/agrapha> as ?resource ) .
-  #BIND(<http://example.com/agraphai.xml> as ?resource ) .
+  #BIND(<http://example.com/general> as ?id ) .
+  #BIND(<http://example.com/agrapha> as ?id ) .
+  #BIND(<http://example.com/agraphai.xml> as ?id ) .
+
+  BIND(?id as ?resource) . # changed in parametrized query
+  BIND(?nav as ?navUnused) . # changed in parametrized query
+  BIND(?page as ?pageUnused) . # changed in parametrized query
 
   ?resource ?rp ?ro .
   ?resource (!dts:member)* ?ros . # arbitrary prop paths except into members
