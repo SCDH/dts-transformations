@@ -69,6 +69,7 @@
 	    },
 	    "member": {
 		"@id": "dts:member",
+		"@container": "@set",
 		"@protected": false
 	    },
 	    "next": {
