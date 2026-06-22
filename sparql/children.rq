@@ -9,6 +9,7 @@
 
 PREFIX dts: <https://w3id.org/dts/api#>
 PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
 CONSTRUCT {
   ?resource ?rp ?ro .
@@ -21,6 +22,9 @@ CONSTRUCT {
   ?resource dts:totalParents ?resourceParents .
   ?member dts:totalChildren ?memberChildren .
   ?member dts:totalParents ?memberParents .
+
+  ?resource dts:mediaTypes ?resourceContentTypes .
+  ?member dts:mediaTypes ?memberContentTypes .
 
 }
 
@@ -56,6 +60,11 @@ WHERE {
   FILTER(?rop != dts:totalParents) .
   FILTER(?mop != dts:totalChildren) .
   FILTER(?mop != dts:totalParents) .
+
+  FILTER(?rp != dts:mediaTypes) .
+  FILTER(?rop != dts:mediaTypes) .
+  FILTER(?mp != dts:mediaTypes) .
+  FILTER(?mop != dts:mediaTypes) .
 
   OPTIONAL
   {
@@ -94,6 +103,30 @@ WHERE {
       ?member dts:member ?child .
     }
     GROUP BY ?member
+  }
+
+  OPTIONAL
+  {
+    SELECT ?resource (COALESCE(?mediaTypes, "application/tei+xml") as ?resourceContentTypes)
+    WHERE {
+      VALUES ?mediaTypes {
+	"application/tei+xml"
+	"text/plain"
+      }
+      ?resource rdf:type dts:Resource .
+    }
+  }
+
+  OPTIONAL
+  {
+    SELECT ?member (COALESCE(?mediaTypes, "application/tei+xml") as ?memberContentTypes)
+    WHERE {
+      VALUES ?mediaTypes {
+	"application/tei+xml"
+	"text/plain"
+      }
+      ?member rdf:type dts:Resource .
+    }
   }
 
 }
