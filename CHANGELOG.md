@@ -1,5 +1,10 @@
 # Changes
 
+## 0.5.3
+
+- fixes parameters of SPARQL for collection endpoint 
+- adds `nav` and `page` parameters because they are in the specs
+
 ## 0.5.2
 
 - fixes JSON-LD frame for making the collection endpoint's JSON output
