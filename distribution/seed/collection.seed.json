@@ -41,7 +41,7 @@
 			}
 		    }
 		],
-		"dts:requested": true,
+		"dts:requested": {},
 		"member": { "@embed": "@always" }
 	    }
 	}
@@ -88,7 +88,7 @@
 			}
 		    }
 		],
-		"dts:requested": true,
+		"dts:requested": {},
 		"member": { "@embed": "@always" }
 	    }
 	}
