@@ -111,7 +111,6 @@ WHERE {
     WHERE {
       VALUES ?mediaTypes {
 	"application/tei+xml"
-	"text/plain"
       }
       ?resource rdf:type dts:Resource .
     }
@@ -123,7 +122,6 @@ WHERE {
     WHERE {
       VALUES ?mediaTypes {
 	"application/tei+xml"
-	"text/plain"
       }
       ?member rdf:type dts:Resource .
     }
