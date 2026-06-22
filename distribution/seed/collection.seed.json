@@ -42,7 +42,7 @@
 		    }
 		],
 		"dts:requested": {},
-		"member": { "@embed": "@always" }
+		"member": { "@embed": "@always", "@omitDefault": true }
 	    }
 	}
     },
@@ -89,7 +89,7 @@
 		    }
 		],
 		"dts:requested": {},
-		"member": { "@embed": "@always" }
+		"member": { "@embed": "@always", "@omitDefault": true }
 	    }
 	}
     }
