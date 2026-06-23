@@ -34,6 +34,11 @@
 		    "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/tags/${revision}${changelist}/xsl/context/modules/1.0rc1.json",
 		    {
 			"extensions": "@nest",
+			"requested": {
+			    "@id": "dts:requested",
+			    "@nest": "extensions",
+			    "@type": "http://www.w3.org/2001/XMLSchema#boolean"
+			},
 			"member": {
 			    "@id": "dts:member",
 			    "@container": "@set",
@@ -81,6 +86,11 @@
 		    "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/tags/${revision}${changelist}/xsl/context/modules/1.0rc1.json",
 		    {
 			"extensions": "@nest",
+			"requested": {
+			    "@id": "dts:requested",
+			    "@nest": "extensions",
+			    "@type": "http://www.w3.org/2001/XMLSchema#boolean"
+			},
 			"member": {
 			    "@id": "dts:member",
 			    "@container": "@set",
