@@ -38,11 +38,6 @@
 			    "@id": "dts:requested",
 			    "@nest": "extensions",
 			    "@type": "http://www.w3.org/2001/XMLSchema#boolean"
-			},
-			"member": {
-			    "@id": "dts:member",
-			    "@container": "@set",
-			    "@protected": false
 			}
 		    }
 		],
@@ -90,11 +85,6 @@
 			    "@id": "dts:requested",
 			    "@nest": "extensions",
 			    "@type": "http://www.w3.org/2001/XMLSchema#boolean"
-			},
-			"member": {
-			    "@id": "dts:member",
-			    "@container": "@set",
-			    "@protected": false
 			}
 		    }
 		],
