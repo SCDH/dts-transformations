@@ -3,9 +3,10 @@
 	"https://raw.githubusercontent.com/SCDH/dts-transformations/refs/heads/main/xsl/context/modules/dct-nest.json",
 	"https://raw.githubusercontent.com/SCDH/dts-transformations/refs/heads/main/xsl/context/modules/1.0rc1.json",
         {
-	    "extensions": "@nest"
+	    "extensions": "@nest",
+	    "requested": { "@id": "dts:requested", "@nest": "extensions", "@type": "http://www.w3.org/2001/XMLSchema#boolean" }
 	}
     ],
-
-    "member": { "@embed": "@always" }
+    "dts:requested": {},
+    "member": { "@embed": "@always", "@omitDefault": true }
 }

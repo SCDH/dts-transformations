@@ -40,10 +40,12 @@
 	    },
 	    "citationTrees": {
 		"@id": "dts:citationTrees",
+		"@container": "@set",
 		"@protected": true
 	    },
 	    "citeStructure": {
 		"@id": "dts:citeStructure",
+		"@container": "@set",
 		"@protected": true
 	    },
 	    "desc": {
@@ -69,6 +71,7 @@
 	    },
 	    "member": {
 		"@id": "dts:member",
+		"@container": "@set",
 		"@protected": false
 	    },
 	    "next": {
@@ -107,15 +110,15 @@
 	    },
 	    "collection": {
 		"@id": "dts:collection",
-		"@protected": true
+		"@protected": false
 	    },
 	    "document": {
 		"@id": "dts:document",
-		"@protected": true
+		"@protected": false
 	    },
 	    "download": {
 		"@id": "dts:download",
-		"@protected": true
+		"@protected": false
 	    },
 	    "dtsVersion": {
 		"@id": "dts:dtsVersion",
@@ -123,7 +126,7 @@
 	    },
 	    "identifier": {
 		"@id": "dts:identifier",
-		"@protected": true
+		"@protected": false
 	    },
 	    "level": {
 		"@id": "dts:level",
@@ -132,11 +135,12 @@
 	    },
 	    "mediaTypes": {
 		"@id": "dts:mediaTypes",
-		"@protected": true
+		"@protected": true,
+		"@container": "@set"
 	    },
 	    "navigation": {
 		"@id": "dts:navigation",
-		"@protected": true
+		"@protected": false
 	    },
 	    "parent": {
 		"@id": "dts:parent",
