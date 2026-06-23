@@ -1,5 +1,22 @@
 # Changes
 
+## 0.5.4
+
+- fixes some aspects of the SPARQL and JSON-LD framing for the collection endpoint
+  - `member` is container (array) even when there's only one member
+  - adds extension property `requested` which is semantically
+    meaningless but is required for getting JSON-LD framing for the
+    SPARQL result working: We need an exclusive property to
+    distinguish the request resource and the members, otherwise
+    framing does not work.
+  - adds `mediaType` for DTS Resources, with `application/tei+xml` as
+    default value
+  - revision of some context properties:
+	- `citationTrees` is a container (array)
+	- `citeStructure` is a container (array)
+	- `identifier` for citeable units is now unprotected
+	- properties for URI templates are now unprotected
+
 ## 0.5.3
 
 - fixes parameters of SPARQL for collection endpoint 
