@@ -40,10 +40,12 @@
 	    },
 	    "citationTrees": {
 		"@id": "dts:citationTrees",
+		"@container": "@set",
 		"@protected": true
 	    },
 	    "citeStructure": {
 		"@id": "dts:citeStructure",
+		"@container": "@set",
 		"@protected": true
 	    },
 	    "desc": {
