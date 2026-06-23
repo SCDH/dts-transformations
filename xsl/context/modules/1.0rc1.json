@@ -126,7 +126,7 @@
 	    },
 	    "identifier": {
 		"@id": "dts:identifier",
-		"@protected": true
+		"@protected": false
 	    },
 	    "level": {
 		"@id": "dts:level",
