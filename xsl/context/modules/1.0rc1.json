@@ -110,15 +110,15 @@
 	    },
 	    "collection": {
 		"@id": "dts:collection",
-		"@protected": true
+		"@protected": false
 	    },
 	    "document": {
 		"@id": "dts:document",
-		"@protected": true
+		"@protected": false
 	    },
 	    "download": {
 		"@id": "dts:download",
-		"@protected": true
+		"@protected": false
 	    },
 	    "dtsVersion": {
 		"@id": "dts:dtsVersion",
@@ -140,7 +140,7 @@
 	    },
 	    "navigation": {
 		"@id": "dts:navigation",
-		"@protected": true
+		"@protected": false
 	    },
 	    "parent": {
 		"@id": "dts:parent",
