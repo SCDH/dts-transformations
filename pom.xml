@@ -56,7 +56,7 @@
         <slf4j.version>2.0.6</slf4j.version>
         <icu-xpath-bindings.version>0.2.3</icu-xpath-bindings.version>
         <slf4j.version>2.0.6</slf4j.version>
-        <jena.version>4.10.0</jena.version>
+        <jena.version>6.1.0</jena.version>
     </properties>
 
     <dependencies>
@@ -636,7 +636,7 @@
                                             <value>file:${project.build.directory}/generated-resources/xml/xslt/pom.xsl.json,${project.basedir}/distribution/seed/collection.seed.json,file:${project.build.directory}/generated-resources/xml/xslt/test/media-type/tei2txt.seed.json</value>
                                         </parameter>
                                     </parameters>
-				    <stylesheet>${seed-merge-xsl.url}</stylesheet>
+                                    <stylesheet>${seed-merge-xsl.url}</stylesheet>
                                     <fileMappers>
                                         <fileMapper
                                             implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
