@@ -95,6 +95,7 @@
          <filtered>true</filtered>
          <includes>
             <include>*.seed.json</include>
+            <include>context-map.json</include>
          </includes>
       </fileSet>
    </fileSets>
