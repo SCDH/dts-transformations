@@ -117,10 +117,10 @@ WHERE {
 
   OPTIONAL
   {
-    SELECT ?resource (COALESCE(?mediaTypes, "application/tei+xml") as ?resourceContentTypes)
+    SELECT ?resource (COALESCE(?contentTypes, "application/tei+xml") as ?resourceContentTypes)
     WHERE {
-      VALUES ?mediaTypes {
-	"application/tei+xml"
+      VALUES ?contentTypes {
+	?mediaTypes
       }
       ?resource rdf:type dts:Resource .
     }
@@ -128,10 +128,10 @@ WHERE {
 
   OPTIONAL
   {
-    SELECT ?parent (COALESCE(?mediaTypes, "application/tei+xml") as ?parentContentTypes)
+    SELECT ?parent (COALESCE(?contentTypes, "application/tei+xml") as ?parentContentTypes)
     WHERE {
-      VALUES ?mediaTypes {
-	"application/tei+xml"
+      VALUES ?contentTypes {
+	?mediaTypes
       }
       ?parent rdf:type dts:Resource .
     }
