@@ -23,6 +23,12 @@
 		"static": false,
 		"type": "xs:integer",
 		"required": false
+            },
+            "mediaTypes": {
+		"default": "application/tei+xml",
+		"static": false,
+		"type": "xs:string*",
+		"required": false
             }
 	},
 	"description": "Get metadata for collection or resource given by ID and for its children from a metadata knowledge graph.",
@@ -69,6 +75,12 @@
 		"default": "()",
 		"static": false,
 		"type": "xs:integer",
+		"required": false
+            },
+            "mediaTypes": {
+		"default": "application/tei+xml",
+		"static": false,
+		"type": "xs:string*",
 		"required": false
             }
 	},

@@ -463,6 +463,10 @@
                                             <!-- Note the trailing slash! It's required for resolve-uri() -->
                                             <value>file://${sef-package.dir}/transformation-api/transform/</value>
                                         </parameter>
+                                        <parameter>
+                                            <name>media-type</name>
+                                            <value>application/ld+json</value>
+                                        </parameter>
                                     </parameters>
                                     <stylesheet>${seed-config-xsl.url}</stylesheet>
                                     <fileMappers>
@@ -500,6 +504,10 @@
                                             <!-- This is a DtsDocumentProcessor! -->
                                             <name>type</name>
                                             <value>DtsDocumentProcessor</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>media-type</name>
+                                            <value>application/tei+xml</value>
                                         </parameter>
                                     </parameters>
                                     <stylesheet>${seed-config-xsl.url}</stylesheet>

@@ -65,6 +65,9 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
 
     <xsl:param name="type" as="xs:string*" select="tokenize($type-csv, ',') ! normalize-space()"/>
 
+    <!-- the media type (Content-Type) the transformation produces -->
+    <xsl:param name="media-type" as="xs:string?" select="()"/>
+
     <xsl:variable name="saxon-config" select="doc($saxon-config-uri)"/>
 
 
@@ -478,6 +481,9 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
     <xsl:function name="seed:media-type" as="xs:string">
         <xsl:param name="stylesheet" as="document-node()"/>
         <xsl:choose>
+            <xsl:when test="$media-type">
+                <xsl:value-of select="$media-type"/>
+            </xsl:when>
             <xsl:when test="$stylesheet/*/output/@method eq 'text'">
                 <xsl:text>text/plain</xsl:text>
             </xsl:when>
