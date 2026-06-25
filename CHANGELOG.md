@@ -1,5 +1,13 @@
 # Changes
 
+## 0.5.5
+
+- makes `mediaTypes` for DTS Resources in SPARQL queries for the
+  collection endpoint work with SEED's parameter injection
+- adjusts `mediaType` config parameter for document endpoint
+- updates default context with a current copy from the spec's context
+- adds a context map to the SEED package
+
 ## 0.5.4
 
 - fixes some aspects of the SPARQL and JSON-LD framing for the collection endpoint
