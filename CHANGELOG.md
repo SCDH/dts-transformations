@@ -1,5 +1,9 @@
 # Changes
 
+## 0.5.6
+
+- adds more URL to the context map for SEED XC
+
 ## 0.5.5
 
 - makes `mediaTypes` for DTS Resources in SPARQL queries for the
