@@ -36,7 +36,7 @@ WHERE {
   #BIND(<http://example.com/agrapha> as ?resource ) .
   #BIND(<http://example.com/agraphai.xml> as ?resource ) .
 
-  BIND(?id as ?resource) . # changed in parametrized query
+  BIND(?requested as ?resource) . # changed in parametrized query
   BIND(?nav as ?navUnused) . # changed in parametrized query
   BIND(?page as ?pageUnused) . # changed in parametrized query
 

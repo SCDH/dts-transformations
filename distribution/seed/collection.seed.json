@@ -6,7 +6,7 @@
 	"libraries": [],
 	"type": ["DTS", "DTSCollection"],
 	"parameterDescriptors": {
-            "id": {
+            "requested": {
 		"default": "()",
 		"static": false,
 		"type": "xs:anyURI",
@@ -59,7 +59,7 @@
 	"libraries": [],
 	"type": ["DTS", "DTSCollection"],
 	"parameterDescriptors": {
-            "id": {
+            "requested": {
 		"default": "()",
 		"static": false,
 		"type": "xs:anyURI",
