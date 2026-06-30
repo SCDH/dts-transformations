@@ -1,5 +1,10 @@
 # Changes
 
+## 0.5.7
+
+- reflects the fact, that `id` in collection query is not the IRI of
+  the requested resource
+
 ## 0.5.6
 
 - adds more URL to the context map for SEED XC
