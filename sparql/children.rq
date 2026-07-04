@@ -44,8 +44,8 @@ WHERE {
   #BIND(<http://example.com/matt.xml> as ?resource ) .
 
   BIND(?requested as ?resource) . # changed in parametrized query
-  BIND(?nav as ?navUnused) .   # changed in parametrized query
-  BIND(?page as ?pageUnused) . # changed in parametrized query
+  BIND(?navP as ?navUnused) .     # changed in parametrized query
+  BIND(?pageP as ?pageUnused) .   # changed in parametrized query
 
   ?resource ?rp ?ro .
   ?resource (!dts:member)* ?ros . # arbitrary prop paths except into members
@@ -139,7 +139,7 @@ WHERE {
     SELECT ?resource (COALESCE(?contentTypes, "application/tei+xml") as ?resourceContentTypes)
     WHERE {
       VALUES ?contentTypes {
-	?mediaTypes
+	?mediaTypesP
       }
       ?resource rdf:type dts:Resource .
     }
@@ -150,7 +150,7 @@ WHERE {
     SELECT ?member (COALESCE(?contentTypes, "application/tei+xml") as ?memberContentTypes)
     WHERE {
       VALUES ?contentTypes {
-	?mediaTypes
+	?mediaTypesP
       }
       ?member rdf:type dts:Resource .
     }

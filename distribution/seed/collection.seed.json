@@ -12,19 +12,19 @@
 		"type": "xs:anyURI",
 		"required": true
             },
-            "nav": {
+            "navP": {
 		"default": "children",
 		"static": false,
 		"type": "xs:string",
 		"required": false
             },
-            "page": {
+            "pageP": {
 		"default": "()",
 		"static": false,
 		"type": "xs:integer",
 		"required": false
             },
-            "mediaTypes": {
+            "mediaTypesP": {
 		"default": "application/tei+xml",
 		"static": false,
 		"type": "xs:string*",
@@ -65,19 +65,19 @@
 		"type": "xs:anyURI",
 		"required": true
             },
-            "nav": {
+            "navP": {
 		"default": "children",
 		"static": false,
 		"type": "xs:string",
 		"required": false
             },
-            "page": {
+            "pageP": {
 		"default": "()",
 		"static": false,
 		"type": "xs:integer",
 		"required": false
             },
-            "mediaTypes": {
+            "mediaTypesP": {
 		"default": "application/tei+xml",
 		"static": false,
 		"type": "xs:string*",
