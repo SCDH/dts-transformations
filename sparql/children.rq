@@ -28,6 +28,14 @@ CONSTRUCT {
 
   ?resource dts:requested true .
 
+  ?resource dts:collection ?resourceCollectionTemplate .
+  ?resource dts:navigation ?resourceNavigationTemplate .
+  ?resource dts:document ?resourceDocumentTemplate .
+
+  ?member dts:collection ?memberCollectionTemplate .
+  ?member dts:navigation ?memberNavigationTemplate .
+  ?member dts:document ?memberDocumentTemplate .
+
 }
 
 WHERE {
@@ -68,6 +76,23 @@ WHERE {
   FILTER(?mp != dts:mediaTypes) .
   FILTER(?mop != dts:mediaTypes) .
 
+  FILTER(?rp != dts:collection) .
+  FILTER(?rop != dts:collection) .
+  FILTER(?mp != dts:collection) .
+  FILTER(?mop != dts:collection) .
+
+  FILTER(?rp != dts:navigation) .
+  FILTER(?rop != dts:navigation) .
+  FILTER(?mp != dts:navigation) .
+  FILTER(?mop != dts:navigation) .
+
+  FILTER(?rp != dts:document) .
+  FILTER(?rop != dts:document) .
+  FILTER(?mp != dts:document) .
+  FILTER(?mop != dts:document) .
+
+  # count children and parents
+
   OPTIONAL
   {
     SELECT ?resource (COALESCE(COUNT(DISTINCT(?child)), 0) as ?resourceChildrenCalculated)
@@ -107,6 +132,8 @@ WHERE {
     GROUP BY ?member
   }
 
+  # get media types
+
   OPTIONAL
   {
     SELECT ?resource (COALESCE(?contentTypes, "application/tei+xml") as ?resourceContentTypes)
@@ -126,6 +153,50 @@ WHERE {
 	?mediaTypes
       }
       ?member rdf:type dts:Resource .
+    }
+  }
+
+  # get URI templates for resource
+
+  OPTIONAL
+  {
+    SELECT ?resource (COALESCE(?rct, ?resource) as ?resourceCollectionTemplate) (COALESCE(?rnt, ?resource) as ?resourceNavigationTemplate) (COALESCE(?rdt, ?resource) as ?resourceDocumentTemplate)
+    WHERE {
+      ?resource rdf:type dts:Resource .
+      BIND(CONCAT(STR(?resource), "{?nav}") as ?rct) .
+      BIND(CONCAT(REPLACE(STR(?resource), "/collection/", "/navigation/"), "{?tree,ref,start,end,down,page}") as ?rnt) .
+      BIND(CONCAT(REPLACE(STR(?resource), "/collection/", "/document/"), "{?tree,ref,start,end,mediaType}") as ?rdt) .
+    }
+  }
+
+  OPTIONAL
+  {
+    SELECT ?resource (COALESCE(?rct, URI("{?nav}")) as ?resourceCollectionTemplate)
+    WHERE {
+      ?resource rdf:type dts:Collection .
+      BIND(CONCAT(STR(?resource), "{?nav}") as ?rct) .
+    }
+  }
+
+  # get URI templates for member
+
+  OPTIONAL
+  {
+    SELECT ?member (COALESCE(?rct, ?member) as ?memberCollectionTemplate) (COALESCE(?rnt, ?member) as ?memberNavigationTemplate) (COALESCE(?rdt, ?member) as ?memberDocumentTemplate)
+    WHERE {
+      ?member rdf:type dts:Resource .
+      BIND(CONCAT(STR(?member), "{?nav}") as ?rct) .
+      BIND(CONCAT(REPLACE(STR(?member), "/collection/", "/navigation/"), "{?tree,ref,start,end,down,page}") as ?rnt) .
+      BIND(CONCAT(REPLACE(STR(?member), "/collection/", "/document/"), "{?tree,ref,start,end,mediaType}") as ?rdt) .
+    }
+  }
+
+  OPTIONAL
+  {
+    SELECT ?member (COALESCE(?rct, URI("{?nav}")) as ?memberCollectionTemplate)
+    WHERE {
+      ?member rdf:type dts:Collection .
+      BIND(CONCAT(STR(?member), "{?nav}") as ?rct) .
     }
   }
 
