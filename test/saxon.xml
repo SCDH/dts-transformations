@@ -33,6 +33,8 @@ This configuration
         <package
             name="https://scdh.github.io/dts-transformations/xsl/uri-templates/query-parameters.xsl"
             version="1.0.0" sourceLocation="../xsl/uri-templates/query-parameters.xsl"/>
+        <package name="https://scdh.github.io/dts-transformations/xsl/uri-templates/seed-xc.xsl"
+            version="1.0.0" sourceLocation="../xsl/uri-templates/seed-xc.xsl"/>
 
         <!-- the following packages are not required by downstream -->
         <package name="https://scdh.github.io/dts-transformations/xsl/post-proc-apply.xsl"
