@@ -12,7 +12,7 @@
     <xsl:accept component="function" names="dts:*" visibility="public"/>
     <xsl:override>
 
-      <xsl:function name="dts:navigation-uri" as="xs:anyURI?" visibility="public">
+      <xsl:function name="dts:navigation-uri" as="xs:string?" visibility="public">
         <xsl:param name="resource" as="document-node()"/>
         <xsl:param name="parameters" as="map(xs:string, item()*)"/>
         <xsl:sequence
@@ -20,7 +20,7 @@
         />
       </xsl:function>
 
-      <xsl:function name="dts:collection-uri-template-on-resource" as="xs:anyURI?"
+      <xsl:function name="dts:collection-uri-template-on-resource" as="xs:string?"
         visibility="public">
         <xsl:param name="resource" as="document-node()"/>
         <xsl:param name="parameters" as="map(xs:string, item()*)"/>
@@ -29,7 +29,7 @@
         />
       </xsl:function>
 
-      <xsl:function name="dts:navigation-uri-template-on-resource" as="xs:anyURI?"
+      <xsl:function name="dts:navigation-uri-template-on-resource" as="xs:string?"
         visibility="public">
         <xsl:param name="resource" as="document-node()"/>
         <xsl:param name="parameters" as="map(xs:string, item()*)"/>
@@ -38,7 +38,7 @@
         />
       </xsl:function>
 
-      <xsl:function name="dts:document-uri-template-on-resource" as="xs:anyURI?" visibility="public">
+      <xsl:function name="dts:document-uri-template-on-resource" as="xs:string?" visibility="public">
         <xsl:param name="resource" as="document-node()"/>
         <xsl:param name="parameters" as="map(xs:string, item()*)"/>
         <xsl:sequence
