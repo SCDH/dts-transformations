@@ -1,5 +1,12 @@
 # Changes
 
+## 0.5.8
+
+- make URI templates for the SEED XC DTS service, for `collection` as
+  well as for `navigation` endpoint
+- changes the default URI template package to
+  `xsl/uri-templates/seed-xc.xsl`
+
 ## 0.5.7
 
 - reflects the fact, that `id` in collection query is not the IRI of
