@@ -35,22 +35,22 @@
   </xsl:function>
 
 
-  <xsl:function name="dts:navigation-uri" as="xs:anyURI?" visibility="abstract">
+  <xsl:function name="dts:navigation-uri" as="xs:string?" visibility="abstract">
     <xsl:param name="resource" as="document-node()"/>
     <xsl:param name="parameters" as="map(xs:string, item()*)"/>
   </xsl:function>
 
-  <xsl:function name="dts:collection-uri-template-on-resource" as="xs:anyURI?" visibility="abstract">
+  <xsl:function name="dts:collection-uri-template-on-resource" as="xs:string?" visibility="abstract">
     <xsl:param name="resource" as="document-node()"/>
     <xsl:param name="parameters" as="map(xs:string, item()*)"/>
   </xsl:function>
 
-  <xsl:function name="dts:navigation-uri-template-on-resource" as="xs:anyURI?" visibility="abstract">
+  <xsl:function name="dts:navigation-uri-template-on-resource" as="xs:string?" visibility="abstract">
     <xsl:param name="resource" as="document-node()"/>
     <xsl:param name="parameters" as="map(xs:string, item()*)"/>
   </xsl:function>
 
-  <xsl:function name="dts:document-uri-template-on-resource" as="xs:anyURI?" visibility="abstract">
+  <xsl:function name="dts:document-uri-template-on-resource" as="xs:string?" visibility="abstract">
     <xsl:param name="resource" as="document-node()"/>
     <xsl:param name="parameters" as="map(xs:string, item()*)"/>
   </xsl:function>
