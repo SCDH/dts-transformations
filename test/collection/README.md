@@ -44,3 +44,21 @@ target/bin/riot.sh --out=JSONLD test/collection/output/agrapha-parents.ttl > tes
 ```shell
 target/bin/ld-cli frame --input=file:$(realpath test/collection/output/agrapha-parents.json)  file:$(realpath sparql/frame.json) --pretty --omit-graph
 ```
+
+## Identifiers
+
+### Findings from Experiments
+
+Using `@base` in the `@context` is important when not writing IRIs
+into `@id` of the collection metadata file.
+
+
+- `"@base": "data:"` works and leads to IRIs `<data:...>`
+- `"@base": ""` will expand relative IDs based on the filename => no good idea!
+- `"@base": null` will make the JSON-LD processor keep relative IRIs,
+  like section 4.1.3 of the JSON-LD specs says: "Setting @base to null
+  will prevent relative IRI references from being expanded to IRIs."
+  https://www.w3.org/TR/json-ld11/#base-iri . However, the RDF parser,
+  which reads the output stream of the JSON-LD processor will resolve
+  the relative IRIs against a base URI.
+
