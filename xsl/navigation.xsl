@@ -36,7 +36,7 @@ See the section at the end of the package.
     <!-- more parameters defined in tree.xsl -->
 
     <xsl:param name="uri-templates-package" as="xs:string" static="true"
-        select="'https://scdh.github.io/dts-transformations/xsl/uri-templates/query-parameters.xsl'"/>
+        select="'https://scdh.github.io/dts-transformations/xsl/uri-templates/seed-xc.xsl'"/>
 
     <xsl:param name="uri-templates-package-version" as="xs:string" static="true" select="'1.0.0'"/>
 
