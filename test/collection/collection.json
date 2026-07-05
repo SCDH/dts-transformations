@@ -11,7 +11,7 @@
 	    "dublinCore": {
 		"title": [
 		    {
-			"language": "en",
+			"lang": "en",
 			"value": "Sample Collection of DTS Transformations"
 		    }
 		],
@@ -45,13 +45,13 @@
 	    "dublinCore": {
 		"title": [
 		    {
-			"language": "en",
+			"lang": "en",
 			"value": "Collection of Apocryphical Books"
 		    }
 		],
 		"identifier": [
 		    {
-			"language": "en",
+			"lang": "en",
 			"value": "APC"
 		    }
 		]
@@ -106,12 +106,12 @@
 		],
 		"identifier": [
 		    {
-			"language": "en",
+			"lang": "en",
 			"value": "4Ezr"
 		    }
 		],
 		"description": {
-		    "en": "TEI-XML edition of the 4th book of Esra based on ..."
+		    "value": "TEI-XML edition of the 4th book of Esra based on ..."
 		}
 	    },
 	    "totalParents": 1,
@@ -129,7 +129,7 @@
 	    "dublinCore": {
 		"title": [
 		    {
-			"language": "en",
+			"lang": "en",
 			"value": "Collection of Agrapha"
 		    }
 		]
