@@ -10,6 +10,7 @@
 PREFIX dts: <https://w3id.org/dts/api#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX seed: <https://raw.githubusercontent.com/SCDH/seed-xc/refs/heads/main/dts/src/main/resources/META-INF/resources/semantics/>
 
 CONSTRUCT {
   ?resource ?rp ?ro .
@@ -90,6 +91,11 @@ WHERE {
   FILTER(?rop != dts:document) .
   FILTER(?mp != dts:document) .
   FILTER(?mop != dts:document) .
+
+  FILTER(?rp != seed:location) .
+  FILTER(?rop != seed:location) .
+  FILTER(?mp != seed:location) .
+  FILTER(?mop != seed:location) .
 
   # count children and parents
 
