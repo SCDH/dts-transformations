@@ -686,4 +686,12 @@
             test="map:get(., 'resource') => map:get('citationTrees') => array:size()" select="0"/>
     </x:scenario>
 
+    <x:scenario label="@context configurable">
+        <x:param name="context-url" select="'urn:lod:context:dts:1.0rc1'"/>
+        <x:context href="../test/no-tree.xml"/>
+        <x:expect label="has @context property" test="map:contains(., '@context')"/>
+        <x:expect label="@context has value from parameter" test="map:get(., '@context')"
+            select="'urn:lod:context:dts:1.0rc1'"/>
+    </x:scenario>
+
 </x:description>
