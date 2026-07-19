@@ -38,6 +38,13 @@
 			</excludes>
 		</fileSet>
 		<fileSet>
+			<directory>${project.basedir}</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>context/**/*</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<!-- include all dependencies unpacked in target/dependencies -->
 			<directory>target/dependencies</directory>
 			<outputDirectory>/target/dependencies</outputDirectory>

@@ -1,5 +1,11 @@
 # Changes
 
+- supports configuring a LOD context for `navigation` (see issue #23)
+- collection SPARQL queries drop `seed:location` property (see
+  [scdh/seed-xc#43](https://github.com/SCDH/seed-xc/issues/43)
+- moves LOD contexts from `/xsl/context/` to `/context/`. 
+
+
 ## 0.5.8
 
 - make URI templates for the SEED XC DTS service, for `collection` as

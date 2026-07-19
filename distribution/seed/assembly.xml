@@ -39,6 +39,13 @@
          </excludes>
       </fileSet>
       <fileSet>
+         <directory>${project.basedir}</directory>
+         <outputDirectory>/${project.artifactId}</outputDirectory>
+         <includes>
+            <include>context/**/*</include>
+         </includes>
+      </fileSet>
+      <fileSet>
          <directory>${project.build.directory}/generated-resources/xml/xslt</directory>
          <outputDirectory>/${project.artifactId}</outputDirectory>
          <includes>

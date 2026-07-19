@@ -38,6 +38,21 @@
          </excludes>
       </fileSet>
       <fileSet>
+         <directory>${project.basedir}</directory>
+         <outputDirectory>/</outputDirectory>
+         <includes>
+            <include>context/**/*</include>
+         </includes>
+      </fileSet>
+      <fileSet>
+         <!-- keeps <=0.5.8 place for compatiblity reasons, deprecation warning required -->
+         <directory>${project.basedir}</directory>
+         <outputDirectory>/xsl/</outputDirectory>
+         <includes>
+            <include>context/**/*</include>
+         </includes>
+      </fileSet>
+      <fileSet>
          <!-- include all dependencies unpacked in target/dependencies -->
          <directory>target/dependencies</directory>
          <outputDirectory>/target/dependencies</outputDirectory>

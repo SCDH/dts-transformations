@@ -1,5 +1,5 @@
 {
-  "@context": "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/heads/main/xsl/context/1.0rc1-dcterms-set.json",
+  "@context": "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/heads/main/context/1.0rc1-dcterms-set.json",
   "dtsVersion": "1.0rc1",
   "@type": "Navigation",
   "@id": "https://example.org/api/dts/navigation/?resource=https://en.wikisource.org/wiki/Dracula&ref=C1&down=-1",
