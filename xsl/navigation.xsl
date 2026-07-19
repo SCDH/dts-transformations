@@ -107,8 +107,7 @@ See the section at the end of the package.
         <xsl:variable name="parameters" as="map(xs:string, item()*)"
             select="dts:validate-navigation-parameters(.)"/>
         <xsl:map>
-            <xsl:map-entry key="'@context'"
-                select="concat('https://distributed-text-services.github.io/specifications/context/', $dts-version,'.json')"/>
+            <xsl:map-entry key="'@context'" select="$context-url"/>
             <xsl:map-entry key="'dtsVersion'" select="$dts-version"/>
             <xsl:map-entry key="'@type'">Navigation</xsl:map-entry>
             <xsl:map-entry key="'@id'" select="dts:navigation-uri(., $parameters)"/>
