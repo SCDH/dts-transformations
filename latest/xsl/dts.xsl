@@ -21,21 +21,21 @@
       <xsl:when
         test="$uses-local-context and $context-url eq 'https://distributed-text-services.github.io/specifications/context/1.0rc1.json'">
         <xsl:sequence
-          select="'./context/1.0rc1.json' => resolve-uri(static-base-uri()) => unparsed-text() => parse-json()"
+          select="'../context/1.0rc1.json' => resolve-uri(static-base-uri()) => unparsed-text() => parse-json()"
         />
       </xsl:when>
       <xsl:when test="unparsed-text-available($context-url)">
         <xsl:sequence select="unparsed-text($context-url) => parse-json()"/>
       </xsl:when>
       <xsl:when
-        test="concat('context/', $dts-version, '.json') => resolve-uri(static-base-uri()) => unparsed-text-available()">
+        test="concat('../context/', $dts-version, '.json') => resolve-uri(static-base-uri()) => unparsed-text-available()">
         <xsl:sequence
-          select="concat('context/', $dts-version, '.json') => resolve-uri(static-base-uri()) => unparsed-text() => parse-json()"
+          select="concat('../context/', $dts-version, '.json') => resolve-uri(static-base-uri()) => unparsed-text() => parse-json()"
         />
       </xsl:when>
       <xsl:otherwise>
         <xsl:sequence
-          select="'context/1.0rc1.json' => resolve-uri(static-base-uri()) => unparsed-text() => parse-json()"
+          select="'../context/1.0rc1.json' => resolve-uri(static-base-uri()) => unparsed-text() => parse-json()"
         />
       </xsl:otherwise>
     </xsl:choose>
