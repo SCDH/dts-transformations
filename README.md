@@ -13,26 +13,35 @@ that can be implemented generically based on evaluating
 - **navigation** endpoint
 - **document** endpoint
 
-The other endpoints are not targeted by this project. But there are
-[recommendations](#other-endpoints).
+The **collection** endpoint is supported by SPARQL queries, that
+construct the required response bodies from a large JSON-LD metadata
+file encompassing all the informations about Collections and Resources
+of a project. The structure of this metadata file is described in
+detail in the documentation of the [SEED DTS
+service](https://github.com/SCDH/seed-xc/blob/main/doc/dts-records.md).
 
 ## Status of Implementation
 
-Implemented version: [1.0rc1](https://distributed-text-services.github.io/specifications/versions/1.0rc1/)
+Implemented version:
+[1.0rc1](https://distributed-text-services.github.io/specifications/versions/1.0rc1/)
 
 Query parameters for the endpoints are supported through stylesheet
 parameters:
 
-| parameter   | [navigation](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#uri-for-navigation-endpoint-requests) | [document](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#query-parameters-2) |
-|-------------|--------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| `resource`  | ✅ [³](#resource)                                                                                                              | ✅ [³](#resource)                                                                                          |
-| `ref`       | ✅                                                                                                                             | ✅                                                                                                         |
-| `start`     | ✅                                                                                                                             | ✅                                                                                                         |
-| `end`       | ✅                                                                                                                             | ✅                                                                                                         |
-| `down`      | ✅                                                                                                                             | not used                                                                                                   |
-| `tree`      | ✅                                                                                                                             | ✅                                                                                                         |
-| `page`      | ❌                                                                                                                             | not used                                                                                                   |
-| `mediaType` | not used                                                                                                                       | ✅[¹](#mediatype)                                                                                          |
+| parameter | [navigation](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#uri-for-navigation-endpoint-requests) | [document](https://distributed-text-services.github.io/specifications/versions/1.0rc1/#query-parameters-2) | [collection](https://dtsapi.org/specifications/versions/1.0rc1/#uri-for-collection-endpoint-request) |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
+| `resource`  | ✅ [³](#resource) | ✅ [³](#resource) |    |
+| `ref`       | ✅                | ✅                |    |
+| `start`     | ✅                | ✅                |    |
+| `end`       | ✅                | ✅                |    |
+| `down`      | ✅                |                   |    |
+| `tree`      | ✅                | ✅                |    |
+| `page`      | ❌                |                   | ❌ |
+| `mediaType` |                   | ✅[¹](#mediatype) |    |
+| `id`        |                   |                   | ✅ |
+| `nav`       |                   |                   | ✅ |
+
+
 
 Evaluated TEI elements:
 
@@ -50,7 +59,9 @@ Evaluated TEI elements:
    the property name and the property value. The function gets the
    actual JSON-LD `@context` and compacts URIs accordingly.
 3. for mapping of the values of `resource` to document URIs see the
-   [`resource`](#resource) section
+   [`resource`](#resource) section and the
+   [documentation](https://github.com/SCDH/seed-xc/blob/main/doc/dts-records.md#id)
+   of the SEED DTS service
 
 
 ## XSLT for Endpoints
@@ -231,6 +242,12 @@ template). There is a mapping function, that can easily be
 replaced. It's called `dts:resource-uri#1` and defined in
 [`xsl/resource.xsl`](xsl/resource.xsl). This package can be replaced
 with one that suits your needs by the Saxon configuration file.
+
+On the [SEED DTS
+server](https://github.com/SCDH/seed-xc/blob/main/doc/dts-records.md),
+the mapping is done independently from the stylesheet. The `resource`
+parameter is just used to put a value into the output of the
+navigation endpoint.
 
 
 ### Citation Trees
