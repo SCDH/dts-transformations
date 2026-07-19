@@ -2,11 +2,14 @@
 
 ## 0.6.0
 
+- A release that actually runs on the SEED DTS server!
 - supports configuring a LOD context for `navigation` (see issue #23)
 - collection SPARQL queries drop `seed:location` property (see
   [scdh/seed-xc#43](https://github.com/SCDH/seed-xc/issues/43)
 - moves LOD contexts from `/xsl/context/` to `/context/`. The oXygen
   packages also has these resources on the old path.
+- makes dropping of uncontained text nodes in
+  `test/media-types/tei2txt.xsl` optional
 
 
 ## 0.5.8
