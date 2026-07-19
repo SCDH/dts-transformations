@@ -13,6 +13,8 @@
 
   <xsl:param name="something" as="xs:string" select="'something'"/>
 
+  <xsl:param name="drop-uncontained" as="xs:boolean" select="false()"/>
+
   <xsl:template mode="tei prose verse" match="TEI">
     <xsl:message>CHAINED PROC</xsl:message>
     <xsl:apply-templates mode="#current" select="text"/>
@@ -83,13 +85,21 @@
   </xsl:template>
 
   <xsl:template mode="tei" match="text()[normalize-space(.) ne '']">
-    <xsl:message>
-      <xsl:text>dropping text in </xsl:text>
-      <xsl:value-of select="name(..)"/>
-      <xsl:text>: '</xsl:text>
-      <xsl:value-of select="tokenize(.)[1 or last()] => string-join(' ... ')"/>
-      <xsl:text>'</xsl:text>
-    </xsl:message>
+    <xsl:choose>
+      <xsl:when test="$drop-uncontained">
+        <xsl:message>
+          <xsl:text>dropping text in </xsl:text>
+          <xsl:value-of select="name(..)"/>
+          <xsl:text>: '</xsl:text>
+          <xsl:value-of select="tokenize(.)[1 or last()] => string-join(' ... ')"/>
+          <xsl:text>'</xsl:text>
+        </xsl:message>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:message>uncontained text</xsl:message>
+        <xsl:sequence select="."/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:package>
