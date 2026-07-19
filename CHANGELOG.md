@@ -1,9 +1,12 @@
 # Changes
 
+## 0.6.0
+
 - supports configuring a LOD context for `navigation` (see issue #23)
 - collection SPARQL queries drop `seed:location` property (see
   [scdh/seed-xc#43](https://github.com/SCDH/seed-xc/issues/43)
-- moves LOD contexts from `/xsl/context/` to `/context/`. 
+- moves LOD contexts from `/xsl/context/` to `/context/`. The oXygen
+  packages also has these resources on the old path.
 
 
 ## 0.5.8
