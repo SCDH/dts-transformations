@@ -58,7 +58,9 @@
 		"temporal": { "@id": "dct:temporal" },
 		"title": { "@id": "dct:title" },
 		"dctype": { "@id": "dct:type" },
-		"valid": { "@id": "dct:valid" }
+		"valid": { "@id": "dct:valid" },
+		"lang": { "@id": "@language" },
+		"value": { "@id": "@value" }
 	    }
 	}
     }
