@@ -48,7 +48,8 @@
 		    }
 		],
 		"dts:requested": {},
-		"member": { "@embed": "@always", "@omitDefault": true }
+		"member": { "@embed": "@always", "@omitDefault": true },
+		"dtsVersion": { "@default": "1.0rc1", "@explicit": false }
 	    }
 	}
     },
@@ -101,7 +102,8 @@
 		    }
 		],
 		"dts:requested": {},
-		"member": { "@embed": "@always", "@omitDefault": true }
+		"member": { "@embed": "@always", "@omitDefault": true },
+		"dtsVersion": { "@default": "1.0rc1", "@explicit": false }
 	    }
 	}
     }

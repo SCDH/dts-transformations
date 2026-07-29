@@ -101,6 +101,11 @@ WHERE {
   FILTER(?pp != dts:document) .
   FILTER(?pop != dts:document) .
 
+  FILTER(?rp != dts:dtsVersion) .
+  FILTER(?rop != dts:dtsVersion) .
+  FILTER(?pp != dts:dtsVersion) .
+  FILTER(?pop != dts:dtsVersion) .
+
   FILTER(?rp != seed:location) .
   FILTER(?rop != seed:location) .
   FILTER(?pp != seed:location) .

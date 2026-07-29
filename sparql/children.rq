@@ -92,6 +92,11 @@ WHERE {
   FILTER(?mp != dts:document) .
   FILTER(?mop != dts:document) .
 
+  FILTER(?rp != dts:dtsVersion) .
+  FILTER(?rop != dts:dtsVersion) .
+  FILTER(?mp != dts:dtsVersion) .
+  FILTER(?mop != dts:dtsVersion) .
+
   FILTER(?rp != seed:location) .
   FILTER(?rop != seed:location) .
   FILTER(?mp != seed:location) .
