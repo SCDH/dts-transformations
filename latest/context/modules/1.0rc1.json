@@ -146,6 +146,9 @@
 		"@id": "dts:parent",
 		"@protected": true
 	    },
+	    "title": {
+		"@id": "dts:title"
+	    },
 	    "totalChildren": {
 		"@id": "dts:totalChildren",
 		"@type": "xsd:integer",
