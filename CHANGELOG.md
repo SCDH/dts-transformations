@@ -7,6 +7,7 @@
   object
 - investigates on nesting the dublinCore metadata object, but finds
   no solution, see #26. However, a workaround is established.
+- set `dtsVersion` by the transformation/endpoint, see #32
 
 ## 0.6.0
 
