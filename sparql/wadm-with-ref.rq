@@ -9,7 +9,7 @@
 # ?PARAMREF - the identifier member passed to the document enpoint as ref parameter
 # ?PARAMURI - the document query URL 
 
-PREFIX dts: <https://w3id.org/dts/api#>
+PREFIX dts: <https://dtsapi.org/v1.0#>
 PREFIX oa:  <http://www.w3.org/ns/oa#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
