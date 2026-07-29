@@ -21,6 +21,32 @@
     },
 
 
+    "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/tags/${revision}${changelist}/context/modules/v1.0.json": {
+	"path": "context/modules/v1.0.json"
+    },
+    "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/heads/main/context/modules/v1.0.json": {
+	"path": "context/modules/v1.0.json"
+    },
+    "https://scdh.github.io/dts-transformations/latest/context/modules/v1.0.json": {
+	"path": "context/modules/v1.0.json"
+    },
+
+
+    "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/tags/${revision}${changelist}/context/v1.0.json": {
+	"path": "context/v1.0.json"
+    },
+    "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/heads/main/context/v1.0.json": {
+	"path": "context/v1.0.json"
+    },
+    "https://scdh.github.io/dts-transformations/latest/context/v1.0.json": {
+	"path": "context/v1.0.json"
+    },
+
+    "https://dtsapi.org/specifications/context/v1.0.json": {
+	"path": "context/v1.0.json"
+    },
+
+
     "https://raw.githubusercontent.com/SCDH/dts-transformations/refs/tags/${revision}${changelist}/context/modules/1.0rc1.json": {
 	"path": "context/modules/1.0rc1.json"
     },
@@ -41,7 +67,6 @@
     "https://scdh.github.io/dts-transformations/latest/context/1.0rc1.json": {
 	"path": "context/1.0rc1.json"
     },
-
 
     "https://dtsapi.org/specifications/context/1.0rc1.json": {
 	"path": "context/1.0rc1.json"
