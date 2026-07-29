@@ -111,6 +111,7 @@ no matter what the $mediaType parameter is set to.
       </xsl:when>
       <xsl:when test="exists($ref)">
         <TEI>
+	  <!-- DTS 1.0 still keeps the old w3id.org namespace for the wrapper! -->
           <dts:wrapper xmlns:dts="https://w3id.org/api/dts#">
             <xsl:sequence xmlns:dts="https://distributed-text-services.github.io/specifications/"
               select="dts:cut-ref(.)"/>

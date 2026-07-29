@@ -18,13 +18,23 @@
             test="map:get(., '@context') => map:contains('dts')"/>
     </x:scenario>
 
-    <x:scenario label="compact URI, that has prefix, but no property mapping">
+    <x:scenario label="compact URI, that has prefix, but no property mapping, 1.0rc1">
         <x:param name="dts-version" select="'1.0rc1'"/>
         <x:call function="dts:compact">
             <x:param name="value" select="'https://w3id.org/dts/api#endMember'"/>
         </x:call>
         <x:expect label="some compaction"
             test="string-length(.) &lt; string-length('https://w3id.org/dts/api#endMember')"/>
+        <x:expect label="result" select="'dts:endMember'"/>
+    </x:scenario>
+
+    <x:scenario label="compact URI, that has prefix, but no property mapping, v1.0">
+        <x:param name="dts-version" select="'1.0'"/>
+        <x:call function="dts:compact">
+            <x:param name="value" select="'https://dtsapi.org/v1.0#'"/>
+        </x:call>
+        <x:expect label="some compaction"
+            test="string-length(.) &lt; string-length('https://dtsapi.org/v1.0#')"/>
         <x:expect label="result" select="'dts:endMember'"/>
     </x:scenario>
 
@@ -51,7 +61,7 @@
     <x:scenario label="uses configured context URI">
         <x:param name="dts-version" select="'1.0rcx'"/>
         <x:call function="dts:compact">
-            <x:param name="value" select="'https://w3id.org/dts/api#endMember'"/>
+            <x:param name="value" select="'https://dtsapi.org/v1.0rcx#endMember'"/>
         </x:call>
         <x:expect label="some compaction"
             test="string-length(.) &lt; string-length('https://w3id.org/dts/api#endMember')"/>
@@ -61,10 +71,10 @@
     <x:scenario label="no exception on unexpected sub-map">
         <x:param name="dts-version" select="'1.0test'"/>
         <x:call function="dts:compact">
-            <x:param name="value" select="'https://w3id.org/dts/api#endMember'"/>
+            <x:param name="value" select="'https://dtsapi.org/v1.0test#endMember'"/>
         </x:call>
         <x:expect label="some compaction"
-            test="string-length(.) &lt; string-length('https://w3id.org/dts/api#endMember')"/>
+            test="string-length(.) &lt; string-length('https://dtsapi.org/v1.0test#endMember')"/>
         <x:expect label="result" select="'endMember'"/>
     </x:scenario>
 
