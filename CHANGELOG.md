@@ -1,5 +1,13 @@
 # Changes
 
+## 0.6.1
+
+- fixes issues related to JSON-LD context and JSON-LD framing: #24,
+  #25 and issues with language containers in the dublinCore metadata
+  object
+- investigates on nesting the dublinCore metadata object, but finds
+  no solution, see #26. However, a workaround is established.
+
 ## 0.6.0
 
 - A release that actually runs on the SEED DTS server!
