@@ -68,6 +68,12 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
     <!-- the media type (Content-Type) the transformation produces -->
     <xsl:param name="media-type" as="xs:string?" select="()"/>
 
+    <xsl:param name="node-tracing-package-name" as="xs:string*"
+        select="'http://wwu.de/scdh/selection-engine/node-tracing'"/>
+
+    <!-- Selene's XSLT package is installed on the SEED service -->
+    <xsl:param name="node-tracing-package-location" as="xs:string" select="'selene/libtrace.xsl'"/>
+
     <xsl:variable name="saxon-config" select="doc($saxon-config-uri)"/>
 
 
@@ -235,6 +241,21 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+
+    <!-- the node tracing library needs special handling -->
+    <xsl:template mode="libraries" match="use-package[@name = $node-tracing-package-name]"
+        priority="10">
+        <xsl:map>
+            <xsl:map-entry key="'location'" select="$node-tracing-package-location"/>
+        </xsl:map>
+    </xsl:template>
+
+    <!-- nothing to do for stylesheet parameters for the node-tracing library -->
+    <xsl:template mode="stylesheet-params"
+        match="use-package[@name eq 'http://wwu.de/scdh/selection-engine/node-tracing']"
+        priority="10"/>
+
+
 
     <xsl:template name="seed:package-with-mode" visibility="final">
         <xsl:param name="name" as="xs:string?"/>
