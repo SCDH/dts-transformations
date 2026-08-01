@@ -92,7 +92,7 @@ target/bin/xslt.sh \
             <xsl:map-entry key="$name">
                 <xsl:sequence select="
                         map:merge((map:remove($chained-bare-config, ('location', 'requiresSource')), $document-bare-config), map {'duplicates': 'use-first'}) =>
-                        map:put('libraries', array:join((map:get($document-bare-config, 'libraries'), seed:as-library($chained-config) => map:get('libraries')))) =>
+                        map:put('libraries', array:join((map:get($document-bare-config, 'libraries'), seed:as-library($chained-config) => map:get('libraries') => array:reverse()))) =>
                         map:put('parameterDescriptors', map:merge((map:get($document-bare-config, 'parameterDescriptors'), seed:as-library($chained-config) => map:get('parameterDescriptors')))) =>
                         map:put('compileTimeParameters', array {$media-type-parameters}) =>
                         map:put('type', array:join((map:get($document-bare-config, 'type'), map:get($chained-bare-config, 'type')))) =>                        
