@@ -550,7 +550,7 @@
                                     <parameters>
                                         <parameter>
                                             <name>saxon-config-uri</name>
-                                            <value>${project.basedir}/saxon.he.xml</value>
+                                            <value>${project.basedir}/saxon.xml</value>
                                         </parameter>
                                         <parameter>
                                             <name>id-prefix</name>
