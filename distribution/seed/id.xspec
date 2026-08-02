@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    xmlns:array="http://www.w3.org/2005/xpath-functions/array"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dts="https://w3id.org/api/dts#"
+    xmlns:t="http://www.tei-c.org/ns/1.0" stylesheet="../../xsl/document.xsl" run-as="external">
+
+    <x:variable name="x:saxon-config" href="../../test/saxon.xml"/>
+
+    <x:param name="media-type-package"
+        select="'https://scdh.github.io/dts-transformations/distribution/seed/id.xsl'" static="true"/>
+
+    <x:param name="media-type-component" select="'template'" static="true"/>
+
+    <x:param name="media-type-processor" select="'entry'" static="true"/>
+
+    <x:scenario label="$ref on matt.xml results in dts:wrapper element in TEI root">
+        <x:param name="ref" select="'Matt:2'"/>
+        <x:param name="resource" select="'https://dts.example.org/document/Matt'"/>
+        <x:context href="../../test/matt.xml"/>
+        <x:expect label="TEI root element" test="exists(/*/self::t:TEI)"/>
+        <x:expect label="root element has XML base property from $resource" test="base-uri(/*)"
+            select="'https://dts.example.org/document/Matt'"/>
+        <x:expect label="has /TEI/teiHeader" test="exists(/t:TEI/t:teiHeader)" pending="not yet"/>
+        <x:expect label="has /TEI/dts:wrapper" test="exists(/t:TEI/dts:wrapper)"/>
+        <x:expect label="has /TEI/dts:wrapper has only one child element"
+            test="count(/t:TEI/dts:wrapper/element())" select="1"/>
+    </x:scenario>
+
+</x:description>

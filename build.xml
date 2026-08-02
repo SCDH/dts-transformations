@@ -27,6 +27,7 @@
         <antcall target="test-test-post-proc-call.xsl"/>
         <antcall target="test-xsl-uri-templates-query-parameters.xsl"/>
         <antcall target="test-xsl-uri-templates-path-parameters.xsl"/>
+        <antcall target="test-distribution-seed-id.xsl"/>
         <!-- testing utils -->
         <antcall target="test-distribution-seed-seed-config.xsl"/>
         <antcall target="test-distribution-seed-seed-config-chain.xsl"/>
@@ -85,6 +86,12 @@
     <target name="test-test-media-type-tei2txt.xsl">
         <antcall target="xspec.xspec" inheritall="false">
             <param name="xspec.xml" location="${basedir}/test/media-type/tei2txt.xspec"/>
+        </antcall>
+    </target>
+
+    <target name="test-distribution-seed-id.xsl">
+        <antcall target="xspec.xspec" inheritall="false">
+            <param name="xspec.xml" location="${basedir}/distribution/seed/id.xspec"/>
         </antcall>
     </target>
 

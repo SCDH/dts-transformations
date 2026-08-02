@@ -49,6 +49,14 @@ This configuration
             sourceLocation="media-type/tei2txt.xsl"/>
         <package name="http://example.com/xsl/a" version="1.0.0" sourceLocation="media-type/a.xsl"/>
         <package name="http://example.com/xsl/b" version="1.0.0" sourceLocation="media-type/b.xsl"/>
+
+        <!-- for node tracing with selene -->
+        <package name="http://wwu.de/scdh/selection-engine/node-tracing" version="1.0.0"
+            sourceLocation="libtrace.xsl"/>
+
+        <!-- distributed with the seed package -->
+        <package name="https://scdh.github.io/dts-transformations/distribution/seed/id.xsl"
+            version="1.0.0" sourceLocation="../distribution/seed/id.xsl"/>
     </xsltPackages>
 
 </configuration>
