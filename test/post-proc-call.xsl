@@ -7,7 +7,7 @@
   <!-- entry point called from document.xsl -->
   <xsl:template name="post-proc" visibility="public">
     <xsl:param name="nodes" as="node()*"/>
-    <xsl:param name="mediaType" as="xs:string" tunnel="true"/>
+    <xsl:param name="mediaType" as="xs:string?" tunnel="true"/>
     <xsl:param name="resource" as="xs:string?" tunnel="true"/>
     <xsl:param name="document-root" as="document-node()" tunnel="true"/>
 

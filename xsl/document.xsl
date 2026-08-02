@@ -82,14 +82,7 @@ no matter what the $mediaType parameter is set to.
   </xsl:template>
 
   <xsl:template mode="document" match="document-node(element(TEI))" use-when="$media-type-package">
-    <xsl:choose>
-      <xsl:when test="not($mediaType) or ($mediaType and $mediaType = $default-media-types)">
-        <xsl:call-template name="document"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:call-template name="transform"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:call-template name="transform"/>
   </xsl:template>
 
   <xsl:template mode="document" match="document-node(element(TEI))"
@@ -165,7 +158,7 @@ no matter what the $mediaType parameter is set to.
       <xsl:when test="not($ref or $start or $end)">
         <xsl:call-template _name="{$media-type-processor}">
           <xsl:with-param name="nodes" as="node()*" tunnel="false" select="."/>
-          <xsl:with-param name="mediaType" as="xs:string" tunnel="true" select="$mediaType"/>
+          <xsl:with-param name="mediaType" as="xs:string?" tunnel="true" select="$mediaType"/>
           <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
           <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
         </xsl:call-template>
@@ -173,7 +166,7 @@ no matter what the $mediaType parameter is set to.
       <xsl:when test="exists($ref)">
         <xsl:call-template _name="{$media-type-processor}">
           <xsl:with-param name="nodes" as="node()*" tunnel="false" select="dts:cut-ref(.)"/>
-          <xsl:with-param name="mediaType" as="xs:string" tunnel="true" select="$mediaType"/>
+          <xsl:with-param name="mediaType" as="xs:string?" tunnel="true" select="$mediaType"/>
           <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
           <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
         </xsl:call-template>
@@ -181,7 +174,7 @@ no matter what the $mediaType parameter is set to.
       <xsl:when test="$start and $end">
         <xsl:call-template _name="{$media-type-processor}">
           <xsl:with-param name="nodes" as="node()*" tunnel="false" select="dts:cut-start-end(.)"/>
-          <xsl:with-param name="mediaType" as="xs:string" tunnel="true" select="$mediaType"/>
+          <xsl:with-param name="mediaType" as="xs:string?" tunnel="true" select="$mediaType"/>
           <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
           <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
         </xsl:call-template>
@@ -194,7 +187,7 @@ no matter what the $mediaType parameter is set to.
     <xsl:context-item as="document-node()" use="required"/>
     <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')">400</xsl:assert>
     <xsl:variable name="fun"
-      as="function (node()*, xs:string, xs:string?, document-node()) as node()*"
+      as="function (node()*, xs:string?, xs:string?, document-node()) as node()*"
       select="replace($media-type-processor, '#[0-9]+$', '') => xs:QName() => function-lookup(4)"/>
     <xsl:choose>
       <xsl:when test="not($ref or $start or $end)">

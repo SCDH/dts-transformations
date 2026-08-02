@@ -9,7 +9,7 @@
   <!-- entry point called from document.xsl -->
   <xsl:function name="dts:post-proc" as="node()*" visibility="public">
     <xsl:param name="nodes" as="node()*"/>
-    <xsl:param name="mediaType" as="xs:string"/>
+    <xsl:param name="mediaType" as="xs:string?"/>
     <xsl:param name="resource" as="xs:string?"/>
     <xsl:param name="document-root" as="document-node()"/>
 
