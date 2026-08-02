@@ -1,5 +1,18 @@
 # Changes
 
+## 0.7.0
+
+- **breaking change**: When a `media-type-package` is provided to the
+  document.xsl stylesheet, this media type package is now always be
+  responsible for the output after cutting out the requested parts of
+  the resource. (see issue #33)
+- supports node tracing with Selne on SEED DTS (see #34) and thus
+  transformation of pointers along the transformation of a resource on
+  the document endpoint, and backwards. See
+  `distribution/seed/id.xsl`.
+- add support for Selene's libtrace package in generators for SEED
+  configurations.
+
 ## 0.6.1
 
 - fixes issues related to JSON-LD context and JSON-LD framing: #24,
