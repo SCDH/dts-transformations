@@ -12,14 +12,16 @@
 
     <x:param name="media-type-component" select="'function'" static="true"/>
 
-    <x:param name="media-type-processor" select="'dts:post-proc#4'" static="true"/>
+    <x:param name="media-type-processor" select="'dts:post-proc#8'" static="true"/>
 
     <x:scenario label="$ref on matt.xml results in dts:wrapper element in TEI root">
         <x:param name="ref" select="'Matt:2'"/>
         <x:context href="matt.xml"/>
-        <x:expect label="TEI root element" test="exists(/*/self::t:TEI)"/>
-        <x:expect label="has /TEI/dts:wrapper" test="exists(/t:TEI/dts:wrapper)"/>
-        <x:expect label="/TEI has only on child element" test="count(/t:TEI/*)" select="1"/>
+        <x:expect label="no TEI root element" test="exists(//t:TEI) => not()"/>
+        <x:expect label="has no /TEI/dts:wrapper" test="exists(//t:TEI/dts:wrapper) => not()"/>
+        <x:expect label="selected div at root" test="exists(/*/self::t:div)"/>
+        <x:expect label="selected div has label 2" test="/*/self::t:div/@n ! string(.)" select="'2'"
+        />
     </x:scenario>
 
     <x:scenario
