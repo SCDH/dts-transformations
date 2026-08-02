@@ -12,7 +12,7 @@
 
     <x:param name="media-type-component" select="'function'" static="true"/>
 
-    <x:param name="media-type-processor" select="'dts:post-proc#4'" static="true"/>
+    <x:param name="media-type-processor" select="'dts:post-proc#8'" static="true"/>
 
     <x:scenario label="$ref on matt.xml results in dts:wrapper element in TEI root">
         <x:param name="ref" select="'Matt:2'"/>

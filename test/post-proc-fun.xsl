@@ -11,6 +11,10 @@
     <xsl:param name="nodes" as="node()*"/>
     <xsl:param name="mediaType" as="xs:string?"/>
     <xsl:param name="resource" as="xs:string?"/>
+    <xsl:param name="tree" as="xs:string?"/>
+    <xsl:param name="ref" as="xs:string?"/>
+    <xsl:param name="start" as="xs:string?"/>
+    <xsl:param name="end" as="xs:string?"/>
     <xsl:param name="document-root" as="document-node()"/>
 
     <!-- do what ever you want -->

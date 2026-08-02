@@ -130,6 +130,10 @@ no matter what the $mediaType parameter is set to.
         <xsl:apply-templates _mode="{$media-type-processor}" select=".">
           <xsl:with-param name="mediaType" as="xs:string" tunnel="true" select="$mediaType"/>
           <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
+          <xsl:with-param name="tree" as="xs:string?" tunnel="true" select="$tree"/>
+          <xsl:with-param name="ref" as="xs:string?" tunnel="true" select="$ref"/>
+          <xsl:with-param name="start" as="xs:string?" tunnel="true" select="$start"/>
+          <xsl:with-param name="end" as="xs:string?" tunnel="true" select="$end"/>
           <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
         </xsl:apply-templates>
       </xsl:when>
@@ -137,6 +141,10 @@ no matter what the $mediaType parameter is set to.
         <xsl:apply-templates _mode="{$media-type-processor}" select="dts:cut-ref(.)">
           <xsl:with-param name="mediaType" as="xs:string" tunnel="true" select="$mediaType"/>
           <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
+          <xsl:with-param name="tree" as="xs:string?" tunnel="true" select="$tree"/>
+          <xsl:with-param name="ref" as="xs:string?" tunnel="true" select="$ref"/>
+          <xsl:with-param name="start" as="xs:string?" tunnel="true" select="$start"/>
+          <xsl:with-param name="end" as="xs:string?" tunnel="true" select="$end"/>
           <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
         </xsl:apply-templates>
       </xsl:when>
@@ -144,6 +152,10 @@ no matter what the $mediaType parameter is set to.
         <xsl:apply-templates _mode="{$media-type-processor}" select="dts:cut-start-end(.)">
           <xsl:with-param name="mediaType" as="xs:string" tunnel="true" select="$mediaType"/>
           <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
+          <xsl:with-param name="tree" as="xs:string?" tunnel="true" select="$tree"/>
+          <xsl:with-param name="ref" as="xs:string?" tunnel="true" select="$ref"/>
+          <xsl:with-param name="start" as="xs:string?" tunnel="true" select="$start"/>
+          <xsl:with-param name="end" as="xs:string?" tunnel="true" select="$end"/>
           <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
         </xsl:apply-templates>
       </xsl:when>
@@ -160,6 +172,10 @@ no matter what the $mediaType parameter is set to.
           <xsl:with-param name="nodes" as="node()*" tunnel="false" select="."/>
           <xsl:with-param name="mediaType" as="xs:string?" tunnel="true" select="$mediaType"/>
           <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
+          <xsl:with-param name="tree" as="xs:string?" tunnel="true" select="$tree"/>
+          <xsl:with-param name="ref" as="xs:string?" tunnel="true" select="$ref"/>
+          <xsl:with-param name="start" as="xs:string?" tunnel="true" select="$start"/>
+          <xsl:with-param name="end" as="xs:string?" tunnel="true" select="$end"/>
           <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
         </xsl:call-template>
       </xsl:when>
@@ -168,6 +184,10 @@ no matter what the $mediaType parameter is set to.
           <xsl:with-param name="nodes" as="node()*" tunnel="false" select="dts:cut-ref(.)"/>
           <xsl:with-param name="mediaType" as="xs:string?" tunnel="true" select="$mediaType"/>
           <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
+          <xsl:with-param name="tree" as="xs:string?" tunnel="true" select="$tree"/>
+          <xsl:with-param name="ref" as="xs:string?" tunnel="true" select="$ref"/>
+          <xsl:with-param name="start" as="xs:string?" tunnel="true" select="$start"/>
+          <xsl:with-param name="end" as="xs:string?" tunnel="true" select="$end"/>
           <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
         </xsl:call-template>
       </xsl:when>
@@ -176,6 +196,10 @@ no matter what the $mediaType parameter is set to.
           <xsl:with-param name="nodes" as="node()*" tunnel="false" select="dts:cut-start-end(.)"/>
           <xsl:with-param name="mediaType" as="xs:string?" tunnel="true" select="$mediaType"/>
           <xsl:with-param name="resource" as="xs:string?" tunnel="true" select="$resource"/>
+          <xsl:with-param name="tree" as="xs:string?" tunnel="true" select="$tree"/>
+          <xsl:with-param name="ref" as="xs:string?" tunnel="true" select="$ref"/>
+          <xsl:with-param name="start" as="xs:string?" tunnel="true" select="$start"/>
+          <xsl:with-param name="end" as="xs:string?" tunnel="true" select="$end"/>
           <xsl:with-param name="document-root" as="document-node()" tunnel="true" select="."/>
         </xsl:call-template>
       </xsl:when>
@@ -187,17 +211,17 @@ no matter what the $mediaType parameter is set to.
     <xsl:context-item as="document-node()" use="required"/>
     <xsl:assert test="dts:validate-parameters(.) => map:contains('resource')">400</xsl:assert>
     <xsl:variable name="fun"
-      as="function (node()*, xs:string?, xs:string?, document-node()) as node()*"
-      select="replace($media-type-processor, '#[0-9]+$', '') => xs:QName() => function-lookup(4)"/>
+      as="function (node()*, xs:string?, xs:string?, xs:string?, xs:string?, xs:string?, xs:string?, document-node()) as node()*"
+      select="replace($media-type-processor, '#[0-9]+$', '') => xs:QName() => function-lookup(8)"/>
     <xsl:choose>
       <xsl:when test="not($ref or $start or $end)">
-        <xsl:sequence select="$fun(., $mediaType, $resource, .)"/>
+        <xsl:sequence select="$fun(., $mediaType, $resource, $tree, $ref, $start, $end, .)"/>
       </xsl:when>
       <xsl:when test="exists($ref)">
-        <xsl:sequence select="$fun(dts:cut-ref(.), $mediaType, $resource, .)"/>
+        <xsl:sequence select="$fun(dts:cut-ref(.), $mediaType, $resource, $tree, $ref, $start, $end, .)"/>
       </xsl:when>
       <xsl:when test="$start and $end">
-        <xsl:sequence select="$fun(dts:cut-start-end(.), $mediaType, $resource, .)"/>
+        <xsl:sequence select="$fun(dts:cut-start-end(.), $mediaType, $resource, $tree, $ref, $start, $end, .)"/>
       </xsl:when>
     </xsl:choose>
   </xsl:template>
