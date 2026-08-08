@@ -50,7 +50,7 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
 
     <xsl:param name="class" as="xs:string" select="'xslt'"/>
 
-    <xsl:param name="transformation-id" as="xs:string" select="'name'"/>
+    <xsl:param name="transformation-id" as="xs:string?" select="()"/>
 
     <xsl:param name="merge-options" as="map(xs:QName, item()*)" select="
             map {
@@ -489,6 +489,10 @@ target/bin/xslt.sh -xsl:distribution/seed/seed-config.xsl saxon-config-uri=https
             select="($transformation => tokenize('\.'))[1] => tokenize('/')"/>
 
         <xsl:choose>
+            <xsl:when test="$transformation-id">
+                <!-- provided by user -->
+                <xsl:value-of select="$transformation-id"/>
+            </xsl:when>
             <xsl:when test="$id-prefix eq ''">
                 <xsl:sequence select="string-join($segments, '-')"/>
             </xsl:when>
