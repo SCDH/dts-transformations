@@ -16,6 +16,7 @@
          <outputDirectory>/${project.artifactId}-testing</outputDirectory>
          <includes>
             <include>**/tei2txt.xsl</include>
+            <include>**/tei2txt-selene.xsl</include>
          </includes>
          <excludes>
             <exclude>post-proc-*</exclude>

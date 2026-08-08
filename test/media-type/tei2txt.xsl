@@ -84,7 +84,7 @@
     </xsl:analyze-string>
   </xsl:template>
 
-  <xsl:template mode="tei" match="text()[normalize-space(.) ne '']">
+  <xsl:template mode="tei" match="text()[normalize-space(.) ne '']" priority="10">
     <xsl:choose>
       <xsl:when test="$drop-uncontained">
         <xsl:message>

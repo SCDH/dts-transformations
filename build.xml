@@ -89,6 +89,12 @@
         </antcall>
     </target>
 
+    <target name="test-test-media-type-tei2txt-selene.xsl">
+        <antcall target="xspec.xspec" inheritall="false">
+            <param name="xspec.xml" location="${basedir}/test/media-type/tei2txt-selene.xspec"/>
+        </antcall>
+    </target>
+
     <target name="test-distribution-seed-id.xsl">
         <antcall target="xspec.xspec" inheritall="false">
             <param name="xspec.xml" location="${basedir}/distribution/seed/id.xspec"/>
