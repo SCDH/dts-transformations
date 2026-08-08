@@ -1,5 +1,13 @@
 # Changes
 
+## 0.7.1
+
+- adds a variant of `test/media-types/tei2txt.xsl` with support for
+  node tracing with Selene
+- adds it to the SEED testing package and replaces to the old tei2txt
+  transformation in order to test pointer transformation from XML to
+  plaintext and back
+
 ## 0.7.0
 
 - **breaking change**: When a `media-type-package` is provided to the
