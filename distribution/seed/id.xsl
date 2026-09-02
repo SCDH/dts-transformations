@@ -1,6 +1,6 @@
 <!-- identity transformation with Selene node tracing capability -->
-<xsl:package name="https://scdh.github.io/dts-transformations/distribution/seed/id.xsl" package-version="1.0.0"
-  version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:package name="https://scdh.github.io/dts-transformations/distribution/seed/id.xsl"
+  package-version="1.0.0" version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:trace="http://wwu.de/scdh/selection-engine/node-tracing" xmlns="http://www.tei-c.org/ns/1.0"
   xpath-default-namespace="http://www.tei-c.org/ns/1.0" default-mode="tei">
@@ -8,6 +8,10 @@
   <xsl:output method="xml" indent="false"/>
 
   <xsl:use-package name="http://wwu.de/scdh/selection-engine/node-tracing" package-version="1.0.0"/>
+
+  <xsl:param name="iri" as="xs:string?" select="()"/>
+
+  <xsl:param name="header" as="xs:boolean" select="true()"/>
 
   <xsl:template name="entry" visibility="public">
     <xsl:param name="nodes" as="node()*"/>
@@ -28,11 +32,18 @@
         </xsl:when>
         <xsl:otherwise>
           <TEI>
-            <xsl:if test="$resource">
-              <xsl:attribute name="xml:base" select="$resource"/>
+            <xsl:choose>
+              <xsl:when test="$iri">
+                <xsl:attribute name="xml:base" select="$iri"/>
+              </xsl:when>
+              <xsl:when test="$resource">
+                <xsl:attribute name="xml:base" select="$resource"/>
+              </xsl:when>
+            </xsl:choose>
+            <xsl:if test="$header">
+              <xsl:copy select="$document-root/TEI/@*[not(attribute::xml:base)]"/>
+              <xsl:apply-templates select="$document-root/TEI/teiHeader"/>
             </xsl:if>
-            <!--xsl:copy select="$document-root/TEI/@*"/>
-            <xsl:apply-templates select="$document-root/TEI/teiHeader"/-->
             <dts:wrapper xmlns:dts="https://w3id.org/api/dts#">
               <xsl:apply-templates select="$nodes"/>
             </dts:wrapper>
