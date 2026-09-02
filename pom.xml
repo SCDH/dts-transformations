@@ -711,6 +711,7 @@
                                                 in an <include>path</include> element! -->
                                     <includes>
                                         <include>test/media-type/tei2txt-selene.xsl</include>
+                                        <include>test/media-type/tei2html-selene.xsl</include>
                                     </includes>
                                     <parameters>
                                         <parameter>
@@ -781,6 +782,51 @@
                                     </fileMappers>
                                 </transformationSet>
                                 <transformationSet>
+                                    <!-- generate chained configuration for tei2html-selene -->
+                                    <dir>${project.basedir}</dir>
+                                    <includes>
+                                        <include>test/media-type/tei2html-selene.xsl</include>
+                                    </includes>
+                                    <parameters>
+                                        <parameter>
+                                            <name>document-config-uri</name>
+                                            <value>${seed-json-config.dir}/xsl/document.seed.json</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>chained-config-uri</name>
+                                            <value>${seed-json-config.dir}/test/media-type/tei2html-selene.chain.json</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>media-type-package</name>
+                                            <value>http://example.com/xsl/tei2html-selene</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>media-type-package-version</name>
+                                            <value>1.0.0</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>media-type-component</name>
+                                            <value>template</value>
+                                        </parameter>
+                                        <parameter>
+                                            <name>media-type-processor</name>
+                                            <value>entry</value>
+                                        </parameter>
+                                        <parameter>
+                                            <!-- This is a SeleneSelectorMapper! -->
+                                            <name>type</name>
+                                            <value>SeleneSelectorMapper</value>
+                                        </parameter>
+                                    </parameters>
+                                    <stylesheet>${seed-chain-xsl.url}</stylesheet>
+                                    <fileMappers>
+                                        <fileMapper
+                                            implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                            <targetExtension>.seed.json</targetExtension>
+                                        </fileMapper>
+                                    </fileMappers>
+                                </transformationSet>
+                                <transformationSet>
                                     <!-- merge SEED configurations for testing package -->
                                     <dir>${project.basedir}</dir>
                                     <includes>
@@ -789,7 +835,7 @@
                                     <parameters>
                                         <parameter>
                                             <name>json-files-csv</name>
-                                            <value>file:${project.build.directory}/generated-resources/xml/xslt/pom.xsl.json,${project.basedir}/distribution/seed/collection.seed.json,file:${project.build.directory}/generated-resources/xml/xslt/test/media-type/tei2txt-selene.seed.json,file:${project.build.directory}/generated-resources/xml/xslt/distribution/seed/id.seed.json</value>
+                                            <value>file:${project.build.directory}/generated-resources/xml/xslt/pom.xsl.json,${project.basedir}/distribution/seed/collection.seed.json,file:${project.build.directory}/generated-resources/xml/xslt/test/media-type/tei2txt-selene.seed.json,file:${project.build.directory}/generated-resources/xml/xslt/test/media-type/tei2html-selene.seed.json,file:${project.build.directory}/generated-resources/xml/xslt/distribution/seed/id.seed.json</value>
                                         </parameter>
                                     </parameters>
                                     <stylesheet>${seed-merge-xsl.url}</stylesheet>
