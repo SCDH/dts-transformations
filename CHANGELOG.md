@@ -1,5 +1,12 @@
 # Changes
 
+## 0.7.2
+
+- adds `iri` parameter to `distribution/seed/id.xsl` that gets the
+  full IRI of the document.
+- adds a chained testing transformation for HTML output, that supports
+  Selene node tracing.
+
 ## 0.7.1
 
 - adds a variant of `test/media-types/tei2txt.xsl` with support for
