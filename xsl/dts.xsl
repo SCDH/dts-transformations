@@ -4,10 +4,11 @@
   xmlns:dts="https://distributed-text-services.github.io/specifications/"
   exclude-result-prefixes="#all" xpath-default-namespace="http://www.tei-c.org/ns/1.0" version="3.0">
 
-  <xsl:param name="dts-version" as="xs:string" select="'1.0rc1'"/>
+  <!-- a DTS version without 'v' prefix, like 1.0rc1 or 1.0 -->
+  <xsl:param name="dts-version" as="xs:string" select="'1.0'"/>
 
   <xsl:param name="context-url" as="xs:string"
-    select="'https://distributed-text-services.github.io/specifications/context/' || $dts-version ||'.json'"/>
+    select="'https://distributed-text-services.github.io/specifications/context/' || dts:context-basename()"/>
 
   <xsl:param name="uses-local-context" as="xs:boolean" select="false()"/>
 
@@ -16,26 +17,48 @@
     <xsl:map-entry key="'dtsVersion'" select="$dts-version"/>
   </xsl:variable>
 
+  <xsl:function name="dts:context-basename" as="xs:string" visibility="public">
+    <xsl:choose>
+      <xsl:when test="$dts-version eq '1.0rc1'">
+        <xsl:value-of select="$dts-version || '.json'"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="'v' || $dts-version || '.json'"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+
+  <xsl:function name="dts:namespace" as="xs:string" visibility="public">
+    <xsl:choose>
+      <xsl:when test="$dts-version eq '1.0rc1'">
+        <xsl:value-of select="'https://w3id.org/dts/api#'"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="'https://dtsapi.org/v' || $dts-version || '#'"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+
   <xsl:variable name="context-json" as="map(xs:string, item()*)" visibility="public">
     <xsl:choose>
       <xsl:when
-        test="$uses-local-context and $context-url eq 'https://distributed-text-services.github.io/specifications/context/1.0rc1.json'">
+        test="$uses-local-context and $context-url eq 'https://distributed-text-services.github.io/specifications/context/v1.0.json'">
         <xsl:sequence
-          select="'../context/1.0rc1.json' => resolve-uri(static-base-uri()) => unparsed-text() => parse-json()"
+          select="'../context/v1.0.json' => resolve-uri(static-base-uri()) => unparsed-text() => parse-json()"
         />
       </xsl:when>
       <xsl:when test="unparsed-text-available($context-url)">
         <xsl:sequence select="unparsed-text($context-url) => parse-json()"/>
       </xsl:when>
       <xsl:when
-        test="concat('../context/', $dts-version, '.json') => resolve-uri(static-base-uri()) => unparsed-text-available()">
+        test="concat('../context/', dts:context-basename()) => resolve-uri(static-base-uri()) => unparsed-text-available()">
         <xsl:sequence
-          select="concat('../context/', $dts-version, '.json') => resolve-uri(static-base-uri()) => unparsed-text() => parse-json()"
+          select="concat('../context/', dts:context-basename()) => resolve-uri(static-base-uri()) => unparsed-text() => parse-json()"
         />
       </xsl:when>
       <xsl:otherwise>
         <xsl:sequence
-          select="'../context/1.0rc1.json' => resolve-uri(static-base-uri()) => unparsed-text() => parse-json()"
+          select="'../context/v1.0.json' => resolve-uri(static-base-uri()) => unparsed-text() => parse-json()"
         />
       </xsl:otherwise>
     </xsl:choose>

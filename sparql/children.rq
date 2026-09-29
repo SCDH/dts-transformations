@@ -7,7 +7,7 @@
 # USAGE: see test/collection/README.md
 
 
-PREFIX dts: <https://w3id.org/dts/api#>
+PREFIX dts: <https://dtsapi.org/v1.0#>
 PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX seed: <https://raw.githubusercontent.com/SCDH/seed-xc/refs/heads/main/dts/src/main/resources/META-INF/resources/semantics/>
