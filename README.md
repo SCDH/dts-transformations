@@ -13,17 +13,15 @@ that can be implemented generically based on evaluating
 - **navigation** endpoint
 - **document** endpoint
 
-The **collection** endpoint is supported by SPARQL queries, that
-construct the required response bodies from a large JSON-LD metadata
-file encompassing all the informations about Collections and Resources
-of a project. The structure of this metadata file is described in
-detail in the documentation of the [SEED DTS
-service](https://github.com/SCDH/seed-xc/blob/main/doc/dts-records.md).
+The **collection** endpoint serves metadata. Since there is no general
+rule for metadata in TEI documents--not to mention its transformation
+to DCTerms or FRBR--, this endpoint is supported by a different
+[approach](sparql/README.md).
 
 ## Status of Implementation
 
 Implemented version:
-[1.0rc1](https://distributed-text-services.github.io/specifications/versions/1.0rc1/)
+[1.0](https://distributed-text-services.github.io/specifications/versions/v1.0/)
 
 Query parameters for the endpoints are supported through stylesheet
 parameters:
