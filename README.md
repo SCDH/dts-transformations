@@ -14,13 +14,13 @@ that can be implemented generically based on evaluating
 - **document** endpoint
 
 The **collection** endpoint serves metadata. Since there is no general
-rule for metadata in TEI documents--not to mention its transformation
-to DCTerms or FRBR--, this endpoint is supported by a different
-[approach](sparql/README.md).
+rule for metadata in TEI documents––not to mention its transformation
+to DCTerms––, this endpoint is supported by a [different
+approach](sparql).
 
 The transformations can be deployed on the [SEED DTS
 microservice](https://github.com/scdh/seed-xc), run on the [command
-line](#command-line) or using in [oXygen](#oxygen-framework) for
+line](#command-line), or used in [oXygen](#oxygen-framework) for
 developing `<tei:citeStructure>` declarations.
 
 ## Status of Implementation
