@@ -78,7 +78,13 @@
         <x:expect label="result" select="'CitableUnit'"/>
     </x:scenario>
 
-    <x:scenario label="uses configured context URI">
+    <x:scenario label="resolves context URI using dts-version">
+        <x:param name="dts-version" select="'1.0rcx'"/>
+        <x:call function="dts:context-basename"/>
+        <x:expect label="basename prefixed with 'v'" select="'v1.0rcx.json'"/>
+    </x:scenario>
+
+    <x:scenario label="compacts with custom context URI configured by version">
         <x:param name="dts-version" select="'1.0rcx'"/>
         <x:call function="dts:compact">
             <x:param name="value" select="'https://dtsapi.org/v1.0rcx#endMember'"/>
