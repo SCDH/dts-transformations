@@ -22,3 +22,5 @@ service](https://github.com/SCDH/seed-xc/blob/main/doc/dts-records.md).
 - **frame.json**: a JSON-LD frame for framing the RDF graph to the
   required JSON-LD response body
 
+Can we support generating the big JSON-LD metadata file with XSLT
+recipes? Yes, we can! Coming soon ...
