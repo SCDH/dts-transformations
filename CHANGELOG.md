@@ -1,5 +1,9 @@
 # Changes
 
+## 1.0.0 (very very soon)
+
+- supports DTS 1.0 spec
+
 ## 0.7.2
 
 - adds `iri` parameter to `distribution/seed/id.xsl` that gets the
