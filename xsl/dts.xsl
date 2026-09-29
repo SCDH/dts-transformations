@@ -19,10 +19,10 @@
   <xsl:function name="dts:context" as="xs:string" visibility="public">
     <xsl:choose>
       <xsl:when test="$dts-version eq '1.0rc1'">
-	<xsl:value-of select="$dts-version || '.json'"></xsl:value-of>
+        <xsl:value-of select="$dts-version || '.json'"/>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:value-of select="'v' || $dts-version || '.json'"></xsl:value-of>
+        <xsl:value-of select="'v' || $dts-version || '.json'"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
@@ -30,10 +30,10 @@
   <xsl:function name="dts:namespace" as="xs:string" visibility="public">
     <xsl:choose>
       <xsl:when test="$dts-version eq '1.0rc1'">
-	<xsl:value-of select="'https://w3id.org/dts/api#'"></xsl:value-of>
+        <xsl:value-of select="'https://w3id.org/dts/api#'"/>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:value-of select="'https://dtsapi.org/v' || $dts-version || '#'"></xsl:value-of>
+        <xsl:value-of select="'https://dtsapi.org/v' || $dts-version || '#'"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
