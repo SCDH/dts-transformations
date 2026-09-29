@@ -51,7 +51,7 @@
         <xsl:sequence select="unparsed-text($context-url) => parse-json()"/>
       </xsl:when>
       <xsl:when
-        test="concat('../context/', $dts-version, '.json') => resolve-uri(static-base-uri()) => unparsed-text-available()">
+        test="concat('../context/', dts:context-basename()) => resolve-uri(static-base-uri()) => unparsed-text-available()">
         <xsl:sequence
           select="concat('../context/', dts:context-basename()) => resolve-uri(static-base-uri()) => unparsed-text() => parse-json()"
         />
