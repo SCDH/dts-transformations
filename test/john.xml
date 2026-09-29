@@ -26,11 +26,11 @@
          <refsDecl n="wadm" default="false">
             <!-- see comments in WIKI article about alignment with WADM -->
             <citeStructure unit="book" match="//body/lg" use="@n">
-               <citeData use="path(.)" property="https://w3id.org/dts/api#xpath"/>
+               <citeData use="path(.)" property="https://dtsapi.org/v1.0#xpath"/>
                <citeStructure unit="chapter" match="lg" use="@n" delim=":">
-                  <citeData use="path(.)" property="https://w3id.org/dts/api#xpath"/>
+                  <citeData use="path(.)" property="https://dtsapi.org/v1.0#xpath"/>
                   <citeStructure unit="verse" match="l" use="@n" delim=":">
-                     <citeData use="path(.)" property="https://w3id.org/dts/api#xpath"/>
+                     <citeData use="path(.)" property="https://dtsapi.org/v1.0#xpath"/>
                   </citeStructure>
                </citeStructure>
             </citeStructure>
@@ -66,8 +66,8 @@
          </refsDecl>
          <refsDecl n="page-hateoas">
             <citeStructure unit="page" match="//body//pb" use="@n" delim="p.">
-               <citeData use="'p.' || @n || '.start'" property="https://w3id.org/dts/api#startMember"/>
-               <citeData use="'p.' || @n || '.end'" property="https://w3id.org/dts/api#endMember"/>
+               <citeData use="'p.' || @n || '.start'" property="https://dtsapi.org/v1.0#startMember"/>
+               <citeData use="'p.' || @n || '.end'" property="https://dtsapi.org/v1.0#endMember"/>
                <citeStructure unit="page-start" match="self::pb"
                   use="''" delim=".start"/>
                <citeStructure unit="page-end" match="(self::pb/following::pb[1]/preceding::node()[1], (//text//text())[last()])[1]"
