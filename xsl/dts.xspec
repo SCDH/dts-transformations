@@ -31,7 +31,7 @@
     <x:scenario label="compact URI, that has prefix, but no property mapping, v1.0">
         <x:param name="dts-version" select="'1.0'"/>
         <x:call function="dts:compact">
-            <x:param name="value" select="'https://dtsapi.org/v1.0#'"/>
+            <x:param name="value" select="'https://dtsapi.org/v1.0#endMember'"/>
         </x:call>
         <x:expect label="some compaction"
             test="string-length(.) &lt; string-length('https://dtsapi.org/v1.0#')"/>
