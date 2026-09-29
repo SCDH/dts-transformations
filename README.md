@@ -39,7 +39,7 @@ parameters:
 | `end`       | ✅                | ✅                |    |
 | `down`      | ✅                |                   |    |
 | `tree`      | ✅                | ✅                |    |
-| `page`      | ❌                |                   | ❌ |
+| `page`      | 🚧                |                   | 🚧 |
 | `mediaType` |                   | ✅[¹](#mediatype) |    |
 | `id`        |                   |                   | ✅ |
 | `nav`       |                   |                   | ✅ |
