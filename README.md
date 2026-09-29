@@ -18,6 +18,11 @@ rule for metadata in TEI documents--not to mention its transformation
 to DCTerms or FRBR--, this endpoint is supported by a different
 [approach](sparql/README.md).
 
+The transformations can be deployed on the [SEED DTS
+microservice](https://github.com/scdh/seed-xc), run on the [command
+line](#command-line) or using in [oXygen](#oxygen-framework) for
+developing `<tei:citeStructure>` declarations.
+
 ## Status of Implementation
 
 Implemented version:
@@ -124,9 +129,9 @@ the last node before `<pb n="2"/>`:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?><TEI xmlns="http://www.tei-c.org/ns/1.0"><dts:wrapper xmlns:dts="https://w3id.org/api/dts#"><pb n="1"/>
-         
+
             <head>The book of John</head>
-            
+
                <milestone unit="theme" xml:id="creation-start"/>
                <l n="1">In the beginning was the Word, and the Word was with God, and the Word was
                   God.</l>
@@ -299,7 +304,11 @@ well-written stylesheets for getting HTML, plain text, LaTeX, etc,
 even for parts of your documents.
 
 For the third option, see the example `post-proc-(apply|call|fun).xsl`
-packages in the [`test`](test) folder.
+packages in the [`test`](test) folder. There are also simple examples
+for getting plain text or HTML by the compile time customization
+approach in [`test/media-type`](test/media-type) folder. They are
+bundled and bundled as a test package that is available on [SEED
+DTS](https://github.com/scdh/seed-xc/dts) by default.
 
 ### URI Templates
 
