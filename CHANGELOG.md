@@ -1,5 +1,13 @@
 # Changes
 
+## 0.7.3
+
+- adds collection endpoint transformation based on SEED DTS Java
+  implementation to SEED distribution (this requires upcoming SEED DTS
+  version). This implementation is supposed to replace the SPARQL
+  queries in the collection endpoint, which turned out to be too
+  slow. See scdh/seed-xc#76.
+
 ## 0.7.2
 
 - adds `iri` parameter to `distribution/seed/id.xsl` that gets the
